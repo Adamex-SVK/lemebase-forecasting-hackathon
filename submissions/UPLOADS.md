@@ -1,6 +1,6 @@
 # Leaderboard uploads
 
-One row per upload (see `TEAM-RULES.md` section 6). The live score covers weeks 1-7 only; the final score uses weeks 8-13.
+One row per upload (see `docs/TEAM-RULES.md` section 6). The live score covers weeks 1-7 only; the final score uses weeks 8-13.
 
 | Date | Who | File | Commit | Live score | Note |
 |---|---|---|---|---|---|

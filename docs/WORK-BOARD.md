@@ -1,5 +1,7 @@
 # Work board
 
+> **ARCHIVED (project finished 2026-11-21).** Written during the hackathon and kept as history. The final model is described in [`../MODEL.md`](../MODEL.md); numbers below that say "best -4.8" predate it (final live score -4.5).
+
 Claim a task by putting your handle in **Owner** and your branch in **Branch** (pull request). One owner per task. Update **Status**: `open`, `in progress`, `review`, `done`.
 
 | Task | Iteration | Owner | Branch | Status | Notes |

@@ -1,5 +1,7 @@
 # Next steps (prepared 2026-11-21, night)
 
+> **ARCHIVED (project finished 2026-11-21).** Written during the hackathon and kept as history. The final model is described in [`../MODEL.md`](../MODEL.md); numbers below that say "best -4.8" predate it (final live score -4.5).
+
 ## RESUME HERE (updated 2026-11-21, afternoon)
 **Read `HANDOVER.md` first**: it has the current state, the best recipe (live -4.8), the jobs in flight and the ordered next steps. Short version (updated 2026-11-21 later): (1) the overlapping-cut forecasts (5 models x 13 cuts) are collected in `iterations/03-foundation-model/forecasts_cuts/`; TabPFN full runs were still in progress, so (D36) score it when they finish (`score_all.py`, then `ensemble_eval.py`); (2) the FFORMA-style meta-learner is written and run (`src/meta/fforma.py`) - it did NOT clear the adoption bar, so the simple blend (D40) stands (see `iterations/05-meta-ensemble/log.md`); (3) the final recipe is unchanged and `submissions/ensemble_top3_blend_v1.csv` was rebuilt byte-identical - a person uploads a handful of meaningfully different files; (4) finish `EXTRA-CREDIT.md`; (5) clean up the SSH key.
 

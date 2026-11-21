@@ -1,4 +1,6 @@
-# HANDOVER: start here
+# HANDOVER (archived)
+
+> **ARCHIVED (project finished 2026-11-21).** Written during the hackathon and kept as history. The final model is described in [`../MODEL.md`](../MODEL.md); numbers below that say "best -4.8" predate it (final live score -4.5).
 
 Written 2026-11-21 (afternoon). Purpose: a person or an AI model with no memory of this project can pick it up and keep going. Read this file first, then `TEAM-RULES.md`, `decisions-to-make.md` and `next-steps.md`. Everything below was verified by running code unless it says *unverified*.
 

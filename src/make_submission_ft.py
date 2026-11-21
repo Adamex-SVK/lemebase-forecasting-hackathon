@@ -41,9 +41,13 @@ def main():
     L = pd.read_csv(ms.SUB_DIR / "lgbm_own_v1.csv").set_index("article_id").loc[ids].to_numpy(float)
     E3 = np.mean([mf.final_matrix(m, ids) for m in ["moirai-2.0-small", "tirex", "chronos-t5-small"]], axis=0); E3[dead] = 0.0
     d40 = np.clip(np.round(0.3 * L + 0.7 * E3), 0, None)
-    Co = own_history_avg(ids, dead)
-    half = 0.3 * L + 0.35 * E3 + 0.35 * Co                         # D40 with half of the foundation part replaced (13-cut gain +0.24)
-    for name, F in [("ensemble_d40_half_chronos2ft_own_v1.csv", half), ("chronos2_ft_siblings_v1.csv", C), ("ensemble_d40_plus_chronos2ft_v1.csv", 0.3 * L + 0.7 * (3 * E3 + C) / 4)]:
+    outputs = [("chronos2_ft_siblings_v1.csv", C), ("ensemble_d40_plus_chronos2ft_v1.csv", 0.3 * L + 0.7 * (3 * E3 + C) / 4)]
+    try:   # optional side file; needs the 5 own-history fine-tune forecasts, which are not committed (GPU)
+        Co = own_history_avg(ids, dead)
+        outputs.insert(0, ("ensemble_d40_half_chronos2ft_own_v1.csv", 0.3 * L + 0.35 * E3 + 0.35 * Co))  # half of the foundation part replaced (13-cut gain +0.24)
+    except FileNotFoundError:
+        print("own-history fine-tune forecasts not present: skipping ensemble_d40_half_chronos2ft_own_v1.csv (not part of the final model)")
+    for name, F in outputs:
         F = np.clip(np.round(F), 0, None)
         path = ms.SUB_DIR / name; ms.write_submission(F, ids, path); ms.validate_submission(path)
         print(f"{name}: mean forecast {F.mean():.2f}, zero rows {100 * (F.max(axis=1) == 0).mean():.1f}%, mean |diff| vs D40 {np.abs(F - d40).mean():.2f} units")
