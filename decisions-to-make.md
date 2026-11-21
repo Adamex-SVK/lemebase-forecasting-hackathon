@@ -158,3 +158,21 @@ All on 2026-11-21 (decision gate 1 and the following round), unless noted. "Rec.
   | T10 new zero-shot models | `it08/adamex-svk/t10` (9c51907) | best chronos-2-small 4th -0.10 | REJECT |
 
   **T5 blocked:** all five TabPFN-TS GPU jobs were CPU-bound and had written no full forecasts after about 3 h; not killed per the task rules (D36 remains unresolved, still blocked). None of the new zero-shot models or forecast variants (sf-* classics, q40/q45, s200, chronos-2-small, toto-open-base, sundial-base-128m, moirai-1.1-small-ft, first_sale/last52 contexts) came close to the bar; the branches and files are merged/kept so any can be retried later. Integration verified: `scripts/check.sh` passes, `ensemble_recipe.py evaluate` prints -13.67, and `build` reproduces `submissions/ensemble_top3_blend_v1.csv` byte-identically.
+
+### Iteration 09 (forecasting headroom) - 2026-11-21, owner `adamex-svk`
+- **D42. RECORDED 2026-11-21 (iteration 09, owner `adamex-svk`): keep D40 unchanged; no candidate passed.** The reference was re-verified at local 4-cut mean **-13.67** (-3.72 / -25.91 / -11.01 / -14.02) and the final build still reproduces `submissions/ensemble_top3_blend_v1.csv` byte-identically. Per-task results of record (details and CSVs under `iterations/09-forecast-approaches/`):
+
+  | Task | Result vs D40 | Verdict |
+  |---|---|---|
+  | 1. Error/headroom atlas | oracle +8.34 (overlap) / +11.35 (standard), but the purged pre-origin selector beat D40 on only 1/8 development cuts (mean -1.59) | gate closed; no dynamic blending |
+  | 2. TabPFN-TS | no complete forecasts; no GPU access this session | UNRESOLVED (D36) |
+  | 3. Distribution pooling | needs GPU quantile exports; none available | BLOCKED (code/tests ready) |
+  | 4. Temporal reconciliation | honest LOCO gain -0.32, 1/4 cuts; best fixed lambda=0.5 -0.82 | REJECT |
+  | 5. Analog conditional median | -17.07 alone vs median13 -16.54; best blend -0.13 | REJECT / STOP |
+  | 6. Purged recency ensemble | task 1 gate closed | NOT RUN |
+  | 7. Moirai 2.0 fine-tune | optional; no GPU access | NOT ATTEMPTED |
+
+  The atlas is the substantive output: scaled error is concentrated in low-scale, sparse, recently-active articles (smallest scale quartile 34-45% of error; zero share > 0.75 47-61%; top 10% of articles 59-64%), and the per-article model-choice oracle is large but not predictable enough to beat a fixed robust blend. Padded and last52 contexts are near-duplicates (per-article MASE Spearman 0.992-0.994, last52 better for only 15% of articles), so no context backtests for dynamic blending were generated. **No submission file was built; uploading remains a person's action.**
+
+### Iteration 09 (forecasting approaches) - 2026-11-21, owner `adamex-svk`
+- **D45 (DECIDED by Adamex-SVK, 2026-11-21): iteration 09 forecasting-approach candidates all rejected; D40 remains frozen.** Error/headroom atlas (`iterations/09-forecast-approaches/results_adamex-svk_error-atlas.csv`): D40 -13.67 reproduced; oracle headroom +8.34 overlap / +11.35 standard (non-adoptable); a purged pre-origin model selector gains -1.59 and wins 1/8, so the headroom is not predictable and dynamic blending (plan task 6) is gated OFF. Temporal reconciliation (2-/4-week aggregated LightGBM reconciled with D40, `results_adamex-svk_temporal-reconcile.csv`): best honest LOCO variant -13.98 (gain -0.32, 1/4); all fixed-lambda=0.5 variants worse (-0.82 to -5.07); low-scale articles regress -> rejected. Analog nearest-neighbour conditional median (`results_adamex-svk_analog.csv`): analog alone -17.23 (worse than median13 -16.54); as a 4th D40 member -14.00 (gain -0.33); fixed 0.15/0.15/0.7 split -13.70 (gain -0.04, 3/4, below the +0.25 stop gate) -> rejected (task 5 stop conditions met). GPU-only candidates (distribution pooling task 3, Moirai 2.0-small fine-tune task 7) NOT run: the GPU SSH host is unavailable to this session (hostname intentionally not in the repo; needs the owner). TabPFN was already settled in it08 (rejected, live -5.2). Conclusion: no recipe change; `HANDOVER.md` and `iterations/07-ensemble-toolkit/README.md` unchanged; negative results recorded in the iteration notes.
