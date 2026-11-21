@@ -12,3 +12,6 @@ One row per upload (see `TEAM-RULES.md` section 6). The live score covers weeks 
 
 Reference points on the board at the time: AutoARIMA -33.7, Naive -64.5, leader -5.4 (seen before the -4.8 upload; the board may have changed).
 
+| 2026-11-21 | owner | `ensemble_d40_plus_chronos2ft_v1.csv` | it10/adamex-svk/x1-oos-mask | **-4.5** | D40 with the sibling-shop fine-tuned Chronos-2 as a 4th member. **Best live so far (+0.3 over D40)**; 13-cut check +0.14 (9/13 cuts) |
+| 2026-11-21 | owner | `chronos2_ft_siblings_v1.csv` | it10/adamex-svk/x1-oos-mask | -4.9 | the sibling-shop fine-tuned Chronos-2 alone: about equal to D40 (-4.8) as a single model |
+| 2026-11-21 | owner | `ensemble_d40_half_chronos2ft_own_v1.csv` | it10/adamex-svk/x1-oos-mask | -5.2 | D40 with half the foundation part replaced by the 5-seed own-history fine-tune: worse than D40 live, although it was the best variant on 13 overlapping cuts (+0.24); live differences of 0.3-0.7 are inside the noise of 7 weeks |
