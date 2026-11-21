@@ -170,7 +170,7 @@ def test_rich_b_promo_expansion():
     exp[("2", "a1", W[2])] = 1
     for key, v in o.items():
         assert v == exp.get(key, 0), (key, v)
-    assert o.sum() == len(exp) == 7
+    assert o.sum() == len(exp) == 6  # P2 on a1 duplicates P1
     assert o.loc[("2", "a2", W[1])] == 0  # P2 is store 1 only
     assert o.loc[("1", "a3", W[1])] == 0  # CAT-2 not covered
     assert list(out.columns) == ["store_id", "article_id", "week"] + rich.RICH_COLS

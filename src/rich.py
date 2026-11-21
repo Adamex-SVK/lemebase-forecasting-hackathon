@@ -154,8 +154,69 @@ def rich_d(sales, stock, weekly_keys):
     return _finish(wk, [m[KEYS + ["price", "disc_share", "promo_flag", "markdown_level"]]], "D")
 
 
+def _promo_keys(promotions, promotion_articles, promotion_stores, articles, stores):
+    """Unique (store_id, article_id, week) keys touched by at least one promotion (D7: no multiplication)."""
+    p = promotions[["promotion_id", "scope_type", "category", "start_date", "end_date"]].copy()
+    p["start_date"] = pd.to_datetime(p["start_date"])
+    p["end_date"] = pd.to_datetime(p["end_date"])
+    rows = []
+    for pid, a, b in zip(p["promotion_id"], p["start_date"], p["end_date"]):
+        for w in prepare.monday(pd.Series(pd.date_range(a, b))).unique():
+            rows.append((pid, w))
+    pw = pd.DataFrame(rows, columns=["promotion_id", "week"])
+    # article scope: SKU via promotion_articles, CATEGORY via articles.category
+    sku = p.loc[p["scope_type"] == "SKU", ["promotion_id"]].merge(
+        promotion_articles[["promotion_id", "article_id"]].astype(str), on="promotion_id")
+    cat = p.loc[p["scope_type"] == "CATEGORY", ["promotion_id", "category"]].merge(
+        articles[["article_id", "category"]].astype({"article_id": str}), on="category")[["promotion_id", "article_id"]]
+    assert set(p["scope_type"]) <= {"SKU", "CATEGORY"}, "unknown promotion scope"
+    pa = pd.concat([sku, cat], ignore_index=True).drop_duplicates()
+    # store scope: rows restrict to that store, no rows = chain-wide
+    ps = promotion_stores[["promotion_id", "store_id"]].astype({"store_id": str}).drop_duplicates()
+    restricted = set(ps["promotion_id"])
+    allst = p.loc[~p["promotion_id"].isin(restricted), ["promotion_id"]].merge(
+        pd.DataFrame({"store_id": sorted(set(stores))}), how="cross")
+    pst = pd.concat([ps, allst], ignore_index=True)
+    k = pw.merge(pa, on="promotion_id").merge(pst, on="promotion_id")
+    k = k[KEYS].drop_duplicates().reset_index(drop=True)  # at most 2 promotions per article-week: a flag suffices
+    k["promo_flag"] = 1.0
+    return k
+
+
+def rich_b(sales_lines, baskets, promotions, promotion_articles, promotion_stores, articles, weekly_keys):
+    _check_keys(weekly_keys)
+    wk = weekly_keys[KEYS].reset_index(drop=True)
+    bk = baskets[["transaction_id", "store_id", "timestamp"]]
+    assert bk["transaction_id"].is_unique
+    m = sales_lines[["transaction_id", "article_id", "units", "unit_price", "line_discount"]].merge(
+        bk, on="transaction_id", how="left", validate="many_to_one")
+    assert m["store_id"].notna().all()
+    m["store_id"] = m["store_id"].astype(str)
+    m["article_id"] = m["article_id"].astype(str)
+    m["week"] = prepare.monday(pd.to_datetime(m["timestamp"]))
+    m = m[m["units"] > 0]
+    m["pu"] = m["unit_price"] * m["units"]
+    m["du"] = m["units"].where(m["line_discount"] > 0, 0).astype(float)
+    g = m.groupby(KEYS, as_index=False).agg(pu=("pu", "sum"), u=("units", "sum"), du=("du", "sum"))
+    g["sale_price"] = g["pu"] / g["u"]
+    g["disc_share"] = g["du"] / g["u"]
+    g = g[KEYS + ["sale_price", "disc_share"]]
+    list_price = articles[["article_id", "price"]].astype({"article_id": str}).rename(columns={"price": "list_price"})
+    assert list_price["article_id"].is_unique
+    out = wk.merge(g, on=KEYS, how="left", validate="one_to_one")
+    assert len(out) == len(wk)
+    out = out.merge(list_price, on="article_id", how="left", validate="many_to_one")
+    assert len(out) == len(wk)
+    out["price"] = out["sale_price"].fillna(out["list_price"])
+    out["markdown_level"] = np.nan  # B: no tiers
+    pk = _promo_keys(promotions, promotion_articles, promotion_stores, articles, wk["store_id"].unique())
+    out = out.merge(pk, on=KEYS, how="left", validate="one_to_one")
+    assert len(out) == len(wk)
+    return _finish(wk, [out[KEYS + ["price", "disc_share", "promo_flag", "markdown_level"]]], "B")
+
+
 def load_rich(shop):
-    if shop not in ("C", "D"):
+    if shop not in ("B", "C", "D"):
         return None
     return pd.read_parquet(OUT / f"rich_{shop}.parquet")
 
@@ -167,6 +228,14 @@ def _report(shop, out, n):
 
 def build_all():
     OUT.mkdir(parents=True, exist_ok=True)
+    wb = pd.read_parquet(OUT / "weekly_B.parquet", columns=KEYS)
+    rb = RAW / "set-b"
+    ob = rich_b(pd.read_parquet(rb / "sales_lines.parquet"), pd.read_parquet(rb / "baskets.parquet"),
+                pd.read_parquet(rb / "promotions.parquet"), pd.read_parquet(rb / "promotion_articles.parquet"),
+                pd.read_parquet(rb / "promotion_stores.parquet"), pd.read_parquet(rb / "articles.parquet"), wb)
+    assert len(ob) == len(wb)
+    ob.to_parquet(OUT / "rich_B.parquet", index=False)
+    _report("B", ob, len(wb))
     wc = pd.read_parquet(OUT / "weekly_C.parquet", columns=KEYS)
     daily = pd.read_parquet(RAW / "set-c/daily.parquet",
                             columns=["date", "store_id", "article_id", "is_return", "units", "unit_price",

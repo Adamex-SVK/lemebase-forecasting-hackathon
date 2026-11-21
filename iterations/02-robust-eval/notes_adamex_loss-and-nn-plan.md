@@ -55,3 +55,19 @@ Success test: same bar as above against the LightGBM reference, and separately t
 
 ## Not planned, with reasons
 Tweedie as the main model (mismatched to the metric), ExtraTrees/RandomForest (weaker than boosting; maybe a blend member later), PatchTST/TSMixer (rarely beat GBMs on retail), Croston/SBA/TSB (cheap extra blend members for dead articles; add if 2.3 shows weakness there).
+
+## Results: items 2.0 and 2.3 (run 2026-11-21, `src/experiments_loss.py`, log `logs/loss_2_0_2_3.txt`, data `results_adamex_loss.csv`)
+Test shop, 4 cuts, D26 score, 3 seeds. Single seeds = mean over seeds; "avg" = average of the 3 seeds' forecasts (gate probabilities averaged too).
+
+| Variant | cut0 | cut1 | cut2 | cut3 | mean |
+|---|---|---|---|---|---|
+| l1 (reference, seeds) | -4.54 | -28.73 | -13.03 | -15.50 | -15.45 |
+| l1 + D20 rule | -4.49 | -28.71 | -13.03 | -15.50 | -15.43 |
+| l1 + gate (P<0.5 -> 0) | -3.48 | -28.50 | -12.95 | -15.33 | **-15.06** |
+| l1 seed average | -4.47 | -28.68 | -13.00 | -15.45 | -15.40 |
+| l1 + gate, seed average | -3.36 | -28.49 | -12.89 | -15.28 | **-15.01** |
+
+- Gate gain over reference: +0.39 on the mean (seed average +0.39), wins 4/4 cuts, but about 2/3 of the gain is cut 0 (+1.0); cuts 1-3 gain +0.1 to +0.2. **Below the +0.5 bar of TEAM-RULES section 2, so not adopted.** Paired article intervals not yet computed.
+- D20 hand rule adds only +0.02; the gate adds nothing on top of it (identical numbers), so the gate subsumes D20.
+- The reference reproduces the logged cut-0 score (-4.83 for seed 0) and the 4-cut mean (-15.5).
+- Not done yet: gate threshold sensitivity, paired intervals, CatBoost (2.4), 2.1, 2.2, blends 2.6.

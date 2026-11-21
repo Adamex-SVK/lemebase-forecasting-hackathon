@@ -9,6 +9,8 @@ horizon h. Every feature of a window with origin `o` uses ONLY weeks before `o`.
 
 A "window" is (series, origin o); the model predicts units in week o+h-1 for h = 1..13.
 """
+import warnings
+
 import numpy as np
 import pandas as pd
 
@@ -29,14 +31,26 @@ FEATURES = (
 
 FEATURES_D33 = FEATURES[:-1] + ["cover_last", "cover_avg4", "h"]   # D33: stock relative to recent sales
 
+# Iteration 04: rich columns (price, discounts, promotions, markdowns), only for shops that have them.
+RICH_FEATURES = ["price_ratio4", "disc4", "disc13", "promo4", "promo13", "markdown_last", "markdown_max4",
+                 "weeks_since_promo", "rich_missing"]
+
+
+def feature_names(rich=False, d33=False):
+    """Column names of the model matrix, `h` last; the rich columns sit before `h`."""
+    base = FEATURES_D33 if d33 else FEATURES
+    return base[:-1] + RICH_FEATURES + ["h"] if rich else base
+
 
 class ShopMatrix:
     """Series x weeks matrices of one shop (units, on_hand, out-of-stock flag).
 
     mask_oh_before (D33): `on_hand` before this date is treated as missing (the test shop's
-    old stock regime, which has a different scale)."""
+    old stock regime, which has a different scale).
+    rich: optional frame (store_id, article_id, week + rich.RICH_COLS); fills M.R[col] (n x W, NaN where
+    missing). Rows whose key or week is not in df are ignored."""
 
-    def __init__(self, df, mask_oh_before=None):
+    def __init__(self, df, mask_oh_before=None, rich=None):
         self.keys = df[KEYS].drop_duplicates().sort_values(KEYS).reset_index(drop=True)
         self.weeks = np.sort(df["week"].unique())
         steps = np.diff(self.weeks).astype("timedelta64[D]").astype(int)
@@ -54,9 +68,20 @@ class ShopMatrix:
         self.OOS = np.zeros((n, w), dtype=bool)
         self.OOS[r, c] = df["out_of_stock_flag"].to_numpy()
         self.n, self.W = n, w
+        self.has_rich = rich is not None
+        self.R = {}
+        if self.has_rich:
+            from rich import RICH_COLS
+            rr = pd.MultiIndex.from_frame(self.keys).get_indexer(pd.MultiIndex.from_frame(rich[KEYS]))
+            rc = pd.Index(self.weeks).get_indexer(rich["week"])
+            ok = (rr >= 0) & (rc >= 0)
+            for col in RICH_COLS:
+                a = np.full((n, w), np.nan, dtype=np.float32)
+                a[rr[ok], rc[ok]] = rich[col].to_numpy(dtype=np.float32)[ok]
+                self.R[col] = a
 
 
-def features_at(M, o, d33=False):
+def features_at(M, o, d33=False, rich=False):
     """Features of every series at origin o (first forecast week index), using weeks < o only.
 
     Returns (X [n x len(FEATURES)-1 float32, no `h`], scale [n float64], valid [n bool])."""
@@ -106,6 +131,30 @@ def features_at(M, o, d33=False):
             avg4 = np.where(known.sum(axis=1) > 0, np.nansum(np.where(known, oh4, 0.0), axis=1) / np.maximum(known.sum(axis=1), 1), np.nan)
         cols["cover_avg4"] = np.log1p(np.clip(avg4, 0, None) / level)
         names = FEATURES_D33
+    if rich:   # only weeks < o of M.R are read
+        nan = np.full(n, np.nan)
+        if M.has_rich:
+            R = {c: M.R[c][:, :o].astype(np.float64) for c in M.R}
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", RuntimeWarning)
+                num = np.nanmean(R["price"][:, o - 4:o], axis=1)
+                med = np.nanmedian(R["price"][:, max(0, o - 26):o], axis=1)
+                cols["price_ratio4"] = np.where(med > 0, num / np.where(med > 0, med, 1.0), np.nan)   # never inf
+                cols["disc4"] = np.nanmean(R["disc_share"][:, o - 4:o], axis=1)
+                cols["disc13"] = np.nanmean(R["disc_share"][:, o - 13:o], axis=1)
+                cols["promo4"] = np.nanmean(R["promo_flag"][:, o - 4:o], axis=1)
+                cols["promo13"] = np.nanmean(R["promo_flag"][:, o - 13:o], axis=1)
+                cols["markdown_max4"] = np.nanmax(R["markdown_level"][:, o - 4:o], axis=1)
+            cols["markdown_last"] = R["markdown_level"][:, o - 1]
+            # DEAD_CAP also when promo_flag is all NaN; rich_missing tells the two cases apart
+            prev = (R["promo_flag"] == 1)[:, ::-1]
+            cols["weeks_since_promo"] = np.where(prev.any(axis=1), np.minimum(prev.argmax(axis=1), DEAD_CAP), DEAD_CAP)
+            cols["rich_missing"] = np.all([np.isnan(R[c][:, o - 13:o]).all(axis=1) for c in R], axis=0).astype(float)
+        else:
+            for name in RICH_FEATURES:
+                cols[name] = nan
+            cols["rich_missing"] = np.ones(n)
+        names = names[:-1] + RICH_FEATURES + ["h"]
     X = np.column_stack([cols[f] for f in names if f != "h"]).astype(np.float32)
     return X, scale, valid
 
@@ -120,15 +169,22 @@ def make_origins(W, step=2, horizon=H, min_hist=MIN_HIST):
 
 
 def build_windows(M, origins, sample_inactive=False, keep_inactive=0.10, weight_inactive=10.0,
-                  rng=None, horizon=H, d33=False):
+                  rng=None, horizon=H, d33=False, rich=False, rich_drop=0.0):
     """Training rows: one row per (kept series-origin) x h. Returns dict with
     X [rows x len(FEATURES)] (last column h), y (units / scale), w (sample weight),
-    series (row index into M.keys), origin (week index), plus n_windows."""
+    series (row index into M.keys), origin (week index), plus n_windows.
+
+    rich=True appends the RICH_FEATURES columns (before h). rich_drop: share of windows (one random
+    decision per series-origin, all h rows alike) whose rich columns are masked: all NaN except
+    rich_missing = 1. No random draw is made when rich_drop is 0 or rich is False."""
     rng = rng or np.random.default_rng(0)
+    names = feature_names(rich, d33)
+    rcols = [i for i, nm in enumerate(names) if nm in RICH_FEATURES and nm != "rich_missing"]
+    miss_col = names.index("rich_missing") if rich else None
     Xs, ys, ws, ser, org = [], [], [], [], []
     for o in origins:
         assert o + horizon <= M.W
-        X, scale, valid = features_at(M, o, d33)
+        X, scale, valid = features_at(M, o, d33, rich)
         active = M.U[:, max(0, o - 26):o].sum(axis=1) > 0
         w = np.ones(M.n)
         keep = valid.copy()
@@ -140,23 +196,29 @@ def build_windows(M, origins, sample_inactive=False, keep_inactive=0.10, weight_
         if len(idx) == 0:
             continue
         Y = M.U[idx, o:o + horizon].astype(np.float64) / scale[idx, None]
+        Xi = X[idx]
+        if rich and rich_drop > 0:
+            drop = rng.random(len(idx)) < rich_drop
+            Xi = Xi.copy()
+            Xi[np.ix_(drop, rcols)] = np.nan
+            Xi[drop, miss_col] = 1.0
         for h in range(1, horizon + 1):
-            Xh = np.column_stack([X[idx], np.full(len(idx), h, dtype=np.float32)])
+            Xh = np.column_stack([Xi, np.full(len(idx), h, dtype=np.float32)])
             Xs.append(Xh); ys.append(Y[:, h - 1].astype(np.float32)); ws.append(w[idx].astype(np.float32))
             ser.append(idx); org.append(np.full(len(idx), o))
     if not Xs:
-        return {"X": np.zeros((0, len(FEATURES)), np.float32), "y": np.zeros(0, np.float32), "w": np.zeros(0, np.float32),
+        return {"X": np.zeros((0, len(names)), np.float32), "y": np.zeros(0, np.float32), "w": np.zeros(0, np.float32),
                 "series": np.zeros(0, int), "origin": np.zeros(0, int), "n_windows": 0}
     return {"X": np.vstack(Xs), "y": np.concatenate(ys), "w": np.concatenate(ws),
             "series": np.concatenate(ser), "origin": np.concatenate(org),
             "n_windows": int(sum(len(i) for i in ser) // horizon)}
 
 
-def inference_features(M, horizon=H, d33=False):
+def inference_features(M, horizon=H, d33=False, rich=False):
     """Rows for forecasting the `horizon` weeks after the last week of M.
 
     Returns (X [n*horizon x len(FEATURES)], scale [n], valid [n]); rows are ordered
     series-major (series 0 h=1..13, series 1 ...)."""
-    X, scale, valid = features_at(M, M.W, d33)
+    X, scale, valid = features_at(M, M.W, d33, rich)
     Xh = np.concatenate([np.column_stack([X, np.full(M.n, h, dtype=np.float32)])[:, None, :] for h in range(1, horizon + 1)], axis=1)
     return Xh.reshape(M.n * horizon, -1), scale, valid

@@ -27,8 +27,8 @@ PARAMS = dict(objective="l1", learning_rate=0.05, num_leaves=63, min_data_in_lea
 OUT = v.ROOT / "iterations" / "01-global-gbm"
 
 
-def fit(win_train, win_val=None, rounds=None, params=PARAMS):
-    dtr = lgb.Dataset(win_train["X"], win_train["y"], weight=win_train["w"], feature_name=f.FEATURES, free_raw_data=True)
+def fit(win_train, win_val=None, rounds=None, params=PARAMS, names=None):
+    dtr = lgb.Dataset(win_train["X"], win_train["y"], weight=win_train["w"], feature_name=list(names or f.FEATURES), free_raw_data=True)
     if win_val is not None:
         dva = lgb.Dataset(win_val["X"], win_val["y"], weight=win_val["w"], reference=dtr)
         m = lgb.train(params, dtr, num_boost_round=3000, valid_sets=[dva],
@@ -37,9 +37,9 @@ def fit(win_train, win_val=None, rounds=None, params=PARAMS):
     return lgb.train(params, dtr, num_boost_round=rounds), rounds
 
 
-def forecast_matrix(model, M, weeks):
+def forecast_matrix(model, M, weeks, rich=False, d33=False):
     """Forecast units for the 13 weeks after the last week of M; series with scale 0 get 0."""
-    X, scale, valid = f.inference_features(M)
+    X, scale, valid = f.inference_features(M, d33=d33, rich=rich)
     p = model.predict(X).reshape(M.n, H) * scale[:, None]
     p = np.clip(p, 0, None)
     p[~valid] = 0.0
