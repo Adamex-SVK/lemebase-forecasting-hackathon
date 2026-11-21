@@ -49,7 +49,7 @@ def combos(P, Fl, Fc, Pr):
     avg = 0.5 * (Fl + Fc)
     return {"lgbm": Fl, "catboost": Fc, "lgbm+cb": avg, "lgbm+gate": gate(Fl), "catboost+gate": gate(Fc),
             "lgbm+cb+gate": gate(avg), "lgbm+cb+median13 (1/3 each)": (Fl + Fc + med) / 3,
-            "lgbm+cb+gate, then 1/3 median": gate((Fl + Fc) / 3 * 2 + med / 3) if False else gate((Fl + Fc + med) / 3)}
+            "lgbm+cb+median13+gate": gate((Fl + Fc + med) / 3)}
 
 
 def main():

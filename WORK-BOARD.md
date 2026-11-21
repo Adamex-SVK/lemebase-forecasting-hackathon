@@ -14,7 +14,8 @@ Claim a task by putting your handle in **Owner** and your branch in **Branch** (
 | LightGBM hyperparameter search on the 4 cuts | 02 | | | open | seed noise about 0.8 on one cut: use the mean over cuts |
 | Combine several robust level estimators (medians over different windows) | 02 | | | open | |
 | TabPFN-TS (local mode, v2 weights): smoke test, 4 cuts, blend test | 03 | | it03/adamex-svk/foundation-models | in progress | D36; environment being installed on the GPU machine |
-| Meta-learning ensemble (FFORMA style): write `src/meta/fforma.py`, run the purged evaluation | 05 | | | in progress | D37; base forecasts at 13 cuts: LightGBM done, GPU streams running; see `iterations/05-meta-ensemble/plan.md` |
-| Collect finished GPU jobs (TabPFN, overlapping cuts), commit the forecasts, rebuild the submission | 03 | | | open | see `HANDOVER.md` section 7 |
+| Meta-learning ensemble (FFORMA style): write `src/meta/fforma.py`, run the purged evaluation | 05 | it05 | it03/adamex-svk/foundation-models | done | D37 tested, NOT adopted (best +0.23, 3/4; keep D40); results `iterations/05-meta-ensemble/results_meta_fforma_*.csv`; TabPFN (D36) still pending |
+| Collect finished GPU jobs (TabPFN, overlapping cuts), commit the forecasts, rebuild the submission | 03 | it05 | it03/adamex-svk/foundation-models | in progress | overlapping cuts (5 models x 13) collected, submission rebuilt (byte-identical); TabPFN full runs still running (D36) |
 | Finish step 1.3 (other shops x arms) and the extra-credit table | 01 | | | open | `EXTRA-CREDIT.md`, `python src/run_arms.py` |
 | Clean up: remove the SSH key from the GPU machine and the laptop | - | | | open | when all GPU work is done |
+| Finish the remaining loss checks (huber/fair/l2, tweedie/poisson + median correction) and the neural forecasters (neuralforecast NHITS/NBEATS, own then pooled) | 02 + 06 | kilo | it06/kilo/neural-forecasters | in progress | plan `1795268567240-neural-forecasters-and-loss-plan.md`; results in `iterations/02-robust-eval/results_adamex_loss.csv` and `iterations/06-neural/notes_kilo_neural.md`; D41 proposed |

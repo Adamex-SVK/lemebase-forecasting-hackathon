@@ -1,0 +1,65 @@
+cut,mode,variant,score
+0,seed-mean,lgbm,-4.540896207489305
+0,seed-mean,catboost,-5.30950265172562
+0,seed-mean,lgbm+cb,-4.758342609195321
+0,seed-mean,lgbm+gate,-3.479060001660946
+0,seed-mean,catboost+gate,-4.61325580933786
+0,seed-mean,lgbm+cb+gate,-3.881084551016034
+0,seed-mean,lgbm+cb+median13 (1/3 each),-4.906811560040869
+0,seed-mean,lgbm+cb+median13+gate,-3.7651051842793266
+0,avg,lgbm,-4.470578321782948
+0,avg,catboost,-5.252066423814572
+0,avg,lgbm+cb,-4.7314120312413666
+0,avg,lgbm+gate,-3.362871238369314
+0,avg,catboost+gate,-4.484377890797053
+0,avg,lgbm+cb+gate,-3.794618022860652
+0,avg,lgbm+cb+median13 (1/3 each),-4.892826395198657
+0,avg,lgbm+cb+median13+gate,-3.6925892166476793
+1,seed-mean,lgbm,-28.73340092580965
+1,seed-mean,catboost,-30.301154905464283
+1,seed-mean,lgbm+cb,-29.41806698928993
+1,seed-mean,lgbm+gate,-28.503526310181417
+1,seed-mean,catboost+gate,-29.375423727330013
+1,seed-mean,lgbm+cb+gate,-28.84704660516969
+1,seed-mean,lgbm+cb+median13 (1/3 each),-29.457515924298416
+1,seed-mean,lgbm+cb+median13+gate,-28.468167274798407
+1,avg,lgbm,-28.681699934758864
+1,avg,catboost,-30.208252267818068
+1,avg,lgbm+cb,-29.377275119575195
+1,avg,lgbm+gate,-28.491255549387805
+1,avg,catboost+gate,-29.294174432473064
+1,avg,lgbm+cb+gate,-28.834111173304656
+1,avg,lgbm+cb+median13 (1/3 each),-29.444285889349707
+1,avg,lgbm+cb+median13+gate,-28.493822456485574
+2,seed-mean,lgbm,-13.032081104656308
+2,seed-mean,catboost,-13.139875357493347
+2,seed-mean,lgbm+cb,-13.029755772862918
+2,seed-mean,lgbm+gate,-12.950965352186818
+2,seed-mean,catboost+gate,-12.94418399306032
+2,seed-mean,lgbm+cb+gate,-12.891564668757376
+2,seed-mean,lgbm+cb+median13 (1/3 each),-12.403261941077325
+2,seed-mean,lgbm+cb+median13+gate,-12.184234529197804
+2,avg,lgbm,-12.9998506505824
+2,avg,catboost,-13.09918242684982
+2,avg,lgbm+cb,-13.009047777006444
+2,avg,lgbm+gate,-12.893767510815746
+2,avg,catboost+gate,-12.881565074393508
+2,avg,lgbm+cb+gate,-12.8473588048988
+2,avg,lgbm+cb+median13 (1/3 each),-12.392723326011756
+2,avg,lgbm+cb+median13+gate,-12.14305215347624
+3,seed-mean,lgbm,-15.498183696641126
+3,seed-mean,catboost,-15.624797506949738
+3,seed-mean,lgbm+cb,-15.474605434197704
+3,seed-mean,lgbm+gate,-15.326190691989993
+3,seed-mean,catboost+gate,-15.237431035328925
+3,seed-mean,lgbm+cb+gate,-15.200309169343257
+3,seed-mean,lgbm+cb+median13 (1/3 each),-15.544109360315398
+3,seed-mean,lgbm+cb+median13+gate,-15.209688003358684
+3,avg,lgbm,-15.447543401428664
+3,avg,catboost,-15.549751233185184
+3,avg,lgbm+cb,-15.448020188012324
+3,avg,lgbm+gate,-15.283385963185214
+3,avg,catboost+gate,-15.146450453435545
+3,avg,lgbm+cb+gate,-15.165548377994241
+3,avg,lgbm+cb+median13 (1/3 each),-15.534398321562403
+3,avg,lgbm+cb+median13+gate,-15.205163976935921

@@ -1,0 +1,8 @@
+candidate,models,lgbm_weight,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won_vs_D40
+D40 reference (current winning blend),moirai-2.0-small;tirex;chronos-t5-small,0.3,-3.72,-25.91,-11.01,-14.02,-13.67,+0.00,0
+top generation 3: chronos-2 + moirai-2.0-small + tirex,chronos-2;moirai-2.0-small;tirex,0.3,-4.06,-26.17,-11.57,-14.17,-13.99,-0.33,0
+top generation 4: above + timesfm-2.5,chronos-2;moirai-2.0-small;tirex;timesfm-2.5,0.3,-4.08,-25.96,-12.02,-13.94,-14.00,-0.33,1
+chronos-2 + chronos-t5-large + moirai-2.0-small + tirex,chronos-2;chronos-t5-large;moirai-2.0-small;tirex,0.3,-4.69,-25.96,-11.46,-14.14,-14.06,-0.40,0
+top of large series: chronos-t5-large + moirai-1.1-large + tirex,chronos-t5-large;moirai-1.1-large;tirex,0.3,-4.27,-25.88,-11.99,-14.42,-14.14,-0.47,1
+all top/large 6 models,chronos-2;chronos-t5-large;moirai-2.0-small;moirai-1.1-large;tirex;timesfm-2.5,0.3,-4.04,-25.37,-11.87,-14.32,-13.90,-0.23,1
+moirai-1.1-large swap: chronos-2 + moirai-1.1-large + tirex,chronos-2;moirai-1.1-large;tirex,0.3,-3.76,-25.84,-12.43,-14.57,-14.15,-0.49,1

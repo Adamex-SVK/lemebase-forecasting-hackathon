@@ -254,6 +254,62 @@ def fforma_forecast(c, fitted):
     return pred
 
 
+def hedge(c, ff_raw, w_simple, h):
+    """h * FFORMA + (1 - h) * simple blend, both raw (post-processing is applied by score/post)."""
+    return h * ff_raw + (1 - h) * simple_blend(c, w_simple)
+
+
+def fit_cuts_for(train_offsets, cuts, fit_all):
+    """The tested protocol holds the newest training cut out as a (by default unused) validation cut;
+    fit_all=True trains on every training cut instead."""
+    val_W = min(train_offsets)
+    fit = [cuts[W] for W in train_offsets if fit_all or W != val_W]
+    return fit, cuts[val_W]
+
+
+# ----------------------------------------------------------------- final weeks (submission)
+FM_FINAL = ROOT / "iterations" / "03-foundation-model" / "forecasts_final"
+
+
+def load_final():
+    """The real forecast origin: features from the whole test-shop history, bases = the real-week
+    forecasts (LightGBM lgbm_own_v1.csv + foundation forecasts_final). Same dict layout as load_cut,
+    without actuals."""
+    import make_submission as ms
+    full = v.load_weekly("test")
+    M = f.ShopMatrix(full)
+    keys = M.keys
+    ids = keys["article_id"].tolist()
+    assert keys["store_id"].nunique() == 1 and sorted(ids) == ms.history_ids(), "final keys differ from the history"
+    X, scale = article_features(M)
+    dead = M.U[:, -8:].sum(axis=1) == 0
+    bases = {"zero": np.zeros((M.n, H))}
+    L = pd.read_csv(ms.SUB_DIR / "lgbm_own_v1.csv").set_index("article_id").loc[ids]
+    bases["lgbm"] = L.to_numpy(float)
+    if "median13" in FF_NAMES:
+        bases["median13"] = np.repeat(np.median(M.U[:, -13:], axis=1)[:, None], H, axis=1).astype(float)
+    for model in MODELS:
+        fc = pd.read_parquet(FM_FINAL / f"{model}__test__final__padded.parquet")
+        P = fc.pivot_table(index="article_id", columns="week", values="forecast", aggfunc="sum").reindex(ids)
+        assert P.shape == (M.n, H) and P.notna().all().all(), f"{model}: final forecast incomplete"
+        bases[model] = P.to_numpy(float)
+    return {"W": "final", "M": M, "keys": keys, "ids": ids, "X": X, "dead": dead, "bases": bases}
+
+
+def write_final(c, F, path):
+    import make_submission as ms
+    G = post(F, c)
+    order = pd.Index(c["ids"]).get_indexer(ms.history_ids())
+    out = Path(path)
+    if not out.is_absolute():
+        out = ROOT / out
+    ms.write_submission(G[order], ms.history_ids(), out)
+    ms.validate_submission(out)
+    print(f"wrote {out} (format checks pass) | mean forecast {G.mean():.3f} | "
+          f"{100 * (G.max(axis=1) == 0).mean():.1f}% all-zero articles")
+    return G[order]
+
+
 # ----------------------------------------------------------------- driver
 MODELS = []
 
@@ -271,9 +327,21 @@ def main():
     ap.add_argument("--ff-bases", default="lgbm,median13,zero",
                     help="non-foundation base methods FFORMA may weight (subset of lgbm,median13,zero)")
     ap.add_argument("--out", default=None, help="results CSV name (default results_meta_fforma.csv)")
+    ap.add_argument("--hedge-weight", type=float, default=0.5,
+                    help="weight of FFORMA in the hedge h*FFORMA + (1-h)*simple blend (also scored)")
+    ap.add_argument("--fit-all", action="store_true",
+                    help="train FFORMA on every training cut (default: hold the newest one out, as tested in D37)")
+    ap.add_argument("--final", action="store_true",
+                    help="instead of evaluating, train on the overlapping cuts and write submissions for the real weeks")
+    ap.add_argument("--final-lgbm-weight", type=float, default=0.3,
+                    help="LightGBM weight of the simple blend inside the final hedge (D40 uses 0.3)")
+    ap.add_argument("--out-pure", default=None, help="final mode: path of the pure FFORMA submission")
+    ap.add_argument("--out-hedge", default=None, help="final mode: path of the hedge submission")
     a = ap.parse_args()
     MODELS = [m.strip() for m in a.models.split(",") if m.strip()]
     set_ff_bases(a.ff_bases)
+    if a.final:
+        return run_final(a)
 
     print(f"FFORMA meta-ensemble: foundation models {MODELS}; offsets {OFFSETS}; test offsets {TEST_OFFSETS}")
     print("loading cuts ...", flush=True)
@@ -293,11 +361,12 @@ def main():
         wbest, wsc = choose_weight(train_cuts)
         ref = score(cuts[W_t], simple_blend(cuts[W_t], wbest))
 
-        val_W = min(train_offsets)
-        fit_cuts = [cuts[W] for W in train_offsets if W != val_W]
-        fitted = fit_fforma(fit_cuts, cuts[val_W], epochs=a.epochs, lr=a.lr, l2=a.l2,
+        fit_cuts, val_cut = fit_cuts_for(train_offsets, cuts, a.fit_all)
+        fitted = fit_fforma(fit_cuts, val_cut, epochs=a.epochs, lr=a.lr, l2=a.l2,
                             early_stop=a.early_stop, min_epochs=a.min_epochs)
-        ff = score(cuts[W_t], fforma_forecast(cuts[W_t], fitted))
+        ff_raw = fforma_forecast(cuts[W_t], fitted)
+        ff = score(cuts[W_t], ff_raw)
+        hg = score(cuts[W_t], hedge(cuts[W_t], ff_raw, wbest, a.hedge_weight))
 
         Xt = prep_X(cuts[W_t], fitted["mu"], fitted["sd"])
         wt, _ = forward(Xt, fitted["theta"], stack_bases(cuts[W_t]))
@@ -310,10 +379,12 @@ def main():
                      "lgbm_alone": round(lgbm, 2), "ensemble_alone": round(ens, 2),
                      "simple_blend": round(ref, 2), "fforma": round(ff, 2),
                      "gain_fforma_minus_simple": round(ff - ref, 2),
-                     "fforma_val_epoch": fitted["val_epoch"]})
+                     "fforma_val_epoch": fitted["val_epoch"],
+                     "hedge": round(hg, 2), "gain_hedge_minus_simple": round(hg - ref, 2)})
         print(f"W_t={W_t:2d} | train {len(train_offsets)} cuts, simple w={wbest:.1f} | "
               f"LightGBM {lgbm:6.2f}  ensemble {ens:6.2f}  simple {ref:6.2f}  FFORMA {ff:6.2f}  "
-              f"gain {ff - ref:+.2f} (val_epoch {fitted['val_epoch']})", flush=True)
+              f"gain {ff - ref:+.2f} | hedge {hg:6.2f} gain {hg - ref:+.2f} "
+              f"(val_epoch {fitted['val_epoch']})", flush=True)
         print(f"      mean FFORMA weights: {wstr}", flush=True)
 
     res = pd.DataFrame(rows)
@@ -326,7 +397,38 @@ def main():
               f"gain {mf - ms:+.2f}, FFORMA better on {won}/{len(res)} cuts")
         print("adoption bar: >= +0.50 mean AND better on >= 3/4 cuts ->",
               "ADOPT FFORMA" if (mf - ms >= 0.5 and won >= 3) else "KEEP SIMPLE BLEND")
+        mh = res["hedge"].mean()
+        wonh = int((res["hedge"] > res["simple_blend"]).sum())
+        print(f"hedge (h={a.hedge_weight}): {mh:.2f}, gain {mh - ms:+.2f}, better on {wonh}/{len(res)} cuts")
     print(f"\nwrote {out_path}")
+
+
+def run_final(a):
+    """Train FFORMA on the overlapping cuts (all lie before the real forecast weeks) and write the
+    pure and hedge submissions for the real weeks."""
+    print(f"FFORMA final: foundation models {MODELS}; FFORMA bases {FF_NAMES}; offsets {OFFSETS}")
+    cuts = {W: load_cut(W) for W in OFFSETS}
+    available = [W for W in OFFSETS if all(m in cuts[W]["bases"] for m in MODELS)]
+    print(f"training cuts: {available} ({'all' if a.fit_all else 'newest held out, as tested'})")
+    fit_cuts, val_cut = fit_cuts_for(available, cuts, a.fit_all)
+    fitted = fit_fforma(fit_cuts, val_cut, epochs=a.epochs, lr=a.lr, l2=a.l2,
+                        early_stop=a.early_stop, min_epochs=a.min_epochs)
+    c = load_final()
+    ff_raw = fforma_forecast(c, fitted)
+    wt, _ = forward(prep_X(c, fitted["mu"], fitted["sd"]), fitted["theta"], stack_bases(c))
+    print("mean FFORMA weights at the real origin: " +
+          " ".join(f"{nm}={x:.2f}" for nm, x in zip(ff_names(c), wt.mean(axis=0))))
+    out = {}
+    if a.out_pure:
+        out["pure"] = write_final(c, ff_raw, a.out_pure)
+    if a.out_hedge:
+        out["hedge"] = write_final(c, hedge(c, ff_raw, a.final_lgbm_weight, a.hedge_weight), a.out_hedge)
+    d40 = post(simple_blend(c, a.final_lgbm_weight), c)
+    for k, G in out.items():
+        order = pd.Index(c["ids"]).get_indexer(sorted(c["ids"]))
+        diff = np.abs(G - d40[order])
+        print(f"{k}: differs from the D40-style blend in {100 * (diff.max(axis=1) > 0).mean():.1f}% of articles, "
+              f"mean |diff| {diff.mean():.3f} units")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+# Neural forecasters trained from scratch (iteration 06): NHITS / NBEATS on the D26-scaled target.
+#
+# Install (GPU machine, reuses the machine's torch 2.5.1):
+#   bash env/setup_gpu.sh nf
+# or by hand:
+#   .venv-nf/bin/pip install -c env/constraints_gpu.txt -r env/requirements_base.txt -r env/requirements_nf.txt
+#
+# Version notes (checked against PyPI on 2026-11-21):
+#  * neuralforecast 3.0.0 requires torch>=2.0.0, so it accepts the machine's torch 2.5.1. The 3.1+ line
+#    requires torch>=2.9.1 and would replace torch, clashing with the machine's torchvision 0.20.1.
+#    Do not bump without re-checking `requires_dist` on PyPI.
+#  * pytorch-lightning and ray are pinned so a later resolve cannot silently pull a newer torch stack.
+#  * pandas<3 comes from env/constraints_gpu.txt; numpy 2.1.2 is the machine's.
+neuralforecast==3.0.0
+pytorch-lightning==2.4.0
+ray[tune]==2.40.0
+optuna>=3.0,<5
+utilsforecast>=0.2.3
+coreforecast>=0.0.6
