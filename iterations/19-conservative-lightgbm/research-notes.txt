@@ -1,0 +1,51 @@
+Research shortlist requested 2026-11-21; literature screening, not reproduction.
+
+1. Bergmeir, Hyndman & Benitez (2016), Bagging exponential smoothing methods
+using STL decomposition and Box-Cox transformation.
+https://robjhyndman.com/publications/bagging-ets/
+Paper: moving-block bootstrap of decomposition remainders; combine ETS forecasts.
+Evidence is M3, especially monthly data, not this sparse weekly pharmacy panel.
+Project inference: dependence-preserving bootstrap deserves consideration after
+current review; arbitrary independent Gaussian noise can destroy zeros and bursts.
+
+2. Petropoulos, Hyndman & Bergmeir (2018), Exploring the sources of uncertainty:
+why does bagging for time series forecasting work?
+https://robjhyndman.com/papers/exploring-sources-uncertainty.pdf
+Paper finds model uncertainty dominant in its ETS/ARIMA competition-series study.
+Project inference: current diverse ensemble already exploits this idea; extra
+randomness or seeds need not improve bias or beat it. Earlier D33 three-seed
+results in iteration 02 were mixed, not evidence for automatic bagging promotion.
+
+3. Salinas et al., DeepAR (2020 journal version).
+https://arxiv.org/abs/1704.04110
+Global probabilistic autoregressive forecasting across related series.
+Project proposal: a compact negative-binomial count model, simulate full 13-week
+paths, take marginal median at each week for absolute-error scoring. Simulation
+is an approximation to the model distribution, not new information; more paths
+reduce sampling error, not model misspecification. Fit and tune on past only.
+Historical on_hand is allowed, future observed stock must not be supplied.
+Count-likelihood assumption needs checking against processed fractional targets.
+
+4. Turkmen et al. (2020 preprint), Intermittent Demand Forecasting with Renewal Processes.
+https://arxiv.org/abs/2010.01550
+Models inter-demand times and sizes, including aging/clustering/quasi-periodicity.
+Project inference: plausible sparse-demand challenger; greater change and effort
+than current regularization. Distinct from iteration 15 probability gate, whose
+small gains did not pass review. Avoid simply repeating that failed gate.
+
+5. Chen et al. (2023 preprint), FrAug: Frequency Domain Augmentation for Time Series Forecasting.
+https://arxiv.org/abs/2302.09292
+Forecast-specific frequency-domain augmentation evaluated with deep models.
+Project inference: low priority; has no demonstrated benefit on our zero-heavy
+weekly panel or LightGBM. Perturbing historical inputs alone need not preserve
+correct conditional labels. No transfer of reported paper gains assumed.
+
+Metric implication derived from project score: per-series scale fixed at forecast
+origin, so a conditional marginal median minimizes expected absolute error per
+week. Do not average simulated demand paths and assume the resulting mean is
+MASE optimal. A mixture-distribution median is not generally the mean or median
+of component point forecasts. Weekly competition errors differ from errors on
+13-week summed inventory demand; do not optimize only the horizon total.
+
+All methods remain proposals pending user experiment choice. Current approved
+scope is iteration 19 only. No new model, perturbation or Monte Carlo run here.
