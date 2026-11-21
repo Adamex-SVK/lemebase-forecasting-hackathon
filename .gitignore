@@ -1,0 +1,20 @@
+# environments
+.venv/
+.venv-*/
+__pycache__/
+*.pyc
+.DS_Store
+
+# local tool settings (never commit)
+.claude/
+
+# raw dataset: CC BY 4.0, download from Hugging Face (see README)
+hackathon-retail-sets/
+
+# regenerable outputs
+data/
+logs/
+iterations/*/forecasts/
+iterations/*/forecasts_*/
+iterations/03-foundation-model/forecasts/
+iterations/01-global-gbm/forecasts_test_own_plain.parquet

@@ -1,0 +1,2 @@
+# TimesFM 2.5 (Apache-2.0). Pin the version after `pip index versions timesfm` (VERIFY: the 2.5 card says the QKV layers were fused Oct 2025, use a current release).
+timesfm[torch]

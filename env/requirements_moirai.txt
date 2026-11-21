@@ -1,0 +1,6 @@
+# Moirai 1.0/1.1, Moirai-MoE, Moirai 2.0 via uni2ts.  Its pins conflict with modern stacks (torch>=2.1,<2.5, numpy~=1.26, gluonts~=0.14.3):
+# use Python 3.10 or 3.11 and a separate environment.  Weights are cc-by-nc-4.0 (non-commercial).
+uni2ts
+torch>=2.1,<2.5
+numpy~=1.26.0
+gluonts~=0.14.3

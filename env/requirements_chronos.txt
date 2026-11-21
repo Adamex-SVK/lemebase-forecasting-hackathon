@@ -1,0 +1,5 @@
+# Chronos 1.0 (t5), Chronos-Bolt, Chronos-2.  Docs: chronos-forecasting>=2.0 for Chronos-2.
+chronos-forecasting>=2.0
+torch>=2.2,<3
+transformers>=4.41,<6
+accelerate>=1.1.0,<2

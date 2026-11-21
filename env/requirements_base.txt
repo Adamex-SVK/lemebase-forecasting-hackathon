@@ -1,0 +1,4 @@
+# shared by every model environment (the runner only needs these plus the model's own package)
+pandas
+pyarrow
+numpy
