@@ -1,0 +1,51 @@
+{
+  "test_fractional_units_rows": 1,
+  "b_stockout_events": 1576,
+  "b_stockout_first": "2025-01-01 08:00:00",
+  "b_stockout_last": "2025-01-01 08:00:00",
+  "c_series_raw_records_stop_before_dataset_end": 485,
+  "d_stock_only_series_excluded_by_existing_universe": 13109,
+  "raw_date_ranges": {
+    "B": [
+      "2025-01-01 08:02:00",
+      "2025-11-01 20:57:00"
+    ],
+    "C": [
+      "2023-12-31",
+      "2026-04-20"
+    ],
+    "D": [
+      "2025-06-01",
+      "2026-04-24"
+    ]
+  },
+  "error_concentration": {
+    "0": {
+      "top_n": 283,
+      "n_scored": 2839,
+      "top10pct_share_scaled_error": 0.5874607019044107
+    },
+    "1": {
+      "top_n": 276,
+      "n_scored": 2762,
+      "top10pct_share_scaled_error": 0.6408728408702826
+    },
+    "2": {
+      "top_n": 268,
+      "n_scored": 2680,
+      "top10pct_share_scaled_error": 0.6003401050040656
+    },
+    "3": {
+      "top_n": 259,
+      "n_scored": 2599,
+      "top10pct_share_scaled_error": 0.632749509651929
+    }
+  },
+  "saved_forecast_sha256": {
+    "logs/chronos_four/LightGBM_1.parquet": "2dcf76b54f08e77fd9743774d30dedd58b78c00e3eb9a931c35359732cf24a4c",
+    "logs/chronos_four/LightGBM_0.parquet": "a17956a5135ff7da3ac2b2c670f9221fae739facdae16d89704174061098623e",
+    "logs/chronos_four/LightGBM_2.parquet": "011827a392217bc32568c113fd60181010958fac1488c6ccfc0f48f3ad05f193",
+    "logs/chronos_four/LightGBM_3.parquet": "2ad493743d821f9eaa0b271ded2c2a44b005f0b71194d4e81cc084100ef61fe8"
+  },
+  "checks": "Saved LGBM scores reproduced on all four cuts; stored baseline scores reproduced where available."
+}

@@ -1,0 +1,32 @@
+{
+  "python": "3.12.4",
+  "pandas": "2.3.3",
+  "numpy": "2.5.5",
+  "pyarrow": "26.0.1",
+  "git_head": "cedcc146aee6100b01b308eaddf88609c555c9cb",
+  "script_sha256": "9f21fc621f48d75fa8dc5abcdbad1ac717512c26683cb63b0b84d3fd647cbb35",
+  "input_sha256": {
+    "hackathon-retail-sets/set-a/articles.parquet": "d527c328ab618726a52d8790bd5bee048fdd11617f54e9691858444ef4172b99",
+    "hackathon-retail-sets/set-a/stock_snapshot.parquet": "b8649f40292ef1cc03b4b12dfa1a31b0ede873852148e2e67db97dc35ad897ba",
+    "hackathon-retail-sets/set-a/weekly.parquet": "668d00c72854ec0f789fc259ae06539f1e422285dbb70e4216fcb2993e22adbc",
+    "hackathon-retail-sets/set-b/articles.parquet": "fbf605d93472efd40a76b3f624cf9aa3fbf79eaed9028f120f155c8809a127a9",
+    "hackathon-retail-sets/set-b/basket_promotions.parquet": "47dedc35d12e1517d2e6bb8d81146d9b891ff841f8fa7da287098b4758dbfaa7",
+    "hackathon-retail-sets/set-b/baskets.parquet": "34108d98ba6e30ce6aae8412a03e9cfb361e34142449103705a320b3f4318c22",
+    "hackathon-retail-sets/set-b/promotion_articles.parquet": "1d9a650040322a1f3947037fbce66626503d4f0ddfc810818b5932b150c53664",
+    "hackathon-retail-sets/set-b/promotion_stores.parquet": "2b5137bf6fcae8ab25f3a6d2b0f74eef4381ee89bcf03cd144f3bbb6ec03f638",
+    "hackathon-retail-sets/set-b/promotions.parquet": "a7f462174f5b43dcd8d8f651ac6d84c2c49f051475901b4fe86d26089d0671f5",
+    "hackathon-retail-sets/set-b/sales_lines.parquet": "e7d7d57a126127d7b22d244635e8da8032c64931342fb03b00bd4c74b778d47a",
+    "hackathon-retail-sets/set-b/stock.parquet": "12a207e10cc7a85f0c5e4274999107f5a8d1978dc53224819083e3e19241df6a",
+    "hackathon-retail-sets/set-b/stock_events.parquet": "265e244af26ce2d7c1d5bf39f673a564e4c8a1a036decdc3f3eadf7d4698dae4",
+    "hackathon-retail-sets/set-c/daily.parquet": "01968a5c451df16b777a2de7bae14164f0b69dac0e96fd95f94ea2bab9125ffb",
+    "hackathon-retail-sets/set-d/sales.parquet": "7566f1fbfaf5071ccfc7a0bcfa1de0d51d13130c01a42f879da3ad0081de41b9",
+    "hackathon-retail-sets/set-d/stock.parquet": "9f2da061ccbbb910d392cbc095f65458af48d6cc5d1a73d2a1c060946f037634",
+    "hackathon-retail-sets/test-shop/history.parquet": "f509a1985f7a7d754325ad82efa579cb7dd2cd250b3ec15cb12ed2ce99145ee7",
+    "data/interim/weekly_A.parquet": "08a0a5e42debbf15158247d9ecfc33524c732eda36a406319e524139ee78a828",
+    "data/interim/weekly_B.parquet": "06bc6012332ce4fcc64ff6f21f7f6eec91eab392d569c8e70cf16d71baddb3cc",
+    "data/interim/weekly_C.parquet": "dc54d37bf8eb52db4ca211b75fb4e4851c64728516cb4c7b005dfee7ddbe1293",
+    "data/interim/weekly_D.parquet": "7c0d6a833bbc22e3c1527ada15ab5d5c5e817605799818cf68bc20c15e7e4619",
+    "data/interim/weekly_test.parquet": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33"
+  },
+  "note": "Existing preprocessing and D26 metric audited, not changed or independently certified official. No training."
+}
