@@ -7,4 +7,5 @@ if [ ! -d data/interim ]; then echo "== building weekly tables (needs hackathon-
 echo "== metric tests";   "$PY" tests/test_validate.py
 echo "== feature tests (includes the leakage test)"; "$PY" tests/test_features.py
 echo "== rich-column tests"; "$PY" tests/test_rich.py
+echo "== iteration-09 improvement tests"; "$PY" tests/test_improve_i09.py
 echo "all checks passed"

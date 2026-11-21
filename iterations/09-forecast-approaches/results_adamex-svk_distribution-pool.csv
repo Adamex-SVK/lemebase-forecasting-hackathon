@@ -1,0 +1,39 @@
+analysis,tag,model,value,note,cut
+monotonicity,cut0,each,0.0,share of article-weeks with a crossing quantile,
+tail_dependence,cut0,pooled,0.022488874761602034,share whose 0.5 crossing needs an unobserved tail,
+coverage_80,cut0,moirai-2.0-small,0.8344458571731299,mean interval width 15.086,
+coverage_80,cut0,tirex,0.7881966518330155,mean interval width 17.105,
+coverage_80,cut0,chronos-t5-small,0.25799957618139435,mean interval width 11.849,
+coverage_80,cut0,pooled,0.8067916931553295,mean 80% width 14.138,
+score,cut0,pooled_alone,-3.7410144261717626,,0.0
+score,cut0,pooled_in_D40,-3.2772664275857677,,0.0
+score,cut0,D40,-3.7249438996323603,,0.0
+monotonicity,cut1,each,0.0,share of article-weeks with a crossing quantile,
+tail_dependence,cut1,pooled,0.04900402627675355,share whose 0.5 crossing needs an unobserved tail,
+coverage_80,cut1,moirai-2.0-small,0.7965670692943421,mean interval width 15.634,
+coverage_80,cut1,tirex,0.7711379529561347,mean interval width 18.481,
+coverage_80,cut1,chronos-t5-small,0.28591862682771774,mean interval width 11.560,
+coverage_80,cut1,pooled,0.7517217630853994,mean 80% width 14.596,
+score,cut1,pooled_alone,-25.854191452039377,,1.0
+score,cut1,pooled_in_D40,-25.49146626091947,,1.0
+score,cut1,D40,-25.907430598726645,,1.0
+monotonicity,cut2,each,0.0,share of article-weeks with a crossing quantile,
+tail_dependence,cut2,pooled,0.07716147488874761,share whose 0.5 crossing needs an unobserved tail,
+coverage_80,cut2,moirai-2.0-small,0.7904481881754609,mean interval width 14.634,
+coverage_80,cut2,tirex,0.794447976266158,mean interval width 16.875,
+coverage_80,cut2,chronos-t5-small,0.31267217630853994,mean interval width 11.479,
+coverage_80,cut2,pooled,0.7647541852087306,mean 80% width 13.689,
+score,cut2,pooled_alone,-12.517727114368803,,2.0
+score,cut2,pooled_in_D40,-12.25430101410787,,2.0
+score,cut2,D40,-11.01061413731992,,2.0
+monotonicity,cut3,each,0.0,share of article-weeks with a crossing quantile,
+tail_dependence,cut3,pooled,0.10505403687221869,share whose 0.5 crossing needs an unobserved tail,
+coverage_80,cut3,moirai-2.0-small,0.7667673235855054,mean interval width 14.468,
+coverage_80,cut3,tirex,0.8169103623649078,mean interval width 16.679,
+coverage_80,cut3,chronos-t5-small,0.3338631065903793,mean interval width 10.807,
+coverage_80,cut3,pooled,0.761416613689341,mean 80% width 13.375,
+score,cut3,pooled_alone,-14.480763858962288,,3.0
+score,cut3,pooled_in_D40,-14.344060880157695,,3.0
+score,cut3,D40,-14.020799231913239,,3.0
+monotonicity,final,each,0.0,share of article-weeks with a crossing quantile,
+tail_dependence,final,pooled,5.2977325704598435e-05,share whose 0.5 crossing needs an unobserved tail,

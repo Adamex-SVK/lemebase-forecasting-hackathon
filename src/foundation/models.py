@@ -77,6 +77,35 @@ def forecast(name, handle, contexts, horizon, end_week):
     return np.clip(np.nan_to_num(out, nan=0.0), 0.0, None)
 
 
+# Common quantile grid for the distribution-pooling experiment (iteration 09). TiRex publishes
+# 0.1..0.9 natively; the other two members can export the same levels, so no tail extrapolation is
+# needed for the median of the pool.
+QUANTILE_LEVELS = np.round(np.arange(0.1, 0.91, 0.1), 2)
+
+
+def forecast_quantiles(name, handle, contexts, horizon, end_week, levels=None):
+    """Quantile forecasts [n_series, horizon, n_levels] on a common grid (additive; `forecast` unchanged).
+
+    Families without a quantile path raise NotImplementedError instead of inventing one.
+    TiRex returns its native grid and the matching levels; the other families return `levels`."""
+    spec = SPECS[name]
+    if spec["family"] not in _QUANTILE_FORECASTERS:
+        raise NotImplementedError(f"{name}: no quantile path for family {spec['family']!r}")
+    wanted = np.asarray(QUANTILE_LEVELS if levels is None else levels, dtype=float)
+    step = int(os.environ.get("FM_CHUNK", spec.get("chunk", CHUNK[spec["family"]])))
+    outs, out_levels = [], None
+    for i in range(0, len(contexts), step):
+        q, lv = _QUANTILE_FORECASTERS[spec["family"]](spec, handle, contexts[i:i + step], horizon, end_week, wanted)
+        outs.append(np.asarray(q, dtype=float))
+        out_levels = lv
+    if not outs:
+        return np.zeros((0, horizon, len(wanted))), out_levels if out_levels is not None else wanted
+    q = np.concatenate(outs, axis=0)
+    # enforce a non-decreasing quantile function (floating-point crossings are possible)
+    q = np.maximum.accumulate(q, axis=-1)
+    return np.clip(np.nan_to_num(q, nan=0.0), 0.0, None), np.asarray(out_levels, dtype=float)
+
+
 # ---------------------------------------------------------------- dummy
 def _load_dummy(spec, device):
     return None
@@ -277,6 +306,86 @@ def _fc_tabpfn_alive(pipe, ctx, H, end_week):
     pred = pipe.predict_df(pd.concat(rows, ignore_index=True), prediction_length=H, quantiles=[0.5])
     pred = pred.reset_index().sort_values(["item_id", "timestamp"])
     return pred["target"].to_numpy(dtype=float).reshape(len(ctx), H)
+
+
+# ---------------------------------------------------------------- quantile paths (iteration 09)
+def _fq_dummy(spec, handle, ctx, H, end_week, levels):
+    point = _fc_dummy(spec, handle, ctx, H, end_week)
+    return np.repeat(point[:, :, None], len(levels), axis=-1), levels
+
+
+def _fq_chronos(spec, pipe, ctx, H, end_week, levels):
+    if spec["kind"] == "c2":
+        rows = []
+        for k, c in enumerate(ctx):
+            ts = pd.date_range(end=end_week, periods=len(c), freq="W-MON")
+            rows.append(pd.DataFrame({"id": k, "timestamp": ts, "target": c.astype("float32")}))
+        pred = pipe.predict_df(pd.concat(rows, ignore_index=True), prediction_length=H,
+                               quantile_levels=list(levels), id_column="id",
+                               timestamp_column="timestamp", target="target")
+        pred = pred.sort_values(["id", "timestamp"])
+        cols = [str(lv) if str(lv) in pred.columns else f"{lv:g}" for lv in levels]
+        if not all(c in pred.columns for c in cols):
+            raise NotImplementedError("Chronos-2 quantile columns not found")
+        return pred[cols].to_numpy().reshape(len(ctx), H, len(levels)), levels
+    import torch
+    q, _mean = pipe.predict_quantiles([torch.tensor(c, dtype=torch.float32) for c in ctx],
+                                      prediction_length=H, quantile_levels=list(levels))
+    return np.asarray(q.float().cpu().numpy()), levels
+
+
+def _fq_timesfm(spec, m, ctx, H, end_week, levels):
+    _point, quant = m.forecast(horizon=H, inputs=[c.astype("float32") for c in ctx])
+    if quant is None or quant.shape[-1] < 10:
+        raise NotImplementedError("TimesFM quantile head unavailable")
+    # column 0 is the mean; columns 1..10 are the 10th..90th percentiles
+    return np.asarray(quant[:, :, 1:10]), np.round(np.arange(0.1, 0.91, 0.1), 2)
+
+
+def _fq_moirai(spec, handle, ctx, H, end_week, levels):
+    ds = _gluonts_dataset(ctx, end_week)
+    L = int(max(len(c) for c in ctx))
+    if spec["kind"] == "m1":
+        from uni2ts.model.moirai import MoiraiForecast, MoiraiModule
+        model = MoiraiForecast(module=MoiraiModule.from_pretrained(spec["hf"]), prediction_length=H, context_length=L,
+                               patch_size="auto", num_samples=spec.get("num_samples", 50), target_dim=1,
+                               feat_dynamic_real_dim=0, past_feat_dynamic_real_dim=0)
+    elif spec["kind"] == "moe":
+        from uni2ts.model.moirai_moe import MoiraiMoEForecast, MoiraiMoEModule
+        model = MoiraiMoEForecast(module=MoiraiMoEModule.from_pretrained(spec["hf"]), prediction_length=H,
+                                  context_length=L, patch_size=16, num_samples=50, target_dim=1,
+                                  feat_dynamic_real_dim=0, past_feat_dynamic_real_dim=0)
+    else:
+        from uni2ts.model.moirai2 import Moirai2Forecast, Moirai2Module
+        extra = {"num_samples": spec["num_samples"]} if "num_samples" in spec else {}
+        model = Moirai2Forecast(module=Moirai2Module.from_pretrained(spec["hf"]), prediction_length=H,
+                                context_length=L, target_dim=1, feat_dynamic_real_dim=0,
+                                past_feat_dynamic_real_dim=0, **extra)
+    predictor = model.create_predictor(batch_size=64)
+    out = []
+    for f in predictor.predict(ds):
+        try:
+            out.append(np.stack([np.asarray(f.quantile(float(p))) for p in levels], axis=-1))
+        except Exception:
+            samples = np.asarray(getattr(f, "samples", np.asarray(f.median)[None, :]))
+            out.append(np.quantile(samples, levels, axis=0).T)
+    return np.stack(out), levels
+
+
+def _fq_tirex(spec, m, ctx, H, end_week, levels):
+    import torch
+    L = max(len(c) for c in ctx)
+    X = torch.full((len(ctx), L), float("nan"))
+    for k, c in enumerate(ctx):
+        X[k, L - len(c):] = torch.tensor(c, dtype=torch.float32)
+    quantiles, _mean = m.forecast(context=X, prediction_length=H)
+    q = quantiles.float().cpu().numpy()
+    lv = np.asarray(spec.get("q_levels", np.linspace(0.1, 0.9, q.shape[-1])), dtype=float)
+    return q, lv
+
+
+_QUANTILE_FORECASTERS = {"dummy": _fq_dummy, "chronos": _fq_chronos, "timesfm": _fq_timesfm,
+                         "moirai": _fq_moirai, "tirex": _fq_tirex}
 
 
 _LOADERS = {"dummy": _load_dummy, "chronos": _load_chronos, "timesfm": _load_timesfm, "moirai": _load_moirai, "tirex": _load_tirex, "tabpfn": _load_tabpfn,

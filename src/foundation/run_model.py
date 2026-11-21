@@ -64,6 +64,9 @@ def main():
     ap.add_argument("--limit", type=int, default=0, help="only the first N active series (smoke runs)")
     ap.add_argument("--cut-weeks", type=int, default=None, help="drop this many weeks from the end before the cut (any offset, for overlapping cuts); output goes to forecasts_cuts/ as ..__w{N}__..")
     ap.add_argument("--final", action="store_true", help="forecast the real future weeks from the full history (no holdout); output goes to forecasts_final/")
+    ap.add_argument("--emit-quantiles", action="store_true",
+                    help="export quantiles (additive, iteration 09) to iterations/09-forecast-approaches/quantiles/; "
+                         "the point forecast is the interpolated median of those quantiles")
     a = ap.parse_args()
     t0 = time.time()
     index, ctx, active, hold, cut, train = contexts_for(a.shop, a.cut_index, a.context, a.final, a.cut_weeks)
@@ -74,8 +77,15 @@ def main():
     handle = fm.load(a.model, a.device)
     t1 = time.time()
     F = np.zeros((len(index), H))
+    Q = None
+    levels = None
     if len(idx):
-        F[idx] = fm.forecast(a.model, handle, [ctx[i] for i in idx], H, end_week)
+        if a.emit_quantiles:
+            Q, levels = fm.forecast_quantiles(a.model, handle, [ctx[i] for i in idx], H, end_week)
+            for i, row in enumerate(Q):
+                F[idx[i]] = np.array([np.interp(0.5, levels, row[h]) for h in range(H)])
+        else:
+            F[idx] = fm.forecast(a.model, handle, [ctx[i] for i in idx], H, end_week)
     t2 = time.time()
     weeks = pd.date_range(cut, periods=H, freq="7D")
     fc = pd.DataFrame({
@@ -86,6 +96,17 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     stem = f"{a.model}__{a.shop}__" + ("final" if a.final else (f"w{a.cut_weeks}" if a.cut_weeks is not None else f"cut{a.cut_index}")) + f"__{a.context}" + (f"__limit{a.limit}" if a.limit else "")
     fc.to_parquet(out_dir / f"{stem}.parquet", index=False)
+    if Q is not None:
+        qdir = ROOT / "iterations" / "09-forecast-approaches" / "quantiles"
+        qdir.mkdir(parents=True, exist_ok=True)
+        Qfull = np.zeros((len(index), H, Q.shape[-1]), dtype=np.float32)
+        Qfull[idx] = Q                       # inactive (all-zero-history) series keep zero quantiles
+        np.savez_compressed(qdir / f"{stem}.npz",
+                            quantiles=Qfull,
+                            levels=np.asarray(levels, dtype=np.float32),
+                            store_id=index.get_level_values(0).to_numpy().astype(str),
+                            article_id=index.get_level_values(1).to_numpy().astype(str),
+                            week=np.asarray(weeks))
     (out_dir / f"{stem}.json").write_text(json.dumps({"model": a.model, "shop": a.shop, "cut_index": a.cut_index, "context": a.context,
                                                    "n_series": len(index), "n_sent_to_model": int(len(idx)),
                                                    "load_seconds": round(t1 - t0, 1), "forecast_seconds": round(t2 - t1, 1)}))
