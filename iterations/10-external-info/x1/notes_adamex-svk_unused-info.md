@@ -55,3 +55,10 @@ Training data: weekly series of Sets A, C and D only (never the test shop, never
 - Averaging siblings-only runs does not help: 3-run avg -14.07, 6-run avg -14.15 alone (the first run's -13.73 was partly luck); in the blend +0.02 to +0.03.
 - Fine-tune on siblings plus the test shop's own pre-cut history (fine-tuned per cut, leakage-safe), alone: seeds 0-4 give -13.37, -14.03, -13.57, -13.17, -13.87 (spread about 0.9 from the seed alone); 5-seed average -13.27 (+0.39, 2/4 cuts); x3 repeat of own history -13.58; 1000 steps -13.87. As a 4th member of D40: -13.51 to -13.73.
 - Nothing clears +0.5 on 3/4 cuts. Seed noise (about +-0.4) is as large as every difference seen. The local plateau is about -13.5.
+
+## E. Where do more ensemble members stop adding value? (`src/improve/ens_curve.py`, `results_adamex-svk_ens_curve.csv`)
+Pool of 30 members from every family: 15 foundation models (incl. TabPFN-TS), 2 fine-tuned Chronos-2, 7 level/intermittent classics (SES, ADIDA, Croston variants, IMAPA, TSB), 1 seasonal (52-week seasonal naive), LightGBM + median13, 3 deep-learning (N-HiTS, N-BEATS, pooled N-HiTS). Zero rule on every non-tree member; equal-weight average of the chosen set; leave-one-cut-out forward selection.
+- Best single members by family (4-cut mean): fine-tuned Chronos-2 -13.4 / -13.7, Moirai 2.0-small -14.7, LightGBM -15.1, N-BEATS -15.1, N-HiTS -15.3, best classic (ADIDA) -19.2, seasonal naive -28.9.
+- Curve (honest, mean of 4 cuts): size 1 -13.75, **size 2 -13.43 (best)**, size 3 -13.96, then flat to worse: -13.7 to -14.1 up to 12 members. In-sample (optimistic) it is also flat at -13.4 to -13.5. **Saturation after 2-3 members.**
+- D40 + one member per family: classics and seasonal hurt (-0.17 to -0.87), deep learning and TabPFN about -0.07 to -0.15, median13 -0.09 to -0.15, fine-tuned Chronos-2 (own history) +0.04 / +0.13. Nothing near +0.5.
+- Reading: all members see the same weekly history, so their errors are highly correlated; what remains is irreducible noise of the weekly counts. Weaker, differently-built models (classics, seasonal) pull the blend toward their own bias.
