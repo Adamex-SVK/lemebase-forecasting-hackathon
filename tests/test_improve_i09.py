@@ -146,7 +146,18 @@ def test_forecast_shape_nonneg():
     assert isinstance(info, dict)
 
 
-def test_inverse_cdf_monotonicity_pending():
+def test_analog_forecast_post_origin_invariance():
+    rng = np.random.default_rng(0)
+    U = rng.poisson(2.0, size=(6, 60)).astype(np.float32)
+    origin = 47
+    F1, fb1, _ = analog.analog_forecast(U, k=5, origin=origin)
+    U2 = U.copy()
+    U2[:, origin:] = rng.poisson(50.0, size=U2[:, origin:].shape)
+    F2, fb2, _ = analog.analog_forecast(U2, k=5, origin=origin)
+    assert np.array_equal(F1, F2) and np.array_equal(fb1, fb2), "post-origin values leaked into the forecast"
+
+
+def test_inverse_cdf_monotonicity():
     path = ROOT / "src" / "improve" / "i09_distribution_pool.py"
     if not path.exists():
         print("SKIP: i09_distribution_pool not present (task 3 GPU-blocked)")
@@ -174,7 +185,8 @@ TESTS = [
     test_analog_features_no_leakage,
     test_block_features_no_leakage,
     test_forecast_shape_nonneg,
-    test_inverse_cdf_monotonicity_pending,
+    test_analog_forecast_post_origin_invariance,
+    test_inverse_cdf_monotonicity,
 ]
 
 
