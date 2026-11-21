@@ -44,3 +44,5 @@ python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 ## Data licence
 The datasets are CC BY 4.0 from several sources (see `ATTRIBUTION.md` in the dataset). They are not included here.
+
+**Best model:** see [`MODEL.md`](MODEL.md) (recipe, one-command rebuild, evidence, weaknesses).
