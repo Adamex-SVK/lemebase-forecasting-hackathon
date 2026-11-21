@@ -62,3 +62,12 @@ Pool of 30 members from every family: 15 foundation models (incl. TabPFN-TS), 2 
 - Curve (honest, mean of 4 cuts): size 1 -13.75, **size 2 -13.43 (best)**, size 3 -13.96, then flat to worse: -13.7 to -14.1 up to 12 members. In-sample (optimistic) it is also flat at -13.4 to -13.5. **Saturation after 2-3 members.**
 - D40 + one member per family: classics and seasonal hurt (-0.17 to -0.87), deep learning and TabPFN about -0.07 to -0.15, median13 -0.09 to -0.15, fine-tuned Chronos-2 (own history) +0.04 / +0.13. Nothing near +0.5.
 - Reading: all members see the same weekly history, so their errors are highly correlated; what remains is irreducible noise of the weekly counts. Weaker, differently-built models (classics, seasonal) pull the blend toward their own bias.
+
+## F. 13 overlapping cuts for the own-history fine-tuned Chronos-2 (`ft_overlap_eval.py`, `results_adamex-svk_ft_overlap13.csv`; seed 0 only, seeds 1-4 still running at the time of writing)
+Offsets 0, 4, ..., 48 weeks; paired against D40 (mean over the 13 cuts -12.74).
+| Variant | Mean | vs D40 | Cuts won | Bootstrap 95% (optimistic, cuts overlap) |
+|---|---|---|---|---|
+| fine-tuned alone | -12.69 | +0.05 | 4/13 | [-0.44, +0.70] |
+| D40 + it as 4th member | -12.60 | +0.14 | 9/13 | [+0.04, +0.26] |
+| D40, half of the foundation part is it | -12.49 | +0.24 | 8/13 | [+0.03, +0.50] |
+A small but consistent gain, in line with the live +0.3 (-4.5 vs -4.8); about +0.15 to +0.25 is the realistic size. Far from the +0.5 bar, so not an adoption by the rules, but the direction is real.
