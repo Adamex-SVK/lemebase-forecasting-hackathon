@@ -31,10 +31,15 @@ OUT = ROOT / "iterations" / "03-foundation-model" / "forecasts"
 H = v.HORIZON
 
 
-def contexts_for(shop, cut_index, context):
+def contexts_for(shop, cut_index, context, final=False, cut_weeks=None):
     full = v.load_weekly(shop)
-    df = full[full["week"] <= full["week"].max() - pd.Timedelta(weeks=13 * cut_index)]
-    train, hold, cut = v.split(df)
+    if final:   # real forecast: ALL history is the context, the 13 weeks after the last week are forecast
+        train = v.pad_to_shop_start(full, full[v.KEYS].drop_duplicates())
+        hold, cut = None, full["week"].max() + pd.Timedelta(weeks=1)
+    else:
+        drop = cut_weeks if cut_weeks is not None else 13 * cut_index   # weeks removed from the end of the history
+        df = full[full["week"] <= full["week"].max() - pd.Timedelta(weeks=drop)]
+        train, hold, cut = v.split(df)
     W = train.pivot_table(index=v.KEYS, columns="week", values="units", aggfunc="sum", fill_value=0.0).sort_index(axis=1)
     A = W.to_numpy(dtype="float64")
     ctx, active = [], []
@@ -54,9 +59,11 @@ def main():
     ap.add_argument("--context", default="padded", choices=["padded", "first_sale"])
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--limit", type=int, default=0, help="only the first N active series (smoke runs)")
+    ap.add_argument("--cut-weeks", type=int, default=None, help="drop this many weeks from the end before the cut (any offset, for overlapping cuts); output goes to forecasts_cuts/ as ..__w{N}__..")
+    ap.add_argument("--final", action="store_true", help="forecast the real future weeks from the full history (no holdout); output goes to forecasts_final/")
     a = ap.parse_args()
     t0 = time.time()
-    index, ctx, active, hold, cut, train = contexts_for(a.shop, a.cut_index, a.context)
+    index, ctx, active, hold, cut, train = contexts_for(a.shop, a.cut_index, a.context, a.final, a.cut_weeks)
     end_week = cut - pd.Timedelta(weeks=1)
     idx = np.flatnonzero(active)
     if a.limit:
@@ -72,10 +79,11 @@ def main():
         "store_id": np.repeat(index.get_level_values(0).to_numpy(), H),
         "article_id": np.repeat(index.get_level_values(1).to_numpy(), H),
         "week": np.tile(weeks, len(index)), "forecast": F.reshape(-1)})
-    OUT.mkdir(parents=True, exist_ok=True)
-    stem = f"{a.model}__{a.shop}__cut{a.cut_index}__{a.context}" + (f"__limit{a.limit}" if a.limit else "")
-    fc.to_parquet(OUT / f"{stem}.parquet", index=False)
-    (OUT / f"{stem}.json").write_text(json.dumps({"model": a.model, "shop": a.shop, "cut_index": a.cut_index, "context": a.context,
+    out_dir = OUT.parent / "forecasts_final" if a.final else (OUT.parent / "forecasts_cuts" if a.cut_weeks is not None else OUT)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stem = f"{a.model}__{a.shop}__" + ("final" if a.final else (f"w{a.cut_weeks}" if a.cut_weeks is not None else f"cut{a.cut_index}")) + f"__{a.context}" + (f"__limit{a.limit}" if a.limit else "")
+    fc.to_parquet(out_dir / f"{stem}.parquet", index=False)
+    (out_dir / f"{stem}.json").write_text(json.dumps({"model": a.model, "shop": a.shop, "cut_index": a.cut_index, "context": a.context,
                                                    "n_series": len(index), "n_sent_to_model": int(len(idx)),
                                                    "load_seconds": round(t1 - t0, 1), "forecast_seconds": round(t2 - t1, 1)}))
     print(f"{stem}: {len(idx):,} of {len(index):,} series sent to the model; load {t1-t0:.0f}s, forecast {t2-t1:.0f}s")

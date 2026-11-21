@@ -1,0 +1,1 @@
+{"model": "chronos-2", "shop": "test", "cut_index": 3, "context": "padded", "n_series": 2904, "n_sent_to_model": 2599, "load_seconds": 6.2, "forecast_seconds": 4.2}

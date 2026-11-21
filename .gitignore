@@ -14,7 +14,14 @@ hackathon-retail-sets/
 # regenerable outputs
 data/
 logs/
-iterations/*/forecasts/
-iterations/*/forecasts_*/
-iterations/03-foundation-model/forecasts/
-iterations/01-global-gbm/forecasts_test_own_plain.parquet
+# forecasts of the foundation models and the LightGBM cuts are tracked (hours of GPU time); dummy plumbing outputs are not
+iterations/**/dummy-*
+iterations/01-global-gbm/forecasts/
+iterations/01-global-gbm/forecasts_partial*/
+iterations/02-robust-eval/forecasts/*
+!iterations/02-robust-eval/forecasts/base_cut*_seed0.npy
+catboost_info/
+.superpowers/
+
+# bundles for the GPU machine
+dist/

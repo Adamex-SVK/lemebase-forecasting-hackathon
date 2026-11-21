@@ -16,14 +16,16 @@ Model packages are imported lazily inside each function, so this file imports wi
 Licences (check before any use beyond the hackathon): Chronos Apache-2.0; TimesFM 2.0/2.5 Apache-2.0,
 TimesFM 3.0 weights non-commercial; Moirai models cc-by-nc-4.0 (non-commercial, research); TiRex NXAI community licence.
 """
+import os
+
 import numpy as np
 import pandas as pd
 
 SPECS = {
     # Chronos 1.0 (T5 tokenised), Chronos-Bolt, Chronos-2          package: chronos-forecasting
-    "chronos-t5-small": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-small"),
-    "chronos-t5-base": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-base"),
-    "chronos-t5-large": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-large"),
+    "chronos-t5-small": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-small", chunk=48),
+    "chronos-t5-base": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-base", chunk=48),
+    "chronos-t5-large": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-large", chunk=48),
     "chronos-bolt-small": dict(family="chronos", kind="bolt", hf="amazon/chronos-bolt-small"),
     "chronos-bolt-base": dict(family="chronos", kind="bolt", hf="amazon/chronos-bolt-base"),
     "chronos-2": dict(family="chronos", kind="c2", hf="amazon/chronos-2"),
@@ -38,11 +40,14 @@ SPECS = {
     "moirai-2.0-small": dict(family="moirai", kind="m2", hf="Salesforce/moirai-2.0-R-small"),
     # TiRex                                                        package: tirex-ts
     "tirex": dict(family="tirex", kind="v1", hf="NX-AI/TiRex"),
+    # TabPFN-TS (tabular foundation model for time series), LOCAL mode only (the hosted API would send the shop's data to a third party),
+    # TabPFN-v2 regression weights (ungated; the newer 2.5 / 3.5 weights need a Prior Labs account + licence acceptance + token)
+    "tabpfn-ts-v2": dict(family="tabpfn", kind="v2", hf="Prior-Labs/TabPFN-v2-reg", ckpt="tabpfn-v2-regressor.ckpt", chunk=200),
     # plumbing tests, no dependencies
     "dummy-median13": dict(family="dummy", kind="median13"),
     "dummy-naive": dict(family="dummy", kind="naive"),
 }
-CHUNK = {"chronos": 1024, "timesfm": 1024, "moirai": 256, "tirex": 1024, "dummy": 100000}
+CHUNK = {"chronos": 1024, "timesfm": 1024, "moirai": 256, "tirex": 1024, "tabpfn": 200, "dummy": 100000}
 
 
 def load(name, device="cuda"):
@@ -53,7 +58,8 @@ def load(name, device="cuda"):
 def forecast(name, handle, contexts, horizon, end_week):
     spec = SPECS[name]
     out = np.zeros((len(contexts), horizon))
-    step = CHUNK[spec["family"]]
+    # series per batch; T5 Chronos samples many paths per series and ran out of GPU memory at 1024 (24 GB card)
+    step = int(os.environ.get("FM_CHUNK", spec.get("chunk", CHUNK[spec["family"]])))
     for i in range(0, len(contexts), step):
         out[i:i + step] = _FORECASTERS[spec["family"]](spec, handle, contexts[i:i + step], horizon, end_week)
     return np.clip(np.nan_to_num(out, nan=0.0), 0.0, None)
@@ -172,5 +178,35 @@ def _fc_tirex(spec, m, ctx, H, end_week):
     return q[..., q.shape[-1] // 2]                           # middle quantile = median   # VERIFY quantile levels
 
 
-_LOADERS = {"dummy": _load_dummy, "chronos": _load_chronos, "timesfm": _load_timesfm, "moirai": _load_moirai, "tirex": _load_tirex}
-_FORECASTERS = {"dummy": _fc_dummy, "chronos": _fc_chronos, "timesfm": _fc_timesfm, "moirai": _fc_moirai, "tirex": _fc_tirex}
+# ---------------------------------------------------------------- TabPFN-TS (local mode, v2 weights)
+def _load_tabpfn(spec, device):
+    os.environ.setdefault("TABPFN_DISABLE_TELEMETRY", "1")
+    from huggingface_hub import hf_hub_download
+    ckpt = hf_hub_download(spec["hf"], spec["ckpt"])      # ungated; the file name carries the model version (v2)
+    from tabpfn_time_series import TabPFNMode, TabPFNTSPipeline
+    return TabPFNTSPipeline(tabpfn_mode=TabPFNMode.LOCAL, tabpfn_output_selection="median",
+                            tabpfn_model_config={"model_path": ckpt})        # VERIFY: device handling is automatic
+
+
+def _fc_tabpfn(spec, pipe, ctx, H, end_week):
+    # ~1 s per series: series with no sale in the last 8 weeks are forecast 0 without calling the model
+    # (the 8-week zero rule of the baselines; our best post-processing sets them to 0 anyway)
+    alive = np.array([c[-8:].sum() > 0 for c in ctx])
+    out = np.zeros((len(ctx), H))
+    if alive.any():
+        out[alive] = _fc_tabpfn_alive(pipe, [c for c, a in zip(ctx, alive) if a], H, end_week)
+    return out
+
+
+def _fc_tabpfn_alive(pipe, ctx, H, end_week):
+    rows = []
+    for k, c in enumerate(ctx):
+        ts = pd.date_range(end=end_week, periods=len(c), freq="W-MON")
+        rows.append(pd.DataFrame({"item_id": k, "timestamp": ts, "target": c.astype("float32")}))
+    pred = pipe.predict_df(pd.concat(rows, ignore_index=True), prediction_length=H, quantiles=[0.5])
+    pred = pred.reset_index().sort_values(["item_id", "timestamp"])
+    return pred["target"].to_numpy(dtype=float).reshape(len(ctx), H)
+
+
+_LOADERS = {"dummy": _load_dummy, "chronos": _load_chronos, "timesfm": _load_timesfm, "moirai": _load_moirai, "tirex": _load_tirex, "tabpfn": _load_tabpfn}
+_FORECASTERS = {"dummy": _fc_dummy, "chronos": _fc_chronos, "timesfm": _fc_timesfm, "moirai": _fc_moirai, "tirex": _fc_tirex, "tabpfn": _fc_tabpfn}

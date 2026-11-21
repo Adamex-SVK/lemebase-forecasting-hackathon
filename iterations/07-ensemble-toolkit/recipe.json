@@ -1,0 +1,40 @@
+{
+  "iteration": "07-ensemble-toolkit",
+  "created": "2026-11-21",
+  "current_recipe": {
+    "name": "D40 ensemble_top3_blend_v1",
+    "models": ["moirai-2.0-small", "tirex", "chronos-t5-small"],
+    "lgbm_weight": 0.3,
+    "steps": [
+      "average the models' raw forecasts",
+      "set to 0 for articles with no sale in the last 8 weeks (zero rule, D39)",
+      "0.3 * LightGBM (lgbm_own_v1) + 0.7 * ensemble",
+      "round to whole units (D38)",
+      "clip at 0"
+    ]
+  },
+  "scores": {
+    "local_4cut_mean": -13.67,
+    "ensemble_alone_4cut_mean": -14.05,
+    "live_weeks_1_7": -4.8,
+    "note": "live board scores weeks 1-7; the final score uses the hidden weeks 8-13"
+  },
+  "artifacts": {
+    "submission": "submissions/ensemble_top3_blend_v1.csv",
+    "evaluate_cmd": "python src/meta/ensemble_recipe.py evaluate --models moirai-2.0-small,tirex,chronos-t5-small,<new>",
+    "build_cmd": "python src/meta/ensemble_recipe.py build --models <list> --lgbm-weight <w> --out submissions/<name>.csv",
+    "fforma_cmd": "python src/meta/fforma.py --models <list> --ff-bases lgbm --out iterations/05-meta-ensemble/results_meta_fforma_<tag>.csv"
+  },
+  "adoption_bar": {
+    "mean_gain_points": 0.5,
+    "cuts_won": 3,
+    "n_cuts": 4,
+    "source": "TEAM-RULES.md section 2"
+  },
+  "model_licences": {
+    "moirai-2.0-small": "cc-by-nc-4.0 (non-commercial)",
+    "tirex": "NXAI community licence",
+    "chronos-t5-small": "Apache-2.0",
+    "tabpfn-ts-v2": "Prior Labs License (ungated v2 weights)"
+  }
+}

@@ -1,0 +1,1 @@
+{"model": "chronos-bolt-base", "shop": "test", "cut_index": 0, "context": "padded", "n_series": 2904, "n_sent_to_model": 2839, "load_seconds": 6.8, "forecast_seconds": 0.6}

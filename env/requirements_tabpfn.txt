@@ -1,0 +1,2 @@
+# TabPFN-TS in LOCAL mode with the ungated v2 weights; keep the machine torch (needs torch >= 2.5)
+tabpfn-time-series

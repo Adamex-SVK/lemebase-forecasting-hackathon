@@ -1,0 +1,32 @@
+LightGBM (base) rounded alone:   -4.03  -28.06  -13.08  -15.31   mean -15.12
+
+moirai-2.0-small alone
+   ensemble alone :   -4.60  -27.68  -11.76  -14.83   mean -14.72
+   blend w=0.5    :   -4.34  -27.53  -11.57  -14.47   mean -14.48   gain over rounded LightGBM +0.64, cuts won 3/4
+   mean by weight on LightGBM: 0.0:-14.72  0.2:-14.36  0.4:-14.51  0.6:-14.60  0.8:-14.70  1.0:-15.12
+
+top2: moirai-2.0 + tirex
+   ensemble alone :   -4.02  -26.55  -11.77  -14.29   mean -14.16
+   blend w=0.2    :   -3.49  -26.24  -11.15  -14.01   mean -13.72   gain over rounded LightGBM +1.40, cuts won 4/4
+   mean by weight on LightGBM: 0.0:-14.16  0.2:-13.72  0.4:-14.00  0.6:-14.20  0.8:-14.51  1.0:-15.12
+
+top3: + chronos-t5-small
+   ensemble alone :   -3.68  -26.19  -12.07  -14.25   mean -14.05
+   blend w=0.3    :   -3.72  -25.91  -11.01  -14.02   mean -13.67   gain over rounded LightGBM +1.45, cuts won 4/4
+   mean by weight on LightGBM: 0.0:-14.05  0.2:-13.79  0.4:-13.88  0.6:-14.17  0.8:-14.39  1.0:-15.12
+
+top5: + chronos-t5-base + moirai-1.1-base
+   ensemble alone :   -3.87  -26.36  -13.47  -14.20   mean -14.47
+   blend w=0.3    :   -3.64  -25.80  -11.08  -14.19   mean -13.68   gain over rounded LightGBM +1.44, cuts won 4/4
+   mean by weight on LightGBM: 0.0:-14.47  0.2:-13.98  0.4:-13.86  0.6:-14.04  0.8:-14.39  1.0:-15.12
+
+diverse5: moirai-2.0, tirex, timesfm, t5-base, chronos-2
+   ensemble alone :   -4.28  -26.33  -13.11  -14.97   mean -14.67
+   blend w=0.3    :   -3.70  -25.57  -11.67  -14.02   mean -13.74   gain over rounded LightGBM +1.38, cuts won 4/4
+   mean by weight on LightGBM: 0.0:-14.67  0.2:-13.90  0.4:-13.83  0.6:-14.12  0.8:-14.44  1.0:-15.12
+
+all good (<= -20 alone): 9 models
+   ensemble alone :   -4.16  -25.84  -12.77  -14.52   mean -14.32
+   blend w=0.3    :   -4.18  -25.34  -11.57  -14.37   mean -13.86   gain over rounded LightGBM +1.25, cuts won 3/4
+   mean by weight on LightGBM: 0.0:-14.32  0.2:-13.85  0.4:-13.85  0.6:-14.00  0.8:-14.40  1.0:-15.12
+

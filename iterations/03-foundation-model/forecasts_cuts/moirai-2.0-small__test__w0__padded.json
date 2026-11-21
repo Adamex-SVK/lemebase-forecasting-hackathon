@@ -1,0 +1,1 @@
+{"model": "moirai-2.0-small", "shop": "test", "cut_index": 0, "context": "padded", "n_series": 2904, "n_sent_to_model": 2839, "load_seconds": 3.8, "forecast_seconds": 94.3}

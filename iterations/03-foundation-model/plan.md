@@ -1,6 +1,6 @@
 # Iteration 03: foundation models (GPU)
 
-**Status (2026-11-21, night):** DRAFT, preparation done, nothing run. Model list decided (D35). Needs the GPU machine and the user's go.
+**Status (2026-11-21):** GPU access received (RTX 3090, JupyterLab); work is on branch `it03/adamex-svk/foundation-models`. Preparation done, nothing run on the GPU yet. Model list decided (D35). Next: step 3.0, follow `gpu-runbook.md` (a person logs in, uploads the bundle, runs the smoke tests and pastes the output). See `log.md`.
 
 ## Hypothesis
 Pretrained time-series models, used zero-shot and then fine-tuned on our pooled windows, add accuracy on their own or as a blend member with the LightGBM. Our data are mostly zeros, which these models were not designed for, so the expectation is modest.

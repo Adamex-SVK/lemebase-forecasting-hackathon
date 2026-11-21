@@ -1,0 +1,7 @@
+# Keep the GPU machine's own torch stack (2.5.1+cu121 / torchvision 0.20.1): pip would otherwise install a
+# newer torch into the environment, which then clashes with the machine's torchvision.
+# transformers 5.x refuses torch < 2.6 at runtime, so stay on 4.x.  Not used for Moirai (own full environment).
+torch==2.5.1
+torchvision==0.20.1
+transformers<5
+pandas<3

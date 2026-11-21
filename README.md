@@ -15,16 +15,18 @@ Work is organised in iterations with every decision tracked.
 | `iterations/00-baselines` | Weekly tables, local metric (reproduces the organizers' published baselines), baselines |
 | `iterations/01-global-gbm` | Global LightGBM (L1 loss on units / MASE scale): own vs pooled vs others-only arms |
 | `iterations/02-robust-eval` | Rolling-origin evaluation (4 cuts), F6 (moving peak) investigation, quick experiments |
-| `iterations/03-foundation-model` | Plan and model notes for Chronos, TimesFM, Moirai, TiRex (prepared, not yet run) |
+| `iterations/03-foundation-model` | Zero-shot foundation models (Chronos, TimesFM, Moirai, TiRex, TabPFN), GPU runbook, results, forecasts |
+| `iterations/04-rich-columns`, `iterations/05-meta-ensemble` | rich-column techniques (other session); FFORMA-style meta-ensemble |
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
+| `HANDOVER.md` | **start here**: state, best recipe, jobs in flight, next steps |
+| `EXTRA-CREDIT.md` | draft answer to the brief's own-vs-pooled question |
 | `TEAM-RULES.md`, `WORK-BOARD.md`, `CLAUDE.md`, `scripts/check.sh` | How we cooperate: branches, one yardstick, claiming tasks, uploads, pre-PR checks, rules for AI assistants |
 | `submissions/UPLOADS.md` | Log of every leaderboard upload |
 
-## Status (night of 2026-11-21)
-Best live score so far: -7.6 (global LightGBM trained on all test-shop history); median of the last 13 weeks: -9.8;
-live references: AutoARIMA -33.7, Naive -64.5. Local cuts track the live board well, see `iterations/01-global-gbm/log.md`.
+## Status (2026-11-21, afternoon)
+**Start with `HANDOVER.md`.** Best live score: **-4.8** (average of three zero-shot foundation models blended 30% with the global LightGBM, rounded); LightGBM alone -7.6, median of the last 13 weeks -9.8; live references: AutoARIMA -33.7, Naive -64.5. Local 4-cut evaluation tracks the live board well. In progress: TabPFN, overlapping cuts for a meta-ensemble (iteration 05); another session works on rich-column techniques (iteration 04).
 
 ## Reproduce
 ```bash

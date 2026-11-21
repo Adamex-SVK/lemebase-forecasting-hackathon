@@ -1,4 +1,5 @@
-# TiRex (xLSTM, 35M).  The custom sLSTM CUDA kernels compile on first load and need GPU compute capability >= 8.0;
-# use `pip install "tirex-ts[cuda]"` on the GPU machine.  NXAI community licence: read it before use.
+# TiRex (xLSTM, 35M).  Plain `tirex-ts` is enough: without the `xlstm` package it uses its pure-PyTorch backend
+# (load_model backend="torch"), so NO nvcc / CUDA compiler is needed (the GPU machine has none).
+# The optional `tirex-ts[cuda]` extra compiles custom sLSTM kernels (needs nvcc, compute capability >= 8.0).  NXAI community licence.
 tirex-ts
 torch

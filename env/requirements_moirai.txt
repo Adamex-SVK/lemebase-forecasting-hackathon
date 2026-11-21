@@ -4,3 +4,4 @@ uni2ts
 torch>=2.1,<2.5
 numpy~=1.26.0
 gluonts~=0.14.3
+pyarrow<18   # uni2ts pins numpy 1.26; pyarrow >= 18 needs numpy 2 and fails to import

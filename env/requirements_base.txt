@@ -1,4 +1,5 @@
 # shared by every model environment (the runner only needs these plus the model's own package)
-pandas
+# pandas is pinned below 3: our code (src/validate.py, src/foundation/run_model.py) was written and tested on pandas 2.3.
+pandas>=2.0,<3
 pyarrow
 numpy
