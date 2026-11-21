@@ -35,7 +35,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--steps", type=int, default=300); ap.add_argument("--per-shop", type=int, default=2000)
     ap.add_argument("--lr", type=float, default=1e-5); ap.add_argument("--cuts", type=int, nargs="+", default=[0, 1, 2, 3])
-    ap.add_argument("--tag", default="ft"); ap.add_argument("--base", default="amazon/chronos-2")
+    ap.add_argument("--final", action="store_true", help="forecast the real future weeks (2023-04-24..) from the full history"); ap.add_argument("--tag", default="ft"); ap.add_argument("--base", default="amazon/chronos-2")
     a = ap.parse_args()
     from chronos import Chronos2Pipeline
     pipe = Chronos2Pipeline.from_pretrained(a.base, device_map="cuda")
@@ -44,8 +44,8 @@ def main():
                   num_steps=a.steps, batch_size=32, context_length=104)
     print(f"fine-tuned in {time.time() - t0:.0f}s", flush=True)
     out = ROOT / "iterations" / "03-foundation-model" / f"forecasts_oos-{a.tag}"; out.mkdir(parents=True, exist_ok=True)
-    for k in a.cuts:
-        index, ctx, active, hold, cut, train = rm.contexts_for("test", k, "padded")
+    for k in ([0] if a.final else a.cuts):
+        index, ctx, active, hold, cut, train = rm.contexts_for("test", k, "padded", final=a.final)
         weeks = pd.date_range(end=cut - pd.Timedelta(weeks=1), periods=len(ctx[0]), freq="W-MON")
         idx = np.flatnonzero(active)
         rows = [pd.DataFrame({"id": int(i), "timestamp": weeks, "target": ctx[i].astype("float32")}) for i in idx]
@@ -54,7 +54,7 @@ def main():
         F = np.zeros((len(index), H)); F[idx] = pred["0.5" if "0.5" in pred.columns else "predictions"].to_numpy().reshape(len(idx), H)
         fw = pd.date_range(cut, periods=H, freq="7D")
         pd.DataFrame({"store_id": np.repeat(index.get_level_values(0).to_numpy(), H), "article_id": np.repeat(index.get_level_values(1).to_numpy(), H),
-                      "week": np.tile(fw, len(index)), "forecast": F.reshape(-1)}).to_parquet(out / f"chronos-2-{a.tag}__test__cut{k}__padded.parquet", index=False)
+                      "week": np.tile(fw, len(index)), "forecast": F.reshape(-1)}).to_parquet(out / (f"chronos-2-{a.tag}__test__final__padded.parquet" if a.final else f"chronos-2-{a.tag}__test__cut{k}__padded.parquet"), index=False)
         print(f"cut{k} done", flush=True)
 
 
