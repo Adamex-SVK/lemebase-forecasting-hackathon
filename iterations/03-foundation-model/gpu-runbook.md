@@ -16,23 +16,17 @@ Why this works without git access on the GPU machine: the models only need the f
    ```bash
    mkdir -p ~/hack && tar xzf gpu_bundle.tar.gz -C ~/hack && cd ~/hack
    ```
-4. **Check the network and what is already installed** (paste the output). The first check printed nothing for the two `curl` lines, which most likely means no internet access:
+4. **Environments.** Checked on the machine (2026-11-21): internet works (Hugging Face and PyPI answer), Python 3.11.10 under `/opt/conda`, **torch 2.5.1+cu121 is already installed and sees the GPU**, numpy 2.1.2, no `uv`. So Chronos, TimesFM and TiRex reuse that torch (`--system-site-packages`); only Moirai (needs torch < 2.5) gets its own full environment. In the terminal, from `~/hack`:
    ```bash
-   curl -sS -m 10 -I https://huggingface.co 2>&1 | head -3; curl -sS -m 10 -I https://pypi.org/simple/ 2>&1 | head -3
-   env | grep -i proxy; which python3 pip uv conda; pip config list
-   python3 -c "import torch; print('torch', torch.__version__, torch.cuda.is_available())" 2>&1 | tail -1
-   pip list 2>/dev/null | grep -i -E "torch|transformers|numpy|pandas|gluonts|chronos|timesfm|uni2ts|tirex|jupyter"
+   which nvcc || echo "no nvcc"          # TiRex compiles CUDA kernels and needs nvcc; Chronos and TimesFM do not
+   bash env/setup_gpu.sh chronos timesfm  # a couple of minutes each; start with these two
    ```
-   If the machine **can** reach PyPI and Hugging Face, create the environments (the machine's `python3` is 3.11.10, fine for every family including Moirai; `uv` is used if present to save disk):
-   ```bash
-   pip install -q uv                       # optional but recommended: disk is tight (about 51 GB free)
-   bash env/setup_gpu.sh chronos timesfm tirex moirai
-   ```
-   If it **cannot** reach them, we need another route for packages and model weights; see "No internet" below.
+   `tirex` and `moirai` come after the first smoke tests (`bash env/setup_gpu.sh tirex moirai`).
 5. **Smoke tests** (adapters were written from documentation and never run): the output tells us which adapter to fix. Paste the full output.
    ```bash
-   .venv-chronos/bin/python src/foundation/smoke.py chronos-bolt-small chronos-bolt-base chronos-t5-small chronos-t5-large chronos-2
+   .venv-chronos/bin/python src/foundation/smoke.py chronos-bolt-small chronos-bolt-base chronos-2 chronos-t5-small   # first batch
    .venv-timesfm/bin/python src/foundation/smoke.py timesfm-2.5
+   # later: chronos-t5-base chronos-t5-large (2.8 GB download)
    .venv-tirex/bin/python  src/foundation/smoke.py tirex
    .venv-moirai/bin/python src/foundation/smoke.py moirai-1.1-large moirai-moe-small moirai-2.0-small
    ```
@@ -68,7 +62,7 @@ Password login cannot be done by the assistant. Key-based login can be set up by
 ## Fine-tuning (later in this iteration)
 Only after zero-shot results: recipes per model are in `model-notes.md` (Chronos-Bolt through AutoGluon, Chronos 1.0 training script, Moirai through the uni2ts CLI, TimesFM LoRA example; TiRex has none). An RTX 3090 with 24 GB is enough for all of the listed models.
 
-## No internet on the GPU machine (fallback)
+## If the machine ever loses internet access (fallback, not needed so far)
 - Check first whether `torch` and `transformers` are already installed (output above). If so, the lightweight families may work with `--system-site-packages` environments, and only the missing small packages (`chronos-forecasting`, `timesfm`, `tirex-ts`, `uni2ts`) need to come in as wheel files.
 - Download wheels and model weights on the laptop (`pip download ...`, `huggingface-cli download amazon/chronos-bolt-base ...`) and upload them through JupyterLab. Cloudflare tunnels often limit one upload request to about 100 MB, so large files must be split (`split -b 90m`) and joined (`cat`) on the machine. Approximate weight sizes in fp32: Chronos-Bolt-base 0.8 GB, Chronos-2 0.5 GB, TimesFM 2.5 0.8 GB, TiRex 0.14 GB, Chronos-T5-large 2.8 GB, Moirai-MoE-base 3.6 GB.
 - Start with the smallest useful set: `chronos-bolt-small`, `chronos-bolt-base`, `chronos-2`, `timesfm-2.5`, `tirex`.
