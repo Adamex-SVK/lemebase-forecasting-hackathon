@@ -1,0 +1,11 @@
+# Leaderboard uploads
+
+One row per upload (see `TEAM-RULES.md` section 6). The live score covers weeks 1-7 only; the final score uses weeks 8-13.
+
+| Date | Who | File | Commit | Live score | Note |
+|---|---|---|---|---|---|
+| 2026-11-21 | owner | `lgbm_own_v1.csv` | 9081b5a (file created before the repo) | **-7.6** | global LightGBM, own arm, trained on all test-shop history |
+| 2026-11-21 | owner | `dry_run_median13.csv` | 9081b5a | -9.8 | median of the last 13 weeks |
+| 2026-11-21 | owner | `lgbm_d33_3seed_blend_v2.csv` | 9081b5a | -8.4 | D33 features, 3 seeds, 70/30 blend with the median: no better than v1 |
+
+Reference points on the board at the time: AutoARIMA -33.7, Naive -64.5, leader -5.4.

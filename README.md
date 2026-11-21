@@ -19,6 +19,8 @@ Work is organised in iterations with every decision tracked.
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
+| `TEAM-RULES.md`, `WORK-BOARD.md`, `CLAUDE.md`, `scripts/check.sh` | How we cooperate: branches, one yardstick, claiming tasks, uploads, pre-PR checks, rules for AI assistants |
+| `submissions/UPLOADS.md` | Log of every leaderboard upload |
 
 ## Status (night of 2026-11-21)
 Best live score so far: -7.6 (global LightGBM trained on all test-shop history); median of the last 13 weeks: -9.8;
