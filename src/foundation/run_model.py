@@ -99,11 +99,13 @@ def main():
     if Q is not None:
         qdir = ROOT / "iterations" / "09-forecast-approaches" / "quantiles"
         qdir.mkdir(parents=True, exist_ok=True)
+        Qfull = np.zeros((len(index), H, Q.shape[-1]), dtype=np.float32)
+        Qfull[idx] = Q                       # inactive (all-zero-history) series keep zero quantiles
         np.savez_compressed(qdir / f"{stem}.npz",
-                            quantiles=np.asarray(Q, dtype=np.float32),
+                            quantiles=Qfull,
                             levels=np.asarray(levels, dtype=np.float32),
-                            store_id=index.get_level_values(0).to_numpy(),
-                            article_id=index.get_level_values(1).to_numpy(),
+                            store_id=index.get_level_values(0).to_numpy().astype(str),
+                            article_id=index.get_level_values(1).to_numpy().astype(str),
                             week=np.asarray(weeks))
     (out_dir / f"{stem}.json").write_text(json.dumps({"model": a.model, "shop": a.shop, "cut_index": a.cut_index, "context": a.context,
                                                    "n_series": len(index), "n_sent_to_model": int(len(idx)),

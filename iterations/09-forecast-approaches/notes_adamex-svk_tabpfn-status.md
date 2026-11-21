@@ -11,9 +11,10 @@ forecast.)
 
 ## Remote check
 
-The GPU machine is reached only through a person-provided SSH host. No host or key is available to this
-session, and credentials must never be written into the repo. The five old T5 processes were therefore
-not inspected or restarted. T10 already reported them as gone; the status remains unknown, not "running".
+The GPU machine is reachable via a person-provided SSH host. Access was obtained late in the iteration
+and used for the distribution-pooling quantile export (task 3), but TabPFN was not re-run: no complete
+`tabpfn-ts-v2` forecasts exist in this worktree. The it08 verdict stands (rejected, live -5.2); this task
+remains unresolved here rather than "running".
 
 ## Consequence
 

@@ -10,14 +10,15 @@ Adoption bar: mean gain >= +0.5 and better on >= 3 of 4 cuts.
 | Task | Output | Verdict |
 |---|---|---|
 | 1. Error/headroom atlas | `results_adamex-svk_error-atlas.csv`, `notes_adamex-svk_error-atlas.md` | large oracle headroom (+8.3), but the purged pre-origin selector loses (1/8 wins, -1.59 mean); **gate closed** |
-| 2. TabPFN-TS | `notes_adamex-svk_tabpfn-status.md` | **UNRESOLVED** — no full forecasts; no GPU access |
-| 3. Distribution pool | `notes_adamex-svk_distribution-pool.md`, `results_adamex-svk_distribution-pool.csv` | **BLOCKED** — no quantile exports; additive code and tests ready |
+| 2. TabPFN-TS | `notes_adamex-svk_tabpfn-status.md` | **UNRESOLVED here** — no full forecasts; it08 verdict (rejected, live -5.2) stands |
+| 3. Distribution pool | `notes_adamex-svk_distribution-pool.md`, `results_adamex-svk_distribution-pool.csv`, `quantiles/` | **REJECT** — ran on GPU; pooled median in D40 = -13.84 (gain -0.18, 2/4); chronos-t5-small miscalibrated (~0.30 coverage) |
 | 4. Temporal reconciliation | `results_adamex-svk_temporal-reconcile.csv`, `notes_adamex-svk_temporal-reconcile.md` | **REJECT** — honest LOCO gain -0.32, 1/4 cuts |
 | 5. Analog conditional median | `results_adamex-svk_analog.csv`, `notes_adamex-svk_analog.md` | **REJECT/STOP** — -17.07 alone vs median13 -16.54; best blend -0.13 |
 | 6. Purged recency ensemble | `notes_adamex-svk_gated-followups.md` | **NOT RUN** — task 1 gate closed |
-| 7. Moirai 2.0 fine-tune | `notes_adamex-svk_gated-followups.md` | **NOT ATTEMPTED** — optional, no GPU access |
+| 7. Moirai 2.0 fine-tune | `notes_adamex-svk_gated-followups.md` | **NOT ATTEMPTED** — optional; GPU obtained late (used for the pooling export) |
 
-**D40 is unchanged.** No submission file was built from a rejected candidate. The useful output is the
+**D40 is unchanged.** A below-bar demonstration file `submissions/ensemble_pooled_median_v1.csv` (pooled
+median in the D40 recipe, local gain -0.18) was built at the person's request for a live check only. The useful output is the
 error atlas: scaled error is concentrated in low-scale, sparse, recently-active articles; the per-article
 oracle is large but not predictable enough from pre-origin features to beat a fixed robust blend.
 
@@ -27,7 +28,7 @@ oracle is large but not predictable enough from pre-origin features to beat a fi
 .venv/bin/python src/improve/i09_error_atlas.py
 .venv/bin/python src/improve/i09_temporal_reconcile.py
 .venv/bin/python src/improve/i09_analog.py
-.venv/bin/python src/improve/i09_distribution_pool.py   # reports BLOCKED without GPU quantiles
+.venv/bin/python src/improve/i09_distribution_pool.py   # pools the GPU-exported quantiles (task 3, rejected)
 bash scripts/check.sh
 .venv/bin/python src/meta/ensemble_recipe.py evaluate --models moirai-2.0-small,tirex,chronos-t5-small
 ```

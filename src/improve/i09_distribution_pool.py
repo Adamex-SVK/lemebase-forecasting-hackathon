@@ -188,6 +188,8 @@ def main():
                 "week": np.tile(np.asarray(ctx["weeks"]), M.n),
                 "forecast": np.clip(np.round(d40), 0, None).reshape(-1)}), detail=True)
             detail[("D40", k)] = r0["detail"]["mase"]
+            rows.append({"analysis": "score", "tag": tag, "model": "D40", "value": r0["score"],
+                         "cut": k})
 
     res = pd.DataFrame(rows)
     res.to_csv(OUT / "results_adamex-svk_distribution-pool.csv", index=False)
@@ -195,7 +197,7 @@ def main():
     if len(sc):
         sc["mean"] = sc.mean(axis=1)
         print(sc.round(2).to_string())
-        for name in sc.index:
+        for name in [n for n in sc.index if n != "D40"]:
             d = sc.loc[name, list(range(N_CUTS))] - sc.loc["D40", list(range(N_CUTS))]
             lo, hi = poisson_bootstrap_interval(pd.concat([detail[(name, k)] for k in range(N_CUTS)]),
                                                 pd.concat([detail[("D40", k)] for k in range(N_CUTS)]), rng)
