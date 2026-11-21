@@ -1,0 +1,1 @@
+{"model": "tabpfn-ts-v2", "shop": "test", "cut_index": 0, "context": "padded", "n_series": 2904, "n_sent_to_model": 2904, "load_seconds": 10.2, "forecast_seconds": 13543.9}
