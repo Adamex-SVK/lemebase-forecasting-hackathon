@@ -1,0 +1,5 @@
+shop,source_rows,packaged_rows,shared_keys,source_only_keys,packaged_only_keys,source_only_series,source_only_weeks,max_shared_units_difference
+A,98835,98835,98835,0,0,0,0,0.0
+B,504000,504000,446320,0,0,0,0,0.0
+C,491857,491857,491857,0,0,0,0,0.0
+D,125751,125751,123928,0,0,0,0,0.0

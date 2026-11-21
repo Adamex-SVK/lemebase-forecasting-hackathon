@@ -1,0 +1,28 @@
+{
+  "file": "submissions/ensemble_top3_chronos_pooled_finetuned_v1.csv",
+  "sha256": "0ab7bb19b78bc795185a7886e29c3c445c9bf1ef18037c4ea048ffb06ec47f7d",
+  "changed_cells": 5512,
+  "training_end": "2023-04-17",
+  "training": {
+    "shop": "test",
+    "offset": 0,
+    "arm": "pooled",
+    "training_end": "2023-04-17",
+    "inner_start": "2023-01-23",
+    "steps": 500,
+    "inner_mase": {
+      "100": 1.1462761163711548,
+      "250": 1.1159889698028564,
+      "500": 1.0149234533309937
+    },
+    "checkpoint": "a971ba21945c4f1796b17a91fe69214b5f4ad472",
+    "seed": 0,
+    "seconds": 92.4
+  },
+  "base_hashes": {
+    "iterations/03-foundation-model/forecasts_final/moirai-2.0-small__test__final__padded.parquet": "e8008dfeaea4d175de4af389041d9b4a7b4ca775eaffaf6d15a11f95367258c6",
+    "iterations/03-foundation-model/forecasts_final/tirex__test__final__padded.parquet": "390dd09e67c41359f10ba109b5229c9cb07d2481b7e463ccf4ada15a6ab1856c",
+    "iterations/03-foundation-model/forecasts_final/chronos-t5-small__test__final__padded.parquet": "796a6e2bbf5d02e470f6b58cad9d010c203468570c4a1da5b7cd7944367d4ddb",
+    "submissions/lgbm_own_v1.csv": "2ba0a899d6775794127403d8601189f5294ae0d5a77fe6dfaa9f336c829bd3af"
+  }
+}

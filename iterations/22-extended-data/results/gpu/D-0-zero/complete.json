@@ -1,0 +1,12 @@
+{
+  "shop": "D",
+  "offset": 0,
+  "arm": "zero",
+  "training_end": "2026-01-12",
+  "inner_start": "2025-10-20",
+  "steps": 0,
+  "inner_mase": {},
+  "checkpoint": "a971ba21945c4f1796b17a91fe69214b5f4ad472",
+  "seed": 0,
+  "seconds": 100.1
+}

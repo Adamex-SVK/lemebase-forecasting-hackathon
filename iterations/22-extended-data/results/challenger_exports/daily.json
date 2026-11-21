@@ -1,0 +1,16 @@
+{
+  "file": "submissions/ensemble_top3_daily_lgbm30_v1.csv",
+  "sha256": "9a0881fec3f7a690275e30e9a092bcc4ca26e5fdcbe8e9151e82199a541ca4b7",
+  "changed_cells": 2996,
+  "training_end": "2023-04-17",
+  "training": {
+    "rounds": 249,
+    "model_sha256": "7e2c223d98d323e5620ec4362506c807d44bb1e3275cca85dbb91d72dc477366"
+  },
+  "base_hashes": {
+    "iterations/03-foundation-model/forecasts_final/moirai-2.0-small__test__final__padded.parquet": "e8008dfeaea4d175de4af389041d9b4a7b4ca775eaffaf6d15a11f95367258c6",
+    "iterations/03-foundation-model/forecasts_final/tirex__test__final__padded.parquet": "390dd09e67c41359f10ba109b5229c9cb07d2481b7e463ccf4ada15a6ab1856c",
+    "iterations/03-foundation-model/forecasts_final/chronos-t5-small__test__final__padded.parquet": "796a6e2bbf5d02e470f6b58cad9d010c203468570c4a1da5b7cd7944367d4ddb",
+    "submissions/lgbm_own_v1.csv": "2ba0a899d6775794127403d8601189f5294ae0d5a77fe6dfaa9f336c829bd3af"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "selected": "incumbent",
+  "forecast": "submissions/ensemble_top3_blend_v1.csv",
+  "sha256": "af2d49198248e54f4fe5b175484f019fb9c4b22ec1f0b6f916d344f01bfb5639",
+  "training_through": "2023-04-17",
+  "n_articles": 2904,
+  "week_starts": [
+    "2023-04-24",
+    "2023-05-01",
+    "2023-05-08",
+    "2023-05-15",
+    "2023-05-22",
+    "2023-05-29",
+    "2023-06-05",
+    "2023-06-12",
+    "2023-06-19",
+    "2023-06-26",
+    "2023-07-03",
+    "2023-07-10",
+    "2023-07-17"
+  ],
+  "base_blob_hashes": {
+    "iterations/03-foundation-model/forecasts_final/moirai-2.0-small__test__final__padded.parquet": "e8008dfeaea4d175de4af389041d9b4a7b4ca775eaffaf6d15a11f95367258c6",
+    "iterations/03-foundation-model/forecasts_final/tirex__test__final__padded.parquet": "390dd09e67c41359f10ba109b5229c9cb07d2481b7e463ccf4ada15a6ab1856c",
+    "iterations/03-foundation-model/forecasts_final/chronos-t5-small__test__final__padded.parquet": "796a6e2bbf5d02e470f6b58cad9d010c203468570c4a1da5b7cd7944367d4ddb",
+    "submissions/lgbm_own_v1.csv": "2ba0a899d6775794127403d8601189f5294ae0d5a77fe6dfaa9f336c829bd3af"
+  }
+}

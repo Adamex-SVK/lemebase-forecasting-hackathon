@@ -1,0 +1,17 @@
+{
+  "python": "3.12.4",
+  "numpy": "2.5.5",
+  "pandas": "2.3.3",
+  "lightgbm": "4.7.0",
+  "pyarrow": "26.0.1",
+  "seed": 0,
+  "inputs": {
+    "data/interim/weekly_D.parquet": "7c0d6a833bbc22e3c1527ada15ab5d5c5e817605799818cf68bc20c15e7e4619",
+    "data/interim/weekly_C.parquet": "dc54d37bf8eb52db4ca211b75fb4e4851c64728516cb4c7b005dfee7ddbe1293",
+    "data/interim/weekly_test.parquet": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33",
+    "data/interim/weekly_B.parquet": "06bc6012332ce4fcc64ff6f21f7f6eec91eab392d569c8e70cf16d71baddb3cc",
+    "data/interim/weekly_A.parquet": "08a0a5e42debbf15158247d9ecfc33524c732eda36a406319e524139ee78a828",
+    "submissions/ensemble_top3_blend_v1.csv": "af2d49198248e54f4fe5b175484f019fb9c4b22ec1f0b6f916d344f01bfb5639",
+    "iterations/10-benchmark-diagnosis/validation.json": "ee3a10c6065575c770d40f3d9145f7f5ad689974ea244296960ce1cf3f9332ab"
+  }
+}
