@@ -70,18 +70,18 @@ def cut_contexts():
     return ctx
 
 
-def raw_practice(model, k, ctx, cache):
-    if (model, k) not in cache:
+def raw_practice(model, k, ctx, cache, context="padded"):
+    if (model, k, context) not in cache:
         M = ctx[k][0]
-        p = FM / f"{model}__test__cut{k}__padded.parquet"
+        p = FM / f"{model}__test__cut{k}__{context}.parquet"
         if not p.exists():
             raise SystemExit(f"missing practice-cut forecast for {model!r} cut {k}: {p}\n"
                              f"run src/foundation/run_model.py {model} test --cut-index {k} on the GPU machine")
         fc = pd.read_parquet(p)
-        cache[(model, k)] = fc.pivot_table(index=v.KEYS, columns="week", values="forecast",
-                                           aggfunc="sum").reindex(
+        cache[(model, k, context)] = fc.pivot_table(index=v.KEYS, columns="week", values="forecast",
+                                                    aggfunc="sum").reindex(
             pd.MultiIndex.from_frame(M.keys)).fillna(0.0).to_numpy(float)
-    return cache[(model, k)]
+    return cache[(model, k, context)]
 
 
 def score_cut(k, F, ctx):
@@ -89,11 +89,11 @@ def score_cut(k, F, ctx):
     return e.score_F(M, np.round(F), train, hold, weeks)["score"]
 
 
-def evaluate_scores(models, w, ctx, cache):
+def evaluate_scores(models, w, ctx, cache, context="padded"):
     out = []
     for k in range(N_CUTS):
         M, _, _, _, dead, Fl = ctx[k]
-        mod = np.mean([raw_practice(m, k, ctx, cache) for m in models], axis=0)
+        mod = np.mean([raw_practice(m, k, ctx, cache, context) for m in models], axis=0)
         mod[dead] = 0.0                       # zero rule (D39)
         out.append(score_cut(k, w * Fl + (1 - w) * mod, ctx))
     return np.array(out)
@@ -102,11 +102,11 @@ def evaluate_scores(models, w, ctx, cache):
 def cmd_evaluate(args):
     models = parse_models(args.models)
     ctx, cache = cut_contexts(), {}
-    ref = evaluate_scores(REFERENCE_MODELS, REFERENCE_W, ctx, cache)
-    cand = evaluate_scores(models, args.lgbm_weight, ctx, cache)
+    ref = evaluate_scores(REFERENCE_MODELS, REFERENCE_W, ctx, cache, "padded")
+    cand = evaluate_scores(models, args.lgbm_weight, ctx, cache, args.context)
     print(f"reference D40   models={REFERENCE_MODELS} lgbm_weight={REFERENCE_W}")
     print("  by cut: " + " ".join(f"{x:7.2f}" for x in ref) + f"   mean {ref.mean():7.2f}")
-    print(f"candidate       models={models} lgbm_weight={args.lgbm_weight}")
+    print(f"candidate       models={models} lgbm_weight={args.lgbm_weight} context={args.context}")
     print("  by cut: " + " ".join(f"{x:7.2f}" for x in cand) + f"   mean {cand.mean():7.2f}")
     d = cand - ref
     won = int((d > 0).sum())
@@ -123,8 +123,8 @@ def dead_mask(ids):
     return last8.reindex(ids).fillna(0).to_numpy() == 0
 
 
-def final_matrix(model, ids):
-    p = FM_FINAL / f"{model}__test__final__padded.parquet"
+def final_matrix(model, ids, context="padded"):
+    p = FM_FINAL / f"{model}__test__final__{context}.parquet"
     if not p.exists():
         raise SystemExit(f"missing final forecast for {model!r}: {p}\n"
                          f"run src/foundation/run_model.py {model} test --final on the GPU machine")
@@ -138,7 +138,7 @@ def cmd_build(args):
     models = parse_models(args.models)
     ids = ms.history_ids()
     dead = dead_mask(ids)
-    E = np.mean([final_matrix(m, ids) for m in models], axis=0)
+    E = np.mean([final_matrix(m, ids, args.context) for m in models], axis=0)
     E[dead] = 0.0
     if args.lgbm_weight > 0:
         L = pd.read_csv(ms.SUB_DIR / "lgbm_own_v1.csv").set_index("article_id").loc[ids].to_numpy(float)
@@ -152,7 +152,7 @@ def cmd_build(args):
     ms.write_submission(F, ids, out)
     ms.validate_submission(out)
     print(f"wrote {out} and it passes the format checks")
-    print(f"  models={models} lgbm_weight={args.lgbm_weight} | {len(ids)} articles | "
+    print(f"  models={models} lgbm_weight={args.lgbm_weight} context={args.context} | {len(ids)} articles | "
           f"mean forecast {F.mean():.2f} | {100 * (F.max(axis=1) == 0).mean():.1f}% forecast 0 every week")
     print("  uploading is done by a person (TEAM-RULES.md section 6)")
 
@@ -163,11 +163,15 @@ def main():
     p = sub.add_parser("evaluate", help="score a candidate model set on the 4 standard cuts")
     p.add_argument("--models", required=True, help="comma-separated foundation models")
     p.add_argument("--lgbm-weight", type=float, default=REFERENCE_W)
+    p.add_argument("--context", default="padded", choices=["padded", "first_sale", "last52"],
+                   help="forecast context variant to read (default: padded, D40)")
     p.set_defaults(func=cmd_evaluate)
     b = sub.add_parser("build", help="build and validate the final submission CSV")
     b.add_argument("--models", required=True)
     b.add_argument("--lgbm-weight", type=float, default=REFERENCE_W)
     b.add_argument("--out", default="submissions/ensemble_recipe.csv")
+    b.add_argument("--context", default="padded", choices=["padded", "first_sale", "last52"],
+                   help="forecast context variant to read (default: padded, D40)")
     b.set_defaults(func=cmd_build)
     a = ap.parse_args()
     a.func(a)

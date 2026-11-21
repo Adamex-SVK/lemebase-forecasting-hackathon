@@ -1,13 +1,14 @@
 """Run one foundation model zero-shot on one shop at one cut and save the forecasts.
 
-    python src/foundation/run_model.py MODEL SHOP [--cut-index K] [--context padded|first_sale]
+    python src/foundation/run_model.py MODEL SHOP [--cut-index K] [--context padded|first_sale|last52]
                                        [--device cuda] [--limit N]
 
 Needs only pandas / numpy / pyarrow plus the model's own package (so it can run in the model's
 own environment). Scoring is done by score_all.py in the main environment.
 
  * history = the shop's weekly table before the cut, every series zero-padded from the shop's first
-   week (D26) when --context padded (default), or starting at its first sale (first_sale);
+   week (D26) when --context padded (default), starting at its first sale (first_sale), or truncated
+   to the last 52 weeks (last52);
  * cut K drops the last 13*K weeks first (rolling origin, D32); K = 0 is the standard local cut (D14);
  * series whose context is all zeros are not sent to the model: forecast 0;
  * output: iterations/03-foundation-model/forecasts/{model}__{shop}__cut{K}__{context}.parquet
@@ -47,8 +48,10 @@ def contexts_for(shop, cut_index, context, final=False, cut_weeks=None):
         row = A[k]
         if context == "first_sale" and (row > 0).any():
             row = row[(row > 0).argmax():]
+        elif context == "last52":
+            row = row[-52:]
         ctx.append(row)
-        active.append(bool((A[k] > 0).any()))
+        active.append(bool((row > 0).any()))
     return W.index, ctx, np.array(active), hold, cut, train
 
 
@@ -56,7 +59,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("model"); ap.add_argument("shop")
     ap.add_argument("--cut-index", type=int, default=0)
-    ap.add_argument("--context", default="padded", choices=["padded", "first_sale"])
+    ap.add_argument("--context", default="padded", choices=["padded", "first_sale", "last52"])
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--limit", type=int, default=0, help="only the first N active series (smoke runs)")
     ap.add_argument("--cut-weeks", type=int, default=None, help="drop this many weeks from the end before the cut (any offset, for overlapping cuts); output goes to forecasts_cuts/ as ..__w{N}__..")
