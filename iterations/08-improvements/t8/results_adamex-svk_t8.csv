@@ -1,0 +1,15 @@
+variant,slot,n_cuts,cut0,cut1,cut2,cut3,mean,D40_mean_same_cuts,gain_vs_D40,cuts_won,cuts_total,seeds_per_cut,verdict,note
+D40 reference (loss_F seed0 slot),lgbm_seed0,4,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,-13.6659,0.0,0,4,1 1 1 1,keep,sanity: must reproduce D40 exactly
+D40 with LGBM seed-avg slot (control),lgbm_seedavg,4,-3.6608,-25.9442,-10.9802,-14.0212,-13.6516,-13.6659,0.0143,2,4,3 3 3 3,keep,isolates the seed-averaging gain
+LightGBM l1 + zero gate (loss_P<0.5),lgbm_gate,4,-3.4106,-25.9807,-10.9385,-14.0398,-13.5924,-13.6659,0.0735,2,4,3 3 3 3,keep,item 2.3 gate as the tree member
+CatBoost MAE (cb_F),catboost,4,-3.7105,-26.1265,-10.9388,-14.1053,-13.7203,-13.6659,-0.0543,2,4,3 3 3 3,keep,3-seed average
+LightGBM + CatBoost (1/2 each),lgbm+cb,4,-3.6916,-26.0146,-10.9926,-14.0716,-13.6926,-13.6659,-0.0266,2,4,3 3 3 3,keep,"3-seed averages, equal weights"
+"LightGBM + CatBoost (1/2 each, seed0)",lgbm+cb_seed0,4,-3.6363,-25.9933,-11.0099,-14.0294,-13.6672,-13.6659,-0.0013,2,4,1 1 1 1,keep,"single seed, no seed averaging"
+0.3 slot split 0.15 LGBM + 0.15 CatBoost,lgbm+cb,4,-3.6916,-26.0146,-10.9926,-14.0716,-13.6926,-13.6659,-0.0266,2,4,3 3 3 3,keep,identical to the 1/2 average above
+d33 LightGBM (extra),d33,4,-3.6767,-25.9256,-10.9489,-14.1072,-13.6646,-13.6659,0.0013,2,4,3 3 3 3,keep,"complete 3-seed set, different features"
+loss2 loss2_F_huber,loss2_F_huber,2,-3.8153,-26.1079,,,-14.9616,-14.8162,-0.1454,0,2,3 1,incomplete,INCOMPLETE: scored only on the cuts that exist
+loss2 loss2_F_fair,loss2_F_fair,2,-3.9401,-25.6856,,,-14.8128,-14.8162,0.0033,1,2,3 1,incomplete,INCOMPLETE: scored only on the cuts that exist
+loss2 loss2_F_l2,loss2_F_l2,2,-6.4919,-28.0322,,,-17.262,-14.8162,-2.4458,0,2,3 1,incomplete,INCOMPLETE: scored only on the cuts that exist
+loss2 loss2_F_tweedie1.2,loss2_F_tweedie1.2,2,-4.5358,-26.4552,,,-15.4955,-14.8162,-0.6793,0,2,3 1,incomplete,INCOMPLETE: scored only on the cuts that exist
+loss2 loss2_F_tweedie1.5,loss2_F_tweedie1.5,1,-4.4796,,,,-4.4796,-3.7249,-0.7547,0,1,3,incomplete,INCOMPLETE: scored only on the cuts that exist
+loss2 loss2_F_poisson,loss2_F_poisson,1,-5.1937,,,,-5.1937,-3.7249,-1.4687,0,1,3,incomplete,INCOMPLETE: scored only on the cuts that exist

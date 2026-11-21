@@ -1,0 +1,36 @@
+variant,kind,param,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won,verdict
+D40 (reference),reference,"round, W=8",-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+offset floor(x+0.30),in_sample_grid,c=0.30,-3.635,-25.9812,-11.7612,-14.4443,-13.9554,-0.2895,1,reject
+offset floor(x+0.35),in_sample_grid,c=0.35,-3.3985,-25.9415,-11.7659,-14.3428,-13.8622,-0.1962,1,reject
+offset floor(x+0.40),in_sample_grid,c=0.40,-3.5526,-25.93,-11.4617,-14.3947,-13.8348,-0.1688,1,reject
+offset floor(x+0.45),in_sample_grid,c=0.45,-3.6086,-25.9097,-11.3663,-14.1809,-13.7664,-0.1004,1,reject
+offset floor(x+0.50),in_sample_grid,c=0.50,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+offset floor(x+0.55),in_sample_grid,c=0.55,-4.0084,-26.1604,-11.1627,-13.715,-13.7616,-0.0957,1,reject
+offset floor(x+0.60),in_sample_grid,c=0.60,-4.0244,-26.026,-11.1732,-13.728,-13.7379,-0.072,1,reject
+offset floor(x+0.65),in_sample_grid,c=0.65,-4.1914,-26.1386,-11.3577,-14.0749,-13.9407,-0.2747,0,reject
+offset floor(x+0.70),in_sample_grid,c=0.70,-4.4352,-26.3546,-12.0963,-13.8301,-14.1791,-0.5131,1,reject
+offset (honest LOOCV),honest_loocv,picks 0.60/0.50/0.50/0.50,-4.0244,-25.9074,-11.0106,-14.0208,-13.7408,-0.0749,0,reject
+offset in-sample optimum c=0.50,in_sample_opt,c=0.50,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+shrink round(0.80*x),in_sample_grid,a=0.80,-4.4062,-27.0741,-12.8314,-15.2842,-14.899,-1.233,0,reject
+shrink round(0.85*x),in_sample_grid,a=0.85,-4.0337,-26.578,-12.1336,-15.0158,-14.4403,-0.7743,0,reject
+shrink round(0.90*x),in_sample_grid,a=0.90,-3.7591,-26.2398,-11.8272,-14.4445,-14.0677,-0.4017,0,reject
+shrink round(0.95*x),in_sample_grid,a=0.95,-3.6763,-25.9629,-11.3944,-14.1971,-13.8077,-0.1417,1,reject
+shrink round(1.00*x),in_sample_grid,a=1.00,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+shrink round(1.05*x),in_sample_grid,a=1.05,-4.0119,-26.1854,-11.0517,-14.0702,-13.8298,-0.1638,0,reject
+shrink (honest LOOCV),honest_loocv,picks 1.00/1.00/1.00/1.00,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+shrink in-sample optimum a=1.00,in_sample_opt,a=1.00,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+zero window W=4,in_sample_grid,W=4,-3.697,-25.8591,-10.9989,-13.9747,-13.6324,0.0335,4,reject
+zero window W=6,in_sample_grid,W=6,-3.7203,-25.8954,-11.0015,-14.0171,-13.6586,0.0074,4,reject
+zero window W=8,in_sample_grid,W=8,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+zero window W=10,in_sample_grid,W=10,-3.7252,-25.9115,-11.0126,-14.0319,-13.6703,-0.0044,0,reject
+zero window W=13,in_sample_grid,W=13,-3.7254,-25.9157,-11.0189,-14.0356,-13.6739,-0.0079,0,reject
+zero window W=26,in_sample_grid,W=26,-3.7258,-25.9174,-11.0242,-14.0495,-13.6792,-0.0133,0,reject
+zero window (honest LOOCV),honest_loocv,picks 4/4/4/4,-3.697,-25.8591,-10.9989,-13.9747,-13.6324,0.0335,4,reject
+zero window in-sample optimum W=4,in_sample_opt,W=4,-3.697,-25.8591,-10.9989,-13.9747,-13.6324,0.0335,4,reject
+small cut t=0.5,in_sample_grid,t=0.5,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+small cut t=0.75,in_sample_grid,t=0.75,-3.4855,-25.9569,-12.057,-14.5014,-14.0002,-0.3343,1,reject
+small cut t=1.0,in_sample_grid,t=1.0,-2.7403,-26.8003,-12.6008,-14.8538,-14.2488,-0.5829,1,reject
+small cut (honest LOOCV),honest_loocv,picks 0.5/0.5/0.5/0.5,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+small cut in-sample optimum t=0.5,in_sample_opt,t=0.5,-3.7249,-25.9074,-11.0106,-14.0208,-13.6659,0.0,0,reject
+per-segment offset (honest LOOCV),honest_loocv,picks 0.70/0.30/0.35 | 0.70/0.30/0.70 | 0.70/0.30/0.60 | 0.70/0.70/0.60,-4.1254,-26.4732,-12.1139,-13.8295,-14.1355,-0.4696,1,reject
+per-segment offset in-sample optimum,in_sample_opt,c=0.70/0.30/0.70,-4.2369,-26.4732,-12.1172,-14.1378,-14.2413,-0.5753,0,reject

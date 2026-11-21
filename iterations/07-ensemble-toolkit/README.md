@@ -111,3 +111,6 @@ Data used by the tools:
   differences of about 2 points or less.
 - Window difficulty varies by about 45 points between neighbouring months, so compare models within a
   cut, never across cuts.
+
+## Iteration 08 outcome (2026-11-21)
+Iteration 08 ran ten improvement tasks (T1-T10: intermittent-demand classics, post-processing tuning, robust combination, flattening, TabPFN-TS, quantile/sample variants, context variants, other tree models, a fine-tuned Moirai 1.1-small and new zero-shot models) against D40. **None passed the adoption bar** (mean gain >= +0.5 and better on >= 3 of 4 cuts; the best was +0.08), so **D40 is unchanged at -13.67** as of 2026-11-21. The new models/forecasts and per-task results are listed in `iterations/08-improvements/README.md`; TabPFN (D36/T5) remains blocked.
