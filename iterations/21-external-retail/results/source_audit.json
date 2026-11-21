@@ -1,0 +1,23 @@
+{
+  "source": "Daqing Chen, UCI Online Retail, DOI 10.24432/C5BW33, CC BY 4.0",
+  "source_sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+  "python": "3.12.4",
+  "pandas": "2.3.3",
+  "openpyxl": "3.1.5",
+  "raw_lines": 541909,
+  "exact_repeat_lines": 5268,
+  "first_transaction": "2010-12-01",
+  "last_transaction": "2011-12-09",
+  "retained_lines": 495525,
+  "distinct_articles": 3775,
+  "observed_product_weeks": 96034,
+  "units": 5226197,
+  "first_full_week": "2010-12-06",
+  "last_full_week": "2011-11-28",
+  "calendar_weeks": 52,
+  "weeks_with_merchandise_sales": 51,
+  "empty_weeks": [
+    "2010-12-27"
+  ],
+  "weekly_sha256": "4f07b7333246a2dea63afe1f2723b7144e67f2d30e9e6667db0fd5cb387c5a5b"
+}
