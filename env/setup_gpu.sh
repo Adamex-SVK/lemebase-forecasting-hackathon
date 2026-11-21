@@ -19,7 +19,11 @@ for fam in $FAMILIES; do
     "$PY" -m venv --system-site-packages ".venv-$fam"
   fi
   ".venv-$fam/bin/pip" install -q --upgrade pip
-  ".venv-$fam/bin/pip" install -q -r env/requirements_base.txt -r "env/requirements_$fam.txt"
+  if [ "$fam" = "moirai" ]; then
+    ".venv-$fam/bin/pip" install -r env/requirements_base.txt -r "env/requirements_$fam.txt" 2>&1 | tail -3
+  else   # keep the machine's torch stack (constraints), and show pip's output so failures are visible
+    ".venv-$fam/bin/pip" install -c env/constraints_gpu.txt -r env/requirements_base.txt -r "env/requirements_$fam.txt" 2>&1 | tail -3
+  fi
   ".venv-$fam/bin/python" -c "import torch; print('torch', torch.__version__, 'cuda available:', torch.cuda.is_available())" || true
   df -h . | tail -1
 done

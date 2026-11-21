@@ -1,5 +1,4 @@
-# Chronos 1.0 (t5), Chronos-Bolt, Chronos-2.  Docs: chronos-forecasting>=2.0 for Chronos-2.
+# Chronos 1.0 (t5), Chronos-Bolt, Chronos-2.  Install with:  pip install -c env/constraints_gpu.txt -r env/requirements_base.txt -r env/requirements_chronos.txt
+# (the constraints keep the machine's torch 2.5.1 and transformers 4.x; checked by a dry-run resolution on 2026-11-21)
 chronos-forecasting>=2.0
-torch>=2.2,<3
-transformers>=4.41,<6
 accelerate>=1.1.0,<2
