@@ -1,0 +1,22 @@
+{
+ "model": "moirai-1.1-small-ft",
+ "base": "Salesforce/moirai-1.1-R-small",
+ "tag": "final",
+ "context_padded_weeks": 143,
+ "train_series": 2904,
+ "windows": 66,
+ "steps": 400,
+ "batch": 32,
+ "lr": 0.0001,
+ "warmup": 40,
+ "wd": 0.01,
+ "context_length": 65,
+ "patch_size": 16,
+ "distance": 1,
+ "num_samples": 50,
+ "train_last_week": "2023-04-17",
+ "holdout_first_week": null,
+ "fit_seconds": 49.3,
+ "forecast_seconds": 27.2,
+ "device": "NVIDIA GeForce RTX 3090"
+}

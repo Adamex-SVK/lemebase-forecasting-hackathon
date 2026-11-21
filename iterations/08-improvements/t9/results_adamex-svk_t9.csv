@@ -1,0 +1,12 @@
+variant,cut0,cut1,cut2,cut3,mean,gain_vs_d40,cuts_won,verdict
+D40_reference,-3.72,-25.91,-11.01,-14.02,-13.67,0.00,0,reference
+ft_alone_classic_recipe,-4.62,-28.47,-11.91,-15.20,-15.05,-1.39,0,REJECT
+ft_4th_member,-3.74,-26.12,-11.32,-14.07,-13.81,-0.14,0,REJECT
+ft_replace_moirai-2.0-small,-3.57,-26.01,-11.46,-14.13,-13.79,-0.13,1,REJECT
+ft_replace_tirex,-3.86,-26.83,-11.54,-14.26,-14.12,-0.46,0,REJECT
+ft_replace_chronos-t5-small,-3.71,-26.46,-11.34,-14.49,-14.00,-0.33,1,REJECT
+solo_ft_raw,-6.21,-29.55,-12.90,-16.22,-16.22,,,solo
+solo_ft_round,-5.44,-29.02,-12.54,-15.53,-15.63,,,solo
+solo_ft_zero8,-6.04,-29.42,-12.72,-16.01,-16.05,,,solo
+solo_ft_round+zero8,-5.42,-29.01,-12.48,-15.48,-15.60,,,solo
+solo_zeroshot_control_round+zero8,-5.36,-30.07,-14.45,-16.15,-16.51,,,control
