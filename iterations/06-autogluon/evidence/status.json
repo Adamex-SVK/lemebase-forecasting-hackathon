@@ -1,0 +1,82 @@
+[
+  {
+    "shop": "test",
+    "cut": 0,
+    "train_weeks": 130,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "WeightedEnsemble",
+    "trained_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ],
+    "predicted_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ]
+  },
+  {
+    "shop": "test",
+    "cut": 1,
+    "train_weeks": 117,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "DirectTabular",
+    "trained_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ],
+    "predicted_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ]
+  },
+  {
+    "shop": "test",
+    "cut": 2,
+    "train_weeks": 104,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "DirectTabular",
+    "trained_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ],
+    "predicted_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ]
+  },
+  {
+    "shop": "test",
+    "cut": 3,
+    "train_weeks": 91,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "DirectTabular",
+    "trained_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ],
+    "predicted_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ]
+  }
+]

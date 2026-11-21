@@ -1,0 +1,4 @@
+# Optional environment; do not install over the reference model environment.
+autogluon.timeseries==1.6.3
+lightgbm==4.7.0
+pyarrow==24.0.0

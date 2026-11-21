@@ -1,0 +1,71 @@
+{
+  "shops": [
+    "test"
+  ],
+  "cuts": [
+    0
+  ],
+  "models": [
+    "Naive",
+    "AutoETS",
+    "DirectTabular"
+  ],
+  "time_limit": 60,
+  "val_windows": 3,
+  "cpus": 1,
+  "seed": 0,
+  "limit_series": 32,
+  "output": "iterations/06-autogluon/runs/smoke32",
+  "model_hyperparameters": {
+    "Naive": {
+      "ag_args_fit": {
+        "num_cpus": 1,
+        "num_gpus": 0
+      }
+    },
+    "AutoETS": {
+      "seasonal_period": 1,
+      "n_jobs": 1,
+      "ag_args_fit": {
+        "num_cpus": 1,
+        "num_gpus": 0
+      }
+    },
+    "DirectTabular": {
+      "lags": [
+        1,
+        2,
+        4,
+        8,
+        13
+      ],
+      "date_features": [],
+      "max_num_samples": 100000,
+      "max_num_items": null,
+      "model_hyperparameters": {
+        "num_boost_round": 200,
+        "num_threads": 1
+      },
+      "ag_args_fit": {
+        "num_cpus": 1,
+        "num_gpus": 0
+      }
+    }
+  },
+  "python": "3.12.4",
+  "autogluon": "1.6.3",
+  "git_head": "a94b2c95b502e75fa4fecf8f22a537ed0e7e0652",
+  "metric": "D26; adjacent-week scale; constant histories excluded; nonnegative median point forecasts",
+  "scope": "own-shop only, units only; not pooled or unseen-shop transfer",
+  "source_sha256": {
+    "src/run_autogluon.py": "f02ee76dd54ecd12378d6b8325fd1f27d14949d0d3a6e377347e8c94fd33c5d2",
+    "src/autogluon_adapter.py": "98f838921c7bda4dad6f0618d000e77f8612f9a24efbdfa84f1d6c271316adfe",
+    "src/validate.py": "0bc5f162e09324c45c03586b6cfb1d6f1c42fafe367dd6875f64071c6eb54921"
+  },
+  "reference_sha256": {
+    "logs/chronos_four/LightGBM_0.parquet": "a17956a5135ff7da3ac2b2c670f9221fae739facdae16d89704174061098623e"
+  },
+  "input_sha256": {
+    "data/interim/weekly_test.parquet": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33"
+  }
+}

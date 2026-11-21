@@ -16,17 +16,19 @@ Work is organised in iterations with every decision tracked.
 | `iterations/01-global-gbm` | Global LightGBM (L1 loss on units / MASE scale): own vs pooled vs others-only arms |
 | `iterations/02-robust-eval` | Rolling-origin evaluation (4 cuts), F6 (moving peak) investigation, quick experiments |
 | `iterations/03-foundation-model` | Plan and model notes for Chronos, TimesFM, Moirai, TiRex (prepared, not yet run) |
+| `iterations/05-data-evaluation` | Reproducible raw/prepared data audit and findings |
+| `iterations/06-autogluon` | Optional AutoGluon challenger setup, evaluation commands, and integration evidence |
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
 
 ## Maya's branch
 
-`Mayas-forecasting-workflow` is currently in planning. Agree on the shared data
-and validation contract before implementing the next model comparison. Preserve
-the existing LightGBM reference while considering other model families and
-cross-shop training. Historical iteration plans are context, not instructions
-to restart unfinished runs automatically.
+`Mayas-forecasting-workflow` contains the data evaluation and an optional
+AutoGluon challenger (see `iterations/06-autogluon/plan.md`). Preserve the existing
+LightGBM reference while comparing other model families and cross-shop training.
+Historical iteration plans are context, not instructions to restart unfinished
+runs automatically.
 
 ## Status (night of 2026-11-21)
 Best live score so far: -7.6 (global LightGBM trained on all test-shop history); median of the last 13 weeks: -9.8;

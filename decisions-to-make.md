@@ -2,6 +2,14 @@
 
 Living list for the team. Settled items are under **Decided** with date and choice. Last updated: 2026-11-21.
 
+## Maya's branch: AutoGluon integration (2026-11-21)
+
+User authorized adding AutoGluon as an optional challenger. Isolate dependencies,
+retain current preprocessing and D26 scoring, use prior internal validation
+windows, and save outer-cut predictions for independent comparison. Initial
+integration is own-shop/units-only; pooling, final model selection, and submission
+remain separate steps. See `iterations/06-autogluon/plan.md` and `log.md`.
+
 ## 1. Task facts (from the brief, not decisions)
 - We submit ONE forecast: the **test shop**, 2,904 articles x 13 weeks (w1 = Mon 2023-04-24 ... w13 = Mon 2023-07-17), as a CSV `article_id, w1..w13`.
 - Target = **units** (pieces), not money. The test shop has no price column.

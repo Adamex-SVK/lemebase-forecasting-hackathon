@@ -1,0 +1,22 @@
+[
+  {
+    "shop": "test",
+    "cut": 0,
+    "train_weeks": 130,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "WeightedEnsemble",
+    "trained_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ],
+    "predicted_models": [
+      "Naive",
+      "DirectTabular",
+      "AutoETS",
+      "WeightedEnsemble"
+    ]
+  }
+]

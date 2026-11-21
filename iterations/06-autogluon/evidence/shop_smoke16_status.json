@@ -1,0 +1,58 @@
+[
+  {
+    "shop": "A",
+    "cut": 0,
+    "train_weeks": 152,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "Naive",
+    "trained_models": [
+      "Naive"
+    ],
+    "predicted_models": [
+      "Naive"
+    ]
+  },
+  {
+    "shop": "B",
+    "cut": 0,
+    "train_weeks": 29,
+    "internal_val_windows": 1,
+    "status": "complete",
+    "selected_model": "Naive",
+    "trained_models": [
+      "Naive"
+    ],
+    "predicted_models": [
+      "Naive"
+    ]
+  },
+  {
+    "shop": "C",
+    "cut": 0,
+    "train_weeks": 107,
+    "internal_val_windows": 3,
+    "status": "complete",
+    "selected_model": "Naive",
+    "trained_models": [
+      "Naive"
+    ],
+    "predicted_models": [
+      "Naive"
+    ]
+  },
+  {
+    "shop": "D",
+    "cut": 0,
+    "train_weeks": 33,
+    "internal_val_windows": 1,
+    "status": "complete",
+    "selected_model": "Naive",
+    "trained_models": [
+      "Naive"
+    ],
+    "predicted_models": [
+      "Naive"
+    ]
+  }
+]

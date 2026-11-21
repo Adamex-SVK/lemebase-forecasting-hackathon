@@ -1,0 +1,45 @@
+{
+  "shops": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "cuts": [
+    0
+  ],
+  "models": [
+    "Naive"
+  ],
+  "time_limit": 20,
+  "val_windows": 3,
+  "cpus": 1,
+  "seed": 0,
+  "limit_series": 16,
+  "output": "iterations/06-autogluon/runs/shop_smoke16",
+  "model_hyperparameters": {
+    "Naive": {
+      "n_jobs": 1,
+      "ag_args_fit": {
+        "num_cpus": 1,
+        "num_gpus": 0
+      }
+    }
+  },
+  "python": "3.12.4",
+  "autogluon": "1.6.3",
+  "git_head": "a94b2c95b502e75fa4fecf8f22a537ed0e7e0652",
+  "metric": "D26; adjacent-week scale; constant histories excluded; nonnegative median point forecasts",
+  "scope": "own-shop only, units only; not pooled or unseen-shop transfer",
+  "source_sha256": {
+    "src/run_autogluon.py": "66fa6042ac502cc5adcad7a63d5d65321a3bc46b4a3bdd16c5d04d6c04deef8f",
+    "src/autogluon_adapter.py": "98f838921c7bda4dad6f0618d000e77f8612f9a24efbdfa84f1d6c271316adfe",
+    "src/validate.py": "0bc5f162e09324c45c03586b6cfb1d6f1c42fafe367dd6875f64071c6eb54921"
+  },
+  "input_sha256": {
+    "data/interim/weekly_A.parquet": "08a0a5e42debbf15158247d9ecfc33524c732eda36a406319e524139ee78a828",
+    "data/interim/weekly_B.parquet": "06bc6012332ce4fcc64ff6f21f7f6eec91eab392d569c8e70cf16d71baddb3cc",
+    "data/interim/weekly_C.parquet": "dc54d37bf8eb52db4ca211b75fb4e4851c64728516cb4c7b005dfee7ddbe1293",
+    "data/interim/weekly_D.parquet": "7c0d6a833bbc22e3c1527ada15ab5d5c5e817605799818cf68bc20c15e7e4619"
+  }
+}

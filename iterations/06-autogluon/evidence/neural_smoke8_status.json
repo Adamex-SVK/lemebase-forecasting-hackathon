@@ -1,0 +1,20 @@
+[
+  {
+    "shop": "test",
+    "cut": 0,
+    "train_weeks": 130,
+    "internal_val_windows": 1,
+    "status": "complete",
+    "selected_model": "DeepAR",
+    "trained_models": [
+      "Naive",
+      "DeepAR",
+      "WeightedEnsemble"
+    ],
+    "predicted_models": [
+      "Naive",
+      "DeepAR",
+      "WeightedEnsemble"
+    ]
+  }
+]

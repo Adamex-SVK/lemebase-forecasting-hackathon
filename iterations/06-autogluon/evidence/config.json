@@ -1,0 +1,78 @@
+{
+  "shops": [
+    "test"
+  ],
+  "cuts": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "models": [
+    "Naive",
+    "AutoETS",
+    "DirectTabular"
+  ],
+  "time_limit": 60,
+  "val_windows": 3,
+  "cpus": 2,
+  "seed": 0,
+  "limit_series": null,
+  "output": "iterations/06-autogluon/runs/target_four_cuts",
+  "model_hyperparameters": {
+    "Naive": {
+      "n_jobs": 2,
+      "ag_args_fit": {
+        "num_cpus": 2,
+        "num_gpus": 0
+      }
+    },
+    "AutoETS": {
+      "seasonal_period": 1,
+      "n_jobs": 2,
+      "ag_args_fit": {
+        "num_cpus": 2,
+        "num_gpus": 0
+      }
+    },
+    "DirectTabular": {
+      "lags": [
+        1,
+        2,
+        4,
+        8,
+        13
+      ],
+      "date_features": [],
+      "max_num_samples": 100000,
+      "max_num_items": null,
+      "model_hyperparameters": {
+        "num_boost_round": 200,
+        "num_threads": 2
+      },
+      "ag_args_fit": {
+        "num_cpus": 2,
+        "num_gpus": 0
+      }
+    }
+  },
+  "python": "3.12.4",
+  "autogluon": "1.6.3",
+  "git_head": "a94b2c95b502e75fa4fecf8f22a537ed0e7e0652",
+  "metric": "D26; adjacent-week scale; constant histories excluded; nonnegative median point forecasts",
+  "scope": "own-shop only, units only; not pooled or unseen-shop transfer",
+  "source_sha256": {
+    "src/run_autogluon.py": "66fa6042ac502cc5adcad7a63d5d65321a3bc46b4a3bdd16c5d04d6c04deef8f",
+    "src/autogluon_adapter.py": "98f838921c7bda4dad6f0618d000e77f8612f9a24efbdfa84f1d6c271316adfe",
+    "src/validate.py": "0bc5f162e09324c45c03586b6cfb1d6f1c42fafe367dd6875f64071c6eb54921"
+  },
+  "reference_sha256": {
+    "logs/chronos_four/LightGBM_0.parquet": "a17956a5135ff7da3ac2b2c670f9221fae739facdae16d89704174061098623e",
+    "logs/chronos_four/LightGBM_1.parquet": "2dcf76b54f08e77fd9743774d30dedd58b78c00e3eb9a931c35359732cf24a4c",
+    "logs/chronos_four/LightGBM_2.parquet": "011827a392217bc32568c113fd60181010958fac1488c6ccfc0f48f3ad05f193",
+    "logs/chronos_four/LightGBM_3.parquet": "2ad493743d821f9eaa0b271ded2c2a44b005f0b71194d4e81cc084100ef61fe8"
+  },
+  "input_sha256": {
+    "data/interim/weekly_test.parquet": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33"
+  }
+}
