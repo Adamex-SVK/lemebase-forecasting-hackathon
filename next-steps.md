@@ -1,7 +1,7 @@
 # Next steps (prepared 2026-11-21, night)
 
 ## RESUME HERE (updated 2026-11-21, afternoon)
-**Read `HANDOVER.md` first**: it has the current state, the best recipe (live -4.8), the jobs in flight and the ordered next steps. Short version: (1) collect the TabPFN and overlapping-cut forecasts from the GPU machine (`iterations/03-foundation-model/gpu-machine.md`); (2) write and run the FFORMA-style meta-learner (`iterations/05-meta-ensemble/plan.md`, `src/meta/fforma.py` not written yet); (3) decide the final recipe and let a person upload a few files; (4) finish `EXTRA-CREDIT.md`; (5) clean up the SSH key.
+**Read `HANDOVER.md` first**: it has the current state, the best recipe (live -4.8), the jobs in flight and the ordered next steps. Short version (updated 2026-11-21 later): (1) the overlapping-cut forecasts (5 models x 13 cuts) are collected in `iterations/03-foundation-model/forecasts_cuts/`; TabPFN full runs were still in progress, so (D36) score it when they finish (`score_all.py`, then `ensemble_eval.py`); (2) the FFORMA-style meta-learner is written and run (`src/meta/fforma.py`) - it did NOT clear the adoption bar, so the simple blend (D40) stands (see `iterations/05-meta-ensemble/log.md`); (3) the final recipe is unchanged and `submissions/ensemble_top3_blend_v1.csv` was rebuilt byte-identical - a person uploads a handful of meaningfully different files; (4) finish `EXTRA-CREDIT.md`; (5) clean up the SSH key.
 
 Status: iteration 00 complete; iteration 01 steps 1.1-1.2 done; step 1.3 (all shops x arms) is paused, not finished (see RESUME HERE above). Decisions to settle are in `decisions-to-make.md` (D30-D32 open). Nothing below is run until you approve it.
 

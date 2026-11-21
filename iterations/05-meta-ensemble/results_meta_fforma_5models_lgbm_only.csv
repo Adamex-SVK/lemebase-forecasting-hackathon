@@ -1,0 +1,5 @@
+test_offset_W,n_train_cuts,simple_weight,lgbm_alone,ensemble_alone,simple_blend,fforma,gain_fforma_minus_simple,fforma_val_epoch
+0,9,0.5,-4.04,-4.15,-3.96,-3.39,0.57,1500
+4,8,0.5,-2.81,-3.58,-2.51,-2.02,0.49,1500
+8,7,0.5,-12.75,-13.09,-11.97,-11.8,0.17,1500
+12,6,0.6,-22.35,-22.21,-21.21,-22.13,-0.91,1500

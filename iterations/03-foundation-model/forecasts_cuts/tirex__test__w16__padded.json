@@ -1,0 +1,1 @@
+{"model": "tirex", "shop": "test", "cut_index": 0, "context": "padded", "n_series": 2904, "n_sent_to_model": 2744, "load_seconds": 20.5, "forecast_seconds": 12.1}
