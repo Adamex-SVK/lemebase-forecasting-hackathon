@@ -10,8 +10,8 @@ Work is organised in iterations with every decision tracked.
 | File | What it is |
 |---|---|
 | `decisions-to-make.md` | Every decision: open, tested, decided, with evidence |
-| `next-steps.md` | Current state, what to resume, plan for the next iterations |
-| `process-rules.md`, `pipeline-architecture.md` | How we work, the pipeline stages |
+| `AGENTS.md` | Workflow rules and advisor-skill guidance |
+| `pipeline-architecture.md` | Pipeline stages and historical implementation roadmap |
 | `iterations/00-baselines` | Weekly tables, local metric (reproduces the organizers' published baselines), baselines |
 | `iterations/01-global-gbm` | Global LightGBM (L1 loss on units / MASE scale): own vs pooled vs others-only arms |
 | `iterations/02-robust-eval` | Rolling-origin evaluation (4 cuts), F6 (moving peak) investigation, quick experiments |
@@ -19,6 +19,14 @@ Work is organised in iterations with every decision tracked.
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
+
+## Maya's branch
+
+`Mayas-forecasting-workflow` is currently in planning. Agree on the shared data
+and validation contract before implementing the next model comparison. Preserve
+the existing LightGBM reference while considering other model families and
+cross-shop training. Historical iteration plans are context, not instructions
+to restart unfinished runs automatically.
 
 ## Status (night of 2026-11-21)
 Best live score so far: -7.6 (global LightGBM trained on all test-shop history); median of the last 13 weeks: -9.8;

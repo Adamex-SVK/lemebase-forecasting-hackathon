@@ -71,5 +71,5 @@ hackathlon/
   data/interim/  data/processed/
   src/                          prepare, features, validate, models, submit
   iterations/NN-name/
-  decisions-to-make.md  process-rules.md  pipeline-architecture.md
+  decisions-to-make.md  AGENTS.md  pipeline-architecture.md
 ```

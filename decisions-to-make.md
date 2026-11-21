@@ -62,7 +62,7 @@ The weekly zero rates are lower than the brief's daily ones because a week has s
 ## 3a-2. Open decision found in step 1.1
 - [ ] **D30. Shop weighting in the pooled arm.** Over all weeks the pooled data is about 7.9M rows, and Set D is 4.16M of them (53%); D is 96% zero targets and is the shop least like the test shop (long history, 65% zeros). Options: (a) every row weight 1 (D dominates); (b) equalise shops (each shop contributes the same total weight); (c) cap D (for example sample D's series to about 1M rows); (d) weight by similarity to the target shop. Rec.: (b) as the first run, compared with (a) in the same iteration; the comparison itself tells us whether D helps.
 
-## 3a-3. Open decisions prepared for the next steps (see `next-steps.md`)
+## 3a-3. Historical open decisions prepared for the next steps
 - [x] **D31. DECIDED 2026-11-21 (user: "whatever makes it faster"): option (b), window origins every 4 weeks for the other shops (the target shop's own windows keep step 2); Set D is not capped. The first attempt (origin step 2 everywhere) was stopped after the test shop's four arms and A's own arm; its partial results are kept in `iterations/01-global-gbm/results_1_3_partial_origin_step2.csv`. Speed of step 1.3.** The pooled arms train on 7-9M rows each; at 5+ minutes per arm the run could take 2+ hours. Options: (a) let it run; (b) restart with window origins every 4 weeks for the other shops (adjacent 2-week origins are highly redundant), halving the rows; (c) (b) plus capping Set D at about 1M rows. Rec.: check the first pooled arm's time, then (b) if it is over about 8 minutes. Changes the protocol slightly versus the own arm, so it would be logged.
 - [ ] **D32. Rolling-origin evaluation for model selection.** Score the test shop at 4 cuts (last 13, 26, 39, 52 weeks) instead of one, so a 2-point gain is not decided by one window. Rec.: yes, from iteration 02 (cheap: the own arm trains in about 35 s).
 
@@ -126,4 +126,4 @@ All on 2026-11-21 (decision gate 1 and the following round), unless noted. "Rec.
 ### Earlier decisions
 - **D18** Use all four techniques to pass rich-column knowledge into a model that only sees the 4 test-shop columns: (a) feature dropout, (b) teacher-student, (c) auxiliary tasks, (d) cleaning. Each is an experiment scored on the extra-credit comparison; order in D19.
 - **D23** Park generating more synthetic Set B data (a public generator may exist; not checked). Revisit only if B helps as a donor in the extra-credit experiment.
-- **Process** Work in iterations with decision gates: `process-rules.md`, `pipeline-architecture.md`, `iterations/00-baselines/plan.md`.
+- **Process** Work in iterations with decision gates: `AGENTS.md`, `pipeline-architecture.md`, `iterations/00-baselines/plan.md`.
