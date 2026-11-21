@@ -134,6 +134,7 @@ All on 2026-11-21 (decision gate 1 and the following round), unless noted. "Rec.
 - **D36 (applied, unconfirmed by the owner):** TabPFN-TS runs in LOCAL mode with the ungated v2 weights only; the hosted mode would send the shop's data to a third party and the 2.5+ weights need an account and licence acceptance by a person.
 - **D32 (de facto adopted):** the 4 rolling cuts are the standard yardstick (`TEAM-RULES.md`); overlapping cuts (every 4 weeks) are used only to train the meta-ensemble, with a purged protocol (iteration 05).
 - **D33:** tested, not adopted (about +0.0).
+- **D43 (DECIDED by Adamex-SVK, 2026-11-21): the rich-column path (iteration 04: shared rich schema B/C/D, rich features, feature dropout) is CLOSED, not adopted.** Evidence (4 rolling cuts of the test shop, 2 seeds, D26): own -15.49; pooled without rich -16.56; pooled with rich -16.29 (no dropout), -16.43 (50%), -16.34 (80%). Best rich arm is 0.80 below own data and wins 0 of 4 cuts; it recovers only +0.14 to +0.28 of the 1.07-point pooling loss (bar: +0.5 and 3 of 4 cuts). Cleaning, auxiliary tasks and teacher-student are not run (same pooled-data ceiling). Details: `iterations/04-rich-columns/notes_adamex-svk_dropout.md`.
 - Still open: **D34** (model licences), **D37** (meta-ensemble, iteration 05), the extra-credit write-up (`EXTRA-CREDIT.md`).
 
 ### Earlier decisions

@@ -72,7 +72,7 @@ def own_cut(df, seed):
     finally:
         g.PARAMS["seed"] = old
     fc = g.complete(g.to_long(res["M"], res["F"], res["weeks"]), res["hold"])
-    r = v.score(res["train"], res["hold"], fc)
+    r = v.score(res["train"], res["hold"], fc, detail=True)
     return r, int(res["best_iter"] * 1.1) + 1
 
 
@@ -88,7 +88,7 @@ def pooled_cut(df, seed, parts, rich, trees, step_test=2):
     del full
     F = g.forecast_matrix(model, M, weeks, rich=rich)
     fc = g.complete(g.to_long(M, F, weeks), hold)
-    r = v.score(train, hold, fc)
+    r = v.score(train, hold, fc, detail=True)
     del model
     return r, trees
 
@@ -112,6 +112,11 @@ def run(arms, seeds, cuts=range(N_CUTS), topic=None, smoke=False):
                 t0 = time.time()
                 df = truncate(full, k)
                 r, n_trees = own_cut(df, seed) if spec is None else pooled_cut(df, seed, parts, spec[0], trees)
+                detail = r.get("detail")
+                if detail is not None:
+                    detail_dir = OUT / "detail"
+                    detail_dir.mkdir(parents=True, exist_ok=True)
+                    detail.to_parquet(detail_dir / f"{arm}_cut{k}_seed{seed}.parquet")
                 row = {"arm": arm, "cut_index": k, "seed": seed, "score": r["score"], "n_scored": r["n_scored"],
                        "trees": n_trees, "seconds": round(time.time() - t0)}
                 rows = [x for x in rows if (x["arm"], x["cut_index"], x["seed"]) != (arm, k, seed)] + [row]

@@ -10,7 +10,7 @@ Claim a task by putting your handle in **Owner** and your branch in **Branch** (
 | Foundation models: TimesFM 2.5 | 03 | | | open | |
 | Foundation models: Moirai 1.x / MoE / 2.0 (needs its own environment) | 03 | | | open | licence cc-by-nc-4.0 (D34) |
 | Foundation models: TiRex | 03 | | | open | CUDA kernels need compute capability >= 8.0 |
-| Rich-column techniques (D18): feature dropout -> cleaning -> auxiliary tasks -> teacher-student | 04 | | | open | needs side tables joined (D7) |
+| Rich-column techniques (D18): feature dropout -> cleaning -> auxiliary tasks -> teacher-student | 04 | adamex-svk | it04/adamex-svk/rich-columns | done (closed, D43) | feature dropout tested, NOT adopted (best rich arm -0.80 vs own, 0/4 cuts); cleaning, auxiliary tasks and teacher-student not run; `iterations/04-rich-columns/notes_adamex-svk_dropout.md` |
 | LightGBM hyperparameter search on the 4 cuts | 02 | | | open | seed noise about 0.8 on one cut: use the mean over cuts |
 | Combine several robust level estimators (medians over different windows) | 02 | | | open | |
 | TabPFN-TS (local mode, v2 weights): smoke test, 4 cuts, blend test | 03 | | it03/adamex-svk/foundation-models | in progress | D36; environment being installed on the GPU machine |
