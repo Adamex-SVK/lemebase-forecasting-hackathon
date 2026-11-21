@@ -8,9 +8,6 @@ __pycache__/
 # local tool settings (never commit)
 .claude/
 
-# raw dataset: CC BY 4.0, download from Hugging Face (see README)
-hackathon-retail-sets/
-
 # regenerable outputs
 data/
 logs/

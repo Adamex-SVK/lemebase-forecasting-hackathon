@@ -1,0 +1,6 @@
+shop,source,additional_data_or_fields,training_use
+A,VN2 v1.0.1,Challenge costs and eight cumulative follow-on sales snapshots,All weekly sales already packaged; use existing series once
+B,Mancino 2025-11-01 synthetic,Customer and descriptive store/product data plus derived aggregates,Use packaged synthetic series once as donor
+C,Zenodo 19784493,Original meanings of encoded retail categories,Use packaged series once as donor
+D,Mendeley 27x8mjm8k4 v1,Product descriptions and original text categories,Use packaged series once as donor
+test,Pre-forecast transaction history,Transaction dates within 143 already matched sales weeks,Test two timing features on the pharmacy only
