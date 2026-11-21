@@ -1,48 +1,51 @@
-# LemeBase forecasting hackathon
+# LemeBase forecasting hackathon: final model
 
-Forecast weekly units sold per article, 13 weeks ahead, for a test shop (2,904 articles), using
-four training shops (Sets A-D) and the test shop's own history. Task, data and scoring are described at
-https://lemebase.com/hackathon (score = (1 - MASE) x 100, higher is better).
+Forecast weekly units sold per article, 13 weeks ahead, for a test shop (2,904 articles), using four training shops (Sets A-D) and the test shop's own history. Task and data: https://lemebase.com/hackathon. Score = (1 - MASE) x 100, higher is better.
 
-Work is organised in iterations with every decision tracked.
+## Final model (`final-model-v1`)
+**D40 ensemble + a Chronos-2 fine-tuned on sibling shops. Live score -4.5** (weeks 1-7; next-best known entry -5.4 when last seen).
 
-## Where to look
-| File | What it is |
+| Model | Live score |
 |---|---|
-| `decisions-to-make.md` | Every decision: open, tested, decided, with evidence |
-| `next-steps.md` | Current state, what to resume, plan for the next iterations |
-| `process-rules.md`, `pipeline-architecture.md` | How we work, the pipeline stages |
-| `iterations/00-baselines` | Weekly tables, local metric (reproduces the organizers' published baselines), baselines |
-| `iterations/01-global-gbm` | Global LightGBM (L1 loss on units / MASE scale): own vs pooled vs others-only arms |
-| `iterations/02-robust-eval` | Rolling-origin evaluation (4 cuts), F6 (moving peak) investigation, quick experiments |
-| `iterations/03-foundation-model` | Zero-shot foundation models (Chronos, TimesFM, Moirai, TiRex, TabPFN), GPU runbook, results, forecasts |
-| `iterations/04-rich-columns`, `iterations/05-meta-ensemble` | rich-column techniques (other session); FFORMA-style meta-ensemble |
-| `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
-| `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
-| `submissions/` | Submission CSVs (`article_id, w1..w13`) |
-| `HANDOVER.md` | **start here**: state, best recipe, jobs in flight, next steps |
-| `EXTRA-CREDIT.md` | draft answer to the brief's own-vs-pooled question |
-| `TEAM-RULES.md`, `WORK-BOARD.md`, `CLAUDE.md`, `scripts/check.sh` | How we cooperate: branches, one yardstick, claiming tasks, uploads, pre-PR checks, rules for AI assistants |
-| `submissions/UPLOADS.md` | Log of every leaderboard upload |
+| **Final: D40 + fine-tuned Chronos-2** | **-4.5** |
+| D40: 3 zero-shot foundation models + 30% LightGBM | -4.8 |
+| LightGBM alone | -7.6 |
+| Median of last 13 weeks | -9.8 |
+| AutoARIMA / Naive (organisers) | -33.7 / -64.5 |
 
-## Status (2026-11-21, afternoon)
-**Start with `HANDOVER.md`.** Best live score: **-4.8** (average of three zero-shot foundation models blended 30% with the global LightGBM, rounded); LightGBM alone -7.6, median of the last 13 weeks -9.8; live references: AutoARIMA -33.7, Naive -64.5. Local 4-cut evaluation tracks the live board well. In progress: TabPFN, overlapping cuts for a meta-ensemble (iteration 05); another session works on rich-column techniques (iteration 04).
-
-## Reproduce
+- **What it is, how to rebuild it, where it is weak:** [`MODEL.md`](MODEL.md).
+- **Submission file:** `submissions/ensemble_d40_plus_chronos2ft_v1.csv`.
+- **Rebuild, no GPU needed (byte-identical, sha256 checked):**
 ```bash
-# 1. data: download the dataset into ./hackathon-retail-sets (set-a ... set-d, test-shop)
-huggingface-cli download LemeBase/hackathon-retail-sets --repo-type dataset --local-dir hackathon-retail-sets
-# 2. environment (Python 3.13; scipy on Python 3.10 fails to load on macOS 27)
-python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
-# 3. pipeline
-.venv/bin/python src/prepare.py            # weekly tables -> data/interim
-.venv/bin/python tests/test_validate.py && .venv/bin/python tests/test_features.py
-.venv/bin/python src/baselines.py          # baselines on the local cuts
-.venv/bin/python src/train_gbm.py test     # LightGBM, own arm, test shop
-.venv/bin/python src/make_submission.py    # writes + validates a submission CSV
+.venv/bin/python src/build_best_model.py --skip-lgbm
 ```
+
+## How we got here
+Eleven iterations, every decision logged, every candidate judged on the same 4 rolling cuts. Combining different models is what worked; about thirty other ideas (neural nets, learned weights, rich columns, gating, tuning) did not clear the adoption bar.
+- [`iterations/README.md`](iterations/README.md): one line per iteration and where to read more
+- [`decisions-to-make.md`](decisions-to-make.md): every decision with evidence (the final model is D44)
+- [`submissions/UPLOADS.md`](submissions/UPLOADS.md): every leaderboard upload and its live score
+
+## Repository map
+| Path | Contents |
+|---|---|
+| `MODEL.md` | The final model card |
+| `src/` | Pipeline: `prepare.py`, `validate.py` (metric, cuts), `features.py`, `train_gbm.py`, `build_best_model.py`, `foundation/` (model adapters), `meta/`, `improve/` |
+| `tests/`, `scripts/check.sh` | Metric and feature tests (incl. a leakage test); pre-PR check |
+| `iterations/` | Plans, logs, results and notes of each iteration |
+| `submissions/` | Submission CSVs (`article_id, w1..w13`) |
+| `docs/` | Working documents from the hackathon (team rules, process, handover, extra-credit draft); archived |
+| `CLAUDE.md` | Rules for AI assistants working in this repo |
+
+## Reproduce from scratch
+```bash
+huggingface-cli download LemeBase/hackathon-retail-sets --repo-type dataset --local-dir hackathon-retail-sets
+python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
+.venv/bin/python src/prepare.py                       # weekly tables -> data/interim
+.venv/bin/python tests/test_validate.py && .venv/bin/python tests/test_features.py
+.venv/bin/python src/build_best_model.py              # LightGBM + ensemble, validates, checks the hash
+```
+Regenerating the foundation-model forecasts themselves needs a GPU; the committed ones are enough to rebuild.
 
 ## Data licence
 The datasets are CC BY 4.0 from several sources (see `ATTRIBUTION.md` in the dataset). They are not included here.
-
-**Best model:** see [`MODEL.md`](MODEL.md) (recipe, one-command rebuild, evidence, weaknesses).

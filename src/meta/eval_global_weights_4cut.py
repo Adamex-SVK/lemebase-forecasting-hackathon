@@ -6,7 +6,7 @@ The FFORMA meta-learner (src/meta/fforma.py) only learns near-global weights on 
 cuts. This script asks whether any of those global weightings beats the current recipe (D40: 0.30 *
 LightGBM + equal average of Moirai 2.0-small / TiRex / Chronos-T5-small, zero rule on the models,
 rounded) on the 4 standard cuts of iterations 01-03. Adoption needs >= +0.5 points on the mean AND
-better on >= 3 of 4 cuts (TEAM-RULES.md section 2); anything smaller is noise.
+better on >= 3 of 4 cuts (docs/TEAM-RULES.md section 2); anything smaller is noise.
 """
 import sys
 from pathlib import Path

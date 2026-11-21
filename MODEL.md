@@ -25,7 +25,7 @@ Local cuts differ by up to 45 points between months (Oct-Dec are the hardest), s
 .venv/bin/python src/build_best_model.py           # LightGBM + ensemble, validates, checks the hash
 .venv/bin/python src/build_best_model.py --skip-lgbm   # reuse submissions/lgbm_own_v1.csv
 ```
-Rebuilding reproduces `submissions/ensemble_d40_plus_chronos2ft_v1.csv` **byte for byte** (sha256 checked in the script; verified 2026-11-21). The final foundation-model forecasts are committed in `iterations/03-foundation-model/forecasts_final/`, so no GPU is needed to rebuild. Regenerating them needs the GPU machine (`GPU-ACCESS.md`, `iterations/03-foundation-model/gpu-machine.md`).
+Rebuilding reproduces `submissions/ensemble_d40_plus_chronos2ft_v1.csv` **byte for byte** (sha256 checked in the script; verified 2026-11-21). The final foundation-model forecasts are committed in `iterations/03-foundation-model/forecasts_final/`, so no GPU is needed to rebuild. Regenerating them needs the GPU machine (`iterations/03-foundation-model/gpu-machine.md`).
 
 ## Why this recipe (evidence)
 - **Combining different models is what worked**: LightGBM -7.6 and Moirai alone -7.3 live, the blend -4.8 (`iterations/03-foundation-model/`).

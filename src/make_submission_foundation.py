@@ -7,7 +7,7 @@ src/foundation/run_model.py --final on the GPU machine) and submissions/lgbm_own
 Recipe (validated on the 4 local cuts, see iterations/03-foundation-model/log.md):
     average the models' raw forecasts -> 0 for articles with no sale in the last 8 weeks of history -> optional blend
     with the LightGBM -> round to whole units -> clip at 0.
-Uploading is done by a person (TEAM-RULES.md section 6).
+Uploading is done by a person (docs/TEAM-RULES.md section 6).
 """
 import sys
 from pathlib import Path

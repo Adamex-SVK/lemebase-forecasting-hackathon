@@ -14,7 +14,7 @@ The blend is always:
 
 `evaluate` scores the fixed-weight blend on the same 4 rolling cuts used everywhere (D26/D32) and compares
 it with the current reference recipe (D40) on *those* cuts. Adoption needs >= +0.5 points on the mean AND
-better on >= 3 of 4 cuts (TEAM-RULES.md section 2); smaller differences are noise.
+better on >= 3 of 4 cuts (docs/TEAM-RULES.md section 2); smaller differences are noise.
 
 Inputs:
   * practice cuts  iterations/03-foundation-model/forecasts/{model}__test__cut{0..3}__padded.parquet
@@ -154,7 +154,7 @@ def cmd_build(args):
     print(f"wrote {out} and it passes the format checks")
     print(f"  models={models} lgbm_weight={args.lgbm_weight} context={args.context} | {len(ids)} articles | "
           f"mean forecast {F.mean():.2f} | {100 * (F.max(axis=1) == 0).mean():.1f}% forecast 0 every week")
-    print("  uploading is done by a person (TEAM-RULES.md section 6)")
+    print("  uploading is done by a person (docs/TEAM-RULES.md section 6)")
 
 
 def main():
