@@ -1,5 +1,7 @@
 # Process rules
 
+> Team setting: where this file says "the user", read "the collaborator who owns the decision". Any collaborator can be a decision owner; see `TEAM-RULES.md`.
+
 How we work. The user is in the middle of every decision; Claude and agents do the legwork and report evidence.
 
 ## 1. Who decides what

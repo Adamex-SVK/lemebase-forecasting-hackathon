@@ -6,7 +6,7 @@ How we work together on this repo. Short on purpose; the reasons are in `process
 1. **Everything runs locally and reproducibly.** Raw data is never committed; `python src/prepare.py` rebuilds the weekly tables in seconds. Seeds are fixed, versions are pinned in `requirements.txt`.
 2. **One yardstick.** Models are judged on the **4 rolling cuts** of the test shop with the D26 metric (`src/validate.py`, `src/rolling.py`), by the **mean over the 4 cuts**, the **cuts won**, and a **paired per-article interval** against a reference. A single cut or a single live score is not evidence (seed noise alone moved one cut by 0.8 points).
 3. **No leakage.** A feature at forecast origin `o` uses only weeks before `o`. Any new feature extends the leakage test in `tests/test_features.py`.
-4. **Decisions are visible.** Anything that changes what the data means, the splits, the metric, the features or the model family goes in `decisions-to-make.md` with evidence, options and a recommendation, and is settled by the decision owner (the repository owner unless the team agrees otherwise). Do not decide silently in code.
+4. **Decisions are visible.** Anything that changes what the data means, the splits, the metric, the features or the model family goes in `decisions-to-make.md` with evidence, options and a recommendation, and is settled by **any collaborator**, the decision owner for that item (usually whoever raised it or owns the task). Record who decided and when. Decisions that change the metric, the cuts or the final model choice are announced to the team before merging, so others can object. Do not decide silently in code.
 5. **Logs are append-only.** Add to `log.md`; never rewrite someone else's entry. Failures and negative results are logged like successes.
 
 ## 2. What counts as an improvement
@@ -18,7 +18,7 @@ Smaller differences are noise by our own measurements (seeds, blend weights, the
 
 ## 3. Git workflow
 - `main` always works: tests pass, results in the logs can be reproduced from the commit. Do not force-push `main`.
-- Work on a branch: `it<NN>/<your-handle>/<topic>` (for example `it03/ana/chronos-bolt-zero-shot`). Open a pull request; one teammate (or the decision owner) reviews. Doc-only and results-only PRs may be merged without review.
+- Work on a branch: `it<NN>/<your-handle>/<topic>` (for example `it03/ana/chronos-bolt-zero-shot`). Open a pull request; one other collaborator reviews. Doc-only and results-only PRs may be merged without review.
 - Commit small and often. Message format: `it03: Chronos-Bolt zero-shot on test shop, 4 cuts`. If an AI assistant helped, keep its `Co-Authored-By` trailer.
 - Before every PR: `bash scripts/check.sh` (tests) and a log entry. The PR template lists the rest.
 - Never commit: raw data, `.venv*/`, files over 5 MB, tokens, keys or passwords, personal data. `.gitignore` already covers data, environments and regenerable outputs.
@@ -45,7 +45,7 @@ Smaller differences are noise by our own measurements (seeds, blend weights, the
 ## 7. Environments and compute
 - Everyday work: Python 3.13 and `requirements.txt` (`.venv`). The scipy build for Python 3.10 does not load on macOS 27.
 - GPU work (iteration 03): one environment per model family with `env/setup_gpu.sh`; run `src/foundation/smoke.py` first. Record the machine, CUDA and package versions in your notes.
-- Model licences: Moirai weights (cc-by-nc-4.0), TimesFM 3.0 and TiRex have restrictions (D34). Using them in the final submission needs the decision owner's agreement.
+- Model licences: Moirai weights (cc-by-nc-4.0), TimesFM 3.0 and TiRex have restrictions (D34). Using them in the final submission must be recorded as a decision (D34) by a collaborator.
 
 ## 6b. Working with an AI assistant (Claude Code or similar)
 Point it at `CLAUDE.md`. It must follow the same rules: propose decisions with evidence and options and wait for the person's go; run the tests; never push to `main` directly unless you ask; never print or commit secrets.
