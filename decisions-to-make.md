@@ -10,6 +10,14 @@ windows, and save outer-cut predictions for independent comparison. Initial
 integration is own-shop/units-only; pooling, final model selection, and submission
 remain separate steps. See `iterations/06-autogluon/plan.md` and `log.md`.
 
+## Maya's branch: fixed XGBoost blend (2026-11-21)
+
+User requested local testing with 30% LightGBM and 10% XGBoost; announced and
+tested 60% foundation average / 30% LightGBM / 10% XGBoost. Fixed settings and
+four existing historical cuts; no weight search. Candidate mean -13.8501 versus
+incumbent -13.6659; worse on 4/4 cuts. No promotion or submission change.
+Evidence and limits: `iterations/08-xgboost-blend/log.md`.
+
 ## 1. Task facts (from the brief, not decisions)
 - We submit ONE forecast: the **test shop**, 2,904 articles x 13 weeks (w1 = Mon 2023-04-24 ... w13 = Mon 2023-07-17), as a CSV `article_id, w1..w13`.
 - Target = **units** (pieces), not money. The test shop has no price column.

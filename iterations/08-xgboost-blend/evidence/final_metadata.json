@@ -1,0 +1,42 @@
+{
+  "recipe": "0.6*mean(FM after 8-week zero rule)+0.3*LGBM+0.1*XGB; round once then clip",
+  "params": {
+    "objective": "reg:absoluteerror",
+    "eval_metric": "mae",
+    "tree_method": "hist",
+    "device": "cpu",
+    "max_depth": 5,
+    "min_child_weight": 50,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "max_bin": 128,
+    "seed": 0,
+    "nthread": 2
+  },
+  "rounds": 366,
+  "rounds_source": "cut 0 historical early-stopping/refit count",
+  "train_end": "2023-04-17",
+  "train_weeks": 143,
+  "train_rows": 1877824,
+  "forecast_start": "2023-04-24",
+  "forecast_end": "2023-07-17",
+  "foundation_source": "71b82f33f0fe5647a13d3786cd17d11b4c4e5493",
+  "forecast_source_sha256": {
+    "iterations/03-foundation-model/forecasts_final/moirai-2.0-small__test__final__padded.parquet": "e8008dfeaea4d175de4af389041d9b4a7b4ca775eaffaf6d15a11f95367258c6",
+    "iterations/03-foundation-model/forecasts_final/tirex__test__final__padded.parquet": "390dd09e67c41359f10ba109b5229c9cb07d2481b7e463ccf4ada15a6ab1856c",
+    "iterations/03-foundation-model/forecasts_final/chronos-t5-small__test__final__padded.parquet": "796a6e2bbf5d02e470f6b58cad9d010c203468570c4a1da5b7cd7944367d4ddb"
+  },
+  "xgboost": "3.3.0",
+  "input_sha256": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33",
+  "lgbm_sha256": "2ba0a899d6775794127403d8601189f5294ae0d5a77fe6dfaa9f336c829bd3af",
+  "incumbent_sha256": "af2d49198248e54f4fe5b175484f019fb9c4b22ec1f0b6f916d344f01bfb5639",
+  "builder_sha256": "47c24023f411d6cd14b03d81f9b5b4be65a8be0a29947ebf709bc56fc9dd036b",
+  "output": "submissions/ensemble_top3_lgbm30_xgb10_v1.csv",
+  "output_sha256": "a1a717b667933a269d33e66428167ae1b4e1c678946144bac4e29bbe114fcafa",
+  "n_products": 2904,
+  "changed_products": 636,
+  "mean_absolute_change": 0.101716465352829,
+  "warning": "User-requested experimental submission; historical mean -13.85 vs incumbent -13.67; not uploaded."
+}

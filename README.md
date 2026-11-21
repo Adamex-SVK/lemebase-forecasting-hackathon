@@ -19,6 +19,7 @@ Work is organised in iterations with every decision tracked.
 | `iterations/05-data-evaluation` | Reproducible raw/prepared data audit and findings |
 | `iterations/06-autogluon` | Optional AutoGluon challenger setup, evaluation commands, and integration evidence |
 | `iterations/07-ensemble-review` | Reproduced winning ensemble, component removals, and blend-weight checks |
+| `iterations/08-xgboost-blend` | Fixed 60/30/10 foundation/LightGBM/XGBoost test; no improvement over incumbent |
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
