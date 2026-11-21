@@ -1,0 +1,14 @@
+variant,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won
+chronos-2 zero-shot alone,-9.54,-35.07,-21.52,-25.7,-22.96,-9.29,0
+[ft_s300_lr5e-5] fine-tuned chronos-2 alone,-3.59,-29.19,-11.93,-14.61,-14.83,-1.17,1
+[ft_s300_lr5e-5] D40 with it as 4th member,-3.77,-26.19,-11.15,-14.11,-13.8,-0.14,0
+[ft_s300_lr5e-5] D40 with chronos-t5-small replaced,-3.57,-26.68,-11.22,-14.14,-13.9,-0.24,1
+[ft_s1000_lr1e-5] fine-tuned chronos-2 alone,-3.43,-26.81,-13.12,-13.81,-14.29,-0.63,2
+[ft_s1000_lr1e-5] D40 with it as 4th member,-3.71,-25.84,-11.19,-13.92,-13.67,-0.0,3
+[ft_s1000_lr1e-5] D40 with chronos-t5-small replaced,-3.68,-26.11,-11.34,-13.63,-13.69,-0.03,2
+[ft_s1000_lr5e-5] fine-tuned chronos-2 alone,-3.59,-27.32,-11.79,-14.56,-14.32,-0.65,1
+[ft_s1000_lr5e-5] D40 with it as 4th member,-3.84,-25.87,-10.99,-14.12,-13.7,-0.04,2
+[ft_s1000_lr5e-5] D40 with chronos-t5-small replaced,-3.71,-26.37,-11.23,-14.16,-13.87,-0.2,1
+[ft_s3000_lr5e-5_n5000] fine-tuned chronos-2 alone,-4.05,-27.47,-12.14,-14.62,-14.57,-0.9,0
+[ft_s3000_lr5e-5_n5000] D40 with it as 4th member,-3.91,-25.91,-11.15,-14.23,-13.8,-0.13,1
+[ft_s3000_lr5e-5_n5000] D40 with chronos-t5-small replaced,-3.86,-26.46,-11.83,-14.18,-14.08,-0.42,0
