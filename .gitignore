@@ -20,3 +20,10 @@ iterations/03-foundation-model/forecasts/
 iterations/01-global-gbm/forecasts_test_own_plain.parquet
 iterations/06-autogluon/runs/
 iterations/08-xgboost-blend/runs/
+iterations/10-benchmark-diagnosis/results/details/
+
+# Phase 2 local model binaries and historical forecast arrays
+iterations/11-activation-features/results/runs/
+
+# Recency experiment local model binaries and forecast arrays
+iterations/13-recency-weighting/results/runs/

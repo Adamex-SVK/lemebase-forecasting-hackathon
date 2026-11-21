@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "phase": "phase_1_contract_for_next_experiment",
+  "metric": "Existing D26 MASE, series-level, adjacent-week full-history scale, existing leading-zero padding; constant histories excluded and counted",
+  "horizon_weeks": 13,
+  "primary_development_offsets": [0, 13, 26, 39],
+  "primary_score_aggregation": "Equal mean over the original four periods; paired candidate versus incumbent within each period",
+  "purged_forward_check_offsets": [0, 16, 32],
+  "label_window_purge_weeks": 13,
+  "meta_training_rule": "Training/calibration label window at offset W must satisfy W >= test_offset + 13; fit hyperparameters only inside these earlier windows",
+  "overlapping_window_policy": "Additional offsets 0,4,...,48 are development data, not independent samples. Forward check targets are nonoverlapping, but these historical periods were used by other workstreams.",
+  "original_forecasts_commit": "71b82f33f0fe5647a13d3786cd17d11b4c4e5493",
+  "additional_forecasts_commit": "5592b3593c794dd21b441b0fdd564eea90f78248",
+  "forecast_version_policy": "Use original source on four primary periods. Use additional source on additional periods, comparing candidate against a baseline recomposed from exactly those same files. Never substitute regenerated Chronos predictions for the pinned incumbent.",
+  "closed_older_stress_offsets": [65],
+  "older_stress_policy": "Do not score until candidate settings are frozen. Required base forecasts are missing. This older period is a backward regime stress check, not untouched prospective future confirmation.",
+  "excluded_confirmation_offsets": {"52": "Overlaps already examined offset-48 target weeks", "78": "Current own-shop early-stopping recipe has only one purged training origin; weak temporal training coverage"},
+  "untouched_forward_confirmation_available": false,
+  "candidate_budget": "One prespecified feature-group ablation first, same original ensemble weights and processing; no broad search or outer-fold weight tuning",
+  "promotion_review": {"minimum_primary_mean_gain_score_points": 0.5, "minimum_primary_periods_improved": 3, "total_primary_periods": 4, "late_horizon_guardrail": "Report weeks 8-13 separately and require no mean regression versus matched incumbent", "independent_validation_claim": "Not permitted from reused periods; require new outcomes or explicit independent data", "automatic_submission": false},
+  "group_guardrails": "Report recent activations, rare sellers, inactive products, and stock states. Error-based product IDs are diagnostics only, never hand-picked correction rules.",
+  "cross_shop_policy": "No generalization claim until evaluated on A-D with feasible time cuts and shop-held-out model selection. D must report constant-history exclusions and scored unit coverage."
+}

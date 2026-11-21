@@ -18,6 +18,53 @@ four existing historical cuts; no weight search. Candidate mean -13.8501 versus
 incumbent -13.6659; worse on 4/4 cuts. No promotion or submission change.
 Evidence and limits: `iterations/08-xgboost-blend/log.md`.
 
+## Maya's branch: phase-1 diagnosis checkpoint (2026-11-21)
+
+Phase-1 checkpoint (2026-11-21): benchmark retained; validation contract recorded
+in `VALIDATION.md` and `iterations/10-benchmark-diagnosis/validation.json`.
+Recent observed activation is the prioritized hypothesis for the next experiment:
+within-activation sale frequency and conditional positive-sale size features for
+LightGBM, with all other ensemble settings fixed. This is a proposal, not a
+trained/promoted change. Details: `iterations/10-benchmark-diagnosis/log.md`.
+
+## Maya's branch: phase-2 activation experiment (2026-11-21)
+
+User authorized implementation of Phase 2. Test exactly two activation-aware
+features with seed 0 and unchanged original LightGBM training settings. Keep
+the foundation forecasts, 70/30 blend, zero rule and rounding fixed. Run an
+otherwise identical retrained control to measure environment drift. Use primary
+offsets 0,13,26,39 and supplementary checks 0,16,32 under the Phase-1 contract.
+No outer-fold tuning, pooling, weight changes or final submission generation.
+Evidence: `iterations/11-activation-features/plan.md` and append-only `log.md`.
+
+Completed: primary score -13.665947 -> -13.618359 (+0.047588), wins 2/4,
+late-horizon gain +0.057022. Both additional offsets (16 and 32) regress.
+All six retrained controls exactly match saved forecasts. Candidate fails
+the prespecified promotion threshold; retain incumbent. No Phase 3 started.
+
+## Maya's branch: phase-3 learned global blend (2026-11-21)
+
+Rejected: purged global learned weights scored -14.3972 versus incumbent
+-13.6659 (-0.7312); all three fitted primary periods and both additional checks
+regressed. Oldest period used an unchanged fallback. User requested removing
+the unsuccessful changes. Challenger code, tests and full evidence were moved
+to ignored local `logs/archived-12-learned-blend/`; they are excluded from GitHub.
+Keep the fixed 70/30 ensemble and original submission unchanged.
+
+## Maya's branch: modest recency weighting (2026-11-21)
+
+User authorized one fixed training-recency test. Use 104-week half-life on window
+origins; normalize to preserve original total training weight. Validation stays
+uniform; original features, loss, seed, parameters, purged stopping, 70/30 blend,
+foundation forecasts and rounding remain unchanged. No half-life search.
+Senior engineer skill was not found in local/repo/plugin skills; consulted the
+available senior-data-scientist skill instead. Original champion remains active.
+
+Completed: primary mean -13.665947 -> -13.630297 (+0.035650), only 2/4 wins.
+Additional offset 16 improves, offset 32 regresses. Fails promotion thresholds;
+do not apply recency weighting to the main model or submission. Reproducible
+isolated experiment and evidence: `iterations/13-recency-weighting/`.
+
 ## 1. Task facts (from the brief, not decisions)
 - We submit ONE forecast: the **test shop**, 2,904 articles x 13 weeks (w1 = Mon 2023-04-24 ... w13 = Mon 2023-07-17), as a CSV `article_id, w1..w13`.
 - Target = **units** (pieces), not money. The test shop has no price column.

@@ -1,0 +1,6 @@
+model,max_abs_difference,mean_abs_difference
+moirai-2.0-small,0.0,0.0
+tirex,0.0,0.0
+chronos-t5-small,194.16900634765625,1.5015747285488241
+lgbm,0.0,0.0
+whole_recipe,46.0,0.3442731510913329

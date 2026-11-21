@@ -1,0 +1,120 @@
+{
+  "input_sha256": {
+    "submission": "af2d49198248e54f4fe5b175484f019fb9c4b22ec1f0b6f916d344f01bfb5639",
+    "data": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33"
+  },
+  "source_sha256": {
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut0__padded.parquet": "9e09e08f22eb5b124f2cff85de125d2adb3fa81bad67f07f04d20732999f1f04",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/tirex__test__cut0__padded.parquet": "8bd6919eade69e221aa0e1de47c4ddb642399e77306a86705685bfbea6644775",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut0__padded.parquet": "acccb9be349792e7df55456eb6726e9af2099a39cdf8a77159969e48c93a7cee",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/02-robust-eval/forecasts/base_cut0_seed0.npy": "6e795dddd310678602da6a904167182cbb79eeb6447f95f6139e742a2028ab5f",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut1__padded.parquet": "f0972f20cb3695c61eac6739ff0ecb377be8a24334f8d7bdcd153e7f1587acf0",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/tirex__test__cut1__padded.parquet": "77ebf1187a028e428faee546987f99e89657297c9b741662c1b085a8e45dba33",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut1__padded.parquet": "9a4d3e568b6fd3d262b88357bb0782c2626696de0a308e195d061eec2c0b8c50",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/02-robust-eval/forecasts/base_cut1_seed0.npy": "81c3090cb2be46178c8fa8c4cee7f98a40fbb93d4b95ccaff191cbf8dfd3f539",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut2__padded.parquet": "09fd1c07bef8bac156d647ac2b7dc508185495d358cab8ae93ccf25b0817f089",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/tirex__test__cut2__padded.parquet": "b286f90489f6be58e1182c5e31ca30e2ccc86b6d2b63359058551debe47691a1",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut2__padded.parquet": "0938a79ae738b0f54549edcaf4baf555c6d1c24299e1a2cd091f87a031ebb38a",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/02-robust-eval/forecasts/base_cut2_seed0.npy": "cd64d3264664d25e6e32933fe9b9d73aa1ad0805b07003ee35b7e43ba3efa247",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut3__padded.parquet": "74952d50196150e865051425152ef3d10a036268dd7511965fb945a120482302",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/tirex__test__cut3__padded.parquet": "77952cda70b5fa02d3984d9c876d883d291a62cb7068e6608e17e8031101987f",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut3__padded.parquet": "140308fcd91fa6839d4059d8b06e62d51b4552c810c660a4cb5230300eaf0a0c",
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493:iterations/02-robust-eval/forecasts/base_cut3_seed0.npy": "49aad1d5b7d976e2d9f57226dfc3816393094e2424928fa2dbd7ab926463d2e3",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/03-foundation-model/forecasts_cuts/moirai-2.0-small__test__w16__padded.parquet": "713ee008a4345ce550c5679d3bf310a3a9d44815c86e5b954e9bc6555506a716",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/03-foundation-model/forecasts_cuts/tirex__test__w16__padded.parquet": "f24d2524f50929e48e767ccdca930d5436e960c971209d53731efedc234e8d29",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/03-foundation-model/forecasts_cuts/chronos-t5-small__test__w16__padded.parquet": "a701b4d2378f396e7efe064a9a963874bf7e2190f8519a39c9aa3c7597771935",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/05-meta-ensemble/base_forecasts/lgbm_w16.npy": "d4e27b1493350acf596d802b3db5713adf012234a7dd978480c8b86e00998a19",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/03-foundation-model/forecasts_cuts/moirai-2.0-small__test__w32__padded.parquet": "45d76d26796b51ced36a3c1016ccd4a4b3692976499d5d696b234cca8625a783",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/03-foundation-model/forecasts_cuts/tirex__test__w32__padded.parquet": "686fb02f48db107d5817a6bcd1d703a50b85bf7ee4cd3d54574347fae1d1b71b",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/03-foundation-model/forecasts_cuts/chronos-t5-small__test__w32__padded.parquet": "02307a8bf9634a4e6812c2af00cad468026490c65d368c305e5563289775351b",
+    "5592b3593c794dd21b441b0fdd564eea90f78248:iterations/05-meta-ensemble/base_forecasts/lgbm_w32.npy": "da1ac8ca79c693190461f7b725bda8cb1b381a5fe27c7bd35c8aa3eb76a18cd3"
+  },
+  "validation_contract": {
+    "version": 1,
+    "phase": "phase_1_contract_for_next_experiment",
+    "metric": "Existing D26 MASE, series-level, adjacent-week full-history scale, existing leading-zero padding; constant histories excluded and counted",
+    "horizon_weeks": 13,
+    "primary_development_offsets": [
+      0,
+      13,
+      26,
+      39
+    ],
+    "primary_score_aggregation": "Equal mean over the original four periods; paired candidate versus incumbent within each period",
+    "purged_forward_check_offsets": [
+      0,
+      16,
+      32
+    ],
+    "label_window_purge_weeks": 13,
+    "meta_training_rule": "Training/calibration label window at offset W must satisfy W >= test_offset + 13; fit hyperparameters only inside these earlier windows",
+    "overlapping_window_policy": "Additional offsets 0,4,...,48 are development data, not independent samples. Forward check targets are nonoverlapping, but these historical periods were used by other workstreams.",
+    "original_forecasts_commit": "71b82f33f0fe5647a13d3786cd17d11b4c4e5493",
+    "additional_forecasts_commit": "5592b3593c794dd21b441b0fdd564eea90f78248",
+    "forecast_version_policy": "Use original source on four primary periods. Use additional source on additional periods, comparing candidate against a baseline recomposed from exactly those same files. Never substitute regenerated Chronos predictions for the pinned incumbent.",
+    "closed_older_stress_offsets": [
+      65
+    ],
+    "older_stress_policy": "Do not score until candidate settings are frozen. Required base forecasts are missing. This older period is a backward regime stress check, not untouched prospective future confirmation.",
+    "excluded_confirmation_offsets": {
+      "52": "Overlaps already examined offset-48 target weeks",
+      "78": "Current own-shop early-stopping recipe has only one purged training origin; weak temporal training coverage"
+    },
+    "untouched_forward_confirmation_available": false,
+    "candidate_budget": "One prespecified feature-group ablation first, same original ensemble weights and processing; no broad search or outer-fold weight tuning",
+    "promotion_review": {
+      "minimum_primary_mean_gain_score_points": 0.5,
+      "minimum_primary_periods_improved": 3,
+      "total_primary_periods": 4,
+      "late_horizon_guardrail": "Report weeks 8-13 separately and require no mean regression versus matched incumbent",
+      "independent_validation_claim": "Not permitted from reused periods; require new outcomes or explicit independent data",
+      "automatic_submission": false
+    },
+    "group_guardrails": "Report recent activations, rare sellers, inactive products, and stock states. Error-based product IDs are diagnostics only, never hand-picked correction rules.",
+    "cross_shop_policy": "No generalization claim until evaluated on A-D with feasible time cuts and shop-held-out model selection. D must report constant-history exclusions and scored unit coverage."
+  },
+  "half_life_weeks": 104.0,
+  "validation_weights": "uniform; original metric",
+  "training_weights": "origin exponential decay normalized to preserve base weight sum",
+  "experiment_budget": "one fixed setting; no outer tuning",
+  "params": {
+    "objective": "l1",
+    "learning_rate": 0.05,
+    "num_leaves": 63,
+    "min_data_in_leaf": 200,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "lambda_l2": 1.0,
+    "verbose": -1,
+    "seed": 0,
+    "num_threads": 8
+  },
+  "python": "3.12.4",
+  "lightgbm": "4.7.0",
+  "numpy": "2.5.5",
+  "pandas": "2.3.3",
+  "offsets": [
+    0,
+    13,
+    26,
+    39,
+    16,
+    32
+  ],
+  "primary_gain": 0.03564976351736071,
+  "primary_wins": 2,
+  "late_gain": 0.021709139368430996,
+  "additional_checks_consistent": false,
+  "promotion_review_pass": false,
+  "independent_confirmation": false,
+  "cross_shop_evaluation": false,
+  "submission_changed": false,
+  "code_sha256": {
+    "run.py": "83f046819e1aad5f449084b02c4c67ae80e4330895747cb421d86f0b3a3b9fdf",
+    "recency.py": "a75a817d09e13320db6193a5e5535cd52aca6c2013a8349d277644823c1742da",
+    "features.py": "77c00bcd550541c571683ffbe33f980f0943f124a908b207f508d939eaaf5963",
+    "train_gbm.py": "89b8e4790fc77f10b18ca064a769995dd8b605e04e1db943f81c7723bf69c8dd",
+    "validate.py": "0bc5f162e09324c45c03586b6cfb1d6f1c42fafe367dd6875f64071c6eb54921"
+  }
+}

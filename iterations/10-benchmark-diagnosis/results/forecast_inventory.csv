@@ -1,0 +1,17 @@
+offset,source_commit,moirai-2.0-small,tirex,chronos-t5-small,lgbm,complete,holdout_start,holdout_end,train_weeks,role
+0,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2023-01-23,2023-04-17,130,additional_development
+4,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-12-26,2023-03-20,126,additional_development
+8,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-11-28,2023-02-20,122,additional_development
+12,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-10-31,2023-01-23,118,additional_development
+16,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-10-03,2022-12-26,114,additional_development
+20,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-09-05,2022-11-28,110,additional_development
+24,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-08-08,2022-10-31,106,additional_development
+28,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-07-11,2022-10-03,102,additional_development
+32,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-06-13,2022-09-05,98,additional_development
+36,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-05-16,2022-08-08,94,additional_development
+40,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-04-18,2022-07-11,90,additional_development
+44,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-03-21,2022-06-13,86,additional_development
+48,5592b3593c794dd21b441b0fdd564eea90f78248,True,True,True,True,True,2022-02-21,2022-05-16,82,additional_development
+52,5592b3593c794dd21b441b0fdd564eea90f78248,False,False,False,False,False,2022-01-24,2022-04-18,78,missing_future_stress_input
+65,5592b3593c794dd21b441b0fdd564eea90f78248,False,False,False,False,False,2021-10-25,2022-01-17,65,missing_future_stress_input
+78,5592b3593c794dd21b441b0fdd564eea90f78248,False,False,False,False,False,2021-07-26,2021-10-18,52,missing_future_stress_input

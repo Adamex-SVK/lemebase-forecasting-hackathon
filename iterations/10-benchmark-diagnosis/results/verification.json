@@ -1,0 +1,11 @@
+{
+  "metric_parity_windows": 16,
+  "original_benchmark_scores_match": true,
+  "original_benchmark_mean": -13.66594696689804,
+  "group_and_error_decomposition_assertions": "passed inside diagnose.py",
+  "history_and_purge_tests": 3,
+  "purged_forward_pairs": 15,
+  "validation_contract_sha256": "ee3a10c6065575c770d40f3d9145f7f5ad689974ea244296960ce1cf3f9332ab",
+  "protocol_checker_sha256": "1cfec3858a22e2e651bba5222fa885cd816592843ae5571cff03d172d716fbcf",
+  "diagnostic_plot_visually_inspected": true
+}

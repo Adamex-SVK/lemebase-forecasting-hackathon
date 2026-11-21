@@ -20,6 +20,10 @@ Work is organised in iterations with every decision tracked.
 | `iterations/06-autogluon` | Optional AutoGluon challenger setup, evaluation commands, and integration evidence |
 | `iterations/07-ensemble-review` | Reproduced winning ensemble, component removals, and blend-weight checks |
 | `iterations/08-xgboost-blend` | Fixed 60/30/10 foundation/LightGBM/XGBoost test; no improvement over incumbent |
+| `iterations/10-benchmark-diagnosis` | Phase-1 ensemble error diagnosis, additional forecast inventory, and next hypothesis |
+| `iterations/11-activation-features` | Phase-2 controlled activation-feature ablation, paired retraining and historical checks |
+| `iterations/13-recency-weighting` | Isolated fixed 104-week training-decay test; improvement too small/inconsistent to adopt |
+| `VALIDATION.md` | Frozen benchmark and temporal validation contract for subsequent experiments |
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
@@ -40,6 +44,11 @@ from commit `71b82f3`. Historical reconstruction and comparisons are in
 `iterations/07-ensemble-review/log.md`. Earlier LightGBM score: -7.6; median13:
 -9.8; live references: AutoARIMA -33.7, Naive -64.5. Public and historical
 scores cover different periods and must not be compared directly.
+
+Phase 2 activation-feature ablation completed: historical mean -13.6184 versus
+incumbent -13.6659, only 2/4 periods improved and both additional periods regressed.
+It fails the promotion threshold; the champion remains unchanged. Reproduction,
+paired controls and evidence: `iterations/11-activation-features/plan.md` and `log.md`.
 
 ## Reproduce
 ```bash
