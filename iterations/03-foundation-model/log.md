@@ -42,3 +42,18 @@ Append-only.
 - Reading: zero-shot TimesFM 2.5 and Chronos-2 are usable but 5-8 points behind the median on average; the Bolt models are about 40 points behind. A likely cause is the zero-heavy data (the metric punishes any non-zero forecast for an article that truly sells 0, because its scale is tiny); two cheap post-processing variants were added to test this: rounding to whole units, and 0 for articles with no sale in the last 8 weeks (`score_all.py`, columns `post`). The main hope for these models is as blend members with the LightGBM (`src/foundation/blend_eval.py`, same protocol as iteration 02: weight chosen on cuts 1-3).
 - Plumbing check (laptop, dummy model): `blend_eval.py` reproduces the iteration 02 blend of LightGBM and median13 exactly (-4.96, -28.79, -12.53, -15.46; mean -15.44).
 - Environment notes: Chronos and TimesFM environments work with the machine's torch 2.5.1 (see the entry above); TiRex and Moirai environments not yet created.
+
+## 2026-11-21: post-processing results; rounding also helps the LightGBM; SSH access set up
+- **Post-processing of the zero-shot forecasts (mean over the 4 test-shop cuts, D26):**
+
+  | model | raw | zero8 | round | round + zero8 |
+  |---|---|---|---|---|
+  | timesfm-2.5 | -21.36 | -21.07 | -18.81 | **-18.73** |
+  | chronos-2 | -24.42 | -24.03 | -23.06 | **-22.96** |
+  | chronos-bolt-base | -59.09 | -58.29 | -56.56 | -56.46 |
+  | chronos-bolt-small | -59.67 | -58.50 | -56.98 | -56.79 |
+
+  (median13 -16.54, LightGBM -15.52.) Rounding to whole units is the useful part (+2.5 for TimesFM, +1.4 for Chronos-2); the zero rule adds about 0.1 on top. The Bolt models stay about 40 points behind, so rounding is not what is wrong with them. Best zero-shot model so far: TimesFM 2.5 with round + zero8, about 2.2 points behind the median, 3.2 behind the LightGBM.
+- **Rounding applied to our own LightGBM forecasts (saved 4-cut forecasts, mean over cuts):** raw -15.52, **rounded -15.12** (+0.4, better on 4 of 4 cuts), `floor(x + 0.4)` -15.22, `floor(x + 0.3)` -15.36, rounded and blended 70/30 with the median -14.92 (+0.6, 4 of 4). The D33 variant behaves the same (raw -15.51, rounded -15.18). Rounding is principled for this metric (the best constant forecast of integer counts is an integer) and is a candidate for the next submission file; the blend with the median did NOT help on the live board before (v2, -8.4), so rounding alone is the cleaner test.
+- **Chronos-T5-small** ran out of GPU memory (2.56 GiB allocation on a 24 GB card) because 1,024 series were processed per batch and T5-Chronos samples many paths per series. Fix: `chunk=48` in its spec (`src/foundation/models.py`, environment override `FM_CHUNK`).
+- **SSH:** a dedicated key (`~/.ssh/hackathon_gpu`, no passphrase) was created on the laptop and its public key was added to the GPU machine's `authorized_keys` by the user; `cloudflared` was installed with Homebrew. The assistant connects with the key only (password authentication disabled in every command). The host name is not recorded in the repo. **When the work is done: delete the last line of `~/.ssh/authorized_keys` on the GPU machine.**

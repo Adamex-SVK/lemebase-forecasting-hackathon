@@ -16,14 +16,16 @@ Model packages are imported lazily inside each function, so this file imports wi
 Licences (check before any use beyond the hackathon): Chronos Apache-2.0; TimesFM 2.0/2.5 Apache-2.0,
 TimesFM 3.0 weights non-commercial; Moirai models cc-by-nc-4.0 (non-commercial, research); TiRex NXAI community licence.
 """
+import os
+
 import numpy as np
 import pandas as pd
 
 SPECS = {
     # Chronos 1.0 (T5 tokenised), Chronos-Bolt, Chronos-2          package: chronos-forecasting
-    "chronos-t5-small": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-small"),
-    "chronos-t5-base": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-base"),
-    "chronos-t5-large": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-large"),
+    "chronos-t5-small": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-small", chunk=48),
+    "chronos-t5-base": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-base", chunk=48),
+    "chronos-t5-large": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-large", chunk=48),
     "chronos-bolt-small": dict(family="chronos", kind="bolt", hf="amazon/chronos-bolt-small"),
     "chronos-bolt-base": dict(family="chronos", kind="bolt", hf="amazon/chronos-bolt-base"),
     "chronos-2": dict(family="chronos", kind="c2", hf="amazon/chronos-2"),
@@ -53,7 +55,8 @@ def load(name, device="cuda"):
 def forecast(name, handle, contexts, horizon, end_week):
     spec = SPECS[name]
     out = np.zeros((len(contexts), horizon))
-    step = CHUNK[spec["family"]]
+    # series per batch; T5 Chronos samples many paths per series and ran out of GPU memory at 1024 (24 GB card)
+    step = int(os.environ.get("FM_CHUNK", spec.get("chunk", CHUNK[spec["family"]])))
     for i in range(0, len(contexts), step):
         out[i:i + step] = _FORECASTERS[spec["family"]](spec, handle, contexts[i:i + step], horizon, end_week)
     return np.clip(np.nan_to_num(out, nan=0.0), 0.0, None)
