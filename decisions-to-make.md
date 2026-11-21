@@ -140,3 +140,21 @@ All on 2026-11-21 (decision gate 1 and the following round), unless noted. "Rec.
 - **D18** Use all four techniques to pass rich-column knowledge into a model that only sees the 4 test-shop columns: (a) feature dropout, (b) teacher-student, (c) auxiliary tasks, (d) cleaning. Each is an experiment scored on the extra-credit comparison; order in D19.
 - **D23** Park generating more synthetic Set B data (a public generator may exist; not checked). Revisit only if B helps as a donor in the extra-credit experiment.
 - **Process** Work in iterations with decision gates: `process-rules.md`, `pipeline-architecture.md`, `iterations/00-baselines/plan.md`.
+
+### Iteration 08 (improvements) - 2026-11-21, owner `adamex-svk`
+- **D41. DECIDED 2026-11-21 (T0 integration, owner `adamex-svk`): keep D40 unchanged.** Ten improvement tasks (T1-T10) were run against D40 (local 4-cut mean **-13.67**: -3.72 / -25.91 / -11.01 / -14.02). **None passed the adoption bar** (mean gain >= +0.5 AND better on >= 3 of 4 cuts); the best task was +0.08 (T3 trimmed mean). Per-task results of record (each branch holds its own results CSV and notes under `iterations/08-improvements/<task>/`):
+
+  | Task | Branch / commit | Best result vs D40 | Verdict |
+  |---|---|---|---|
+  | T1 intermittent-demand classics | `it08/adamex-svk/t1` (f55b44d) | best blend -14.10 | REJECT |
+  | T2 post-processing tuning | `it08/adamex-svk/t2` (83ab4a6, 63ed403) | D40 optimal; zero-rule W=4 +0.03 | REJECT |
+  | T3 robust combination | `it08/adamex-svk/t3` (92c6461) | trimmed mean +0.08 | REJECT |
+  | T4 flatten forecasts | `it08/adamex-svk/t4` (bc9d35e) | all variants lose every cut | REJECT |
+  | T5 TabPFN-TS in the ensemble | `it08/adamex-svk/t5` (ae8aaa8) | no forecasts produced | BLOCKED |
+  | T6 quantile / sample-count variants | `it08/adamex-svk/t6` (e1901c6) | best chronos-q40 +0.03 | REJECT |
+  | T7 context variants | `it08/adamex-svk/t7` (99b433c) | first_sale -25.91, last52 -14.21 | REJECT |
+  | T8 other tree-model members | `it08/adamex-svk/t8` (bd9f473) | best +0.07 | REJECT |
+  | T9 fine-tune Moirai 1.1-small | `it08/adamex-svk/t9` (fc3f36c) | best 4th member -0.14 | REJECT |
+  | T10 new zero-shot models | `it08/adamex-svk/t10` (9c51907) | best chronos-2-small 4th -0.10 | REJECT |
+
+  **T5 blocked:** all five TabPFN-TS GPU jobs were CPU-bound and had written no full forecasts after about 3 h; not killed per the task rules (D36 remains unresolved, still blocked). None of the new zero-shot models or forecast variants (sf-* classics, q40/q45, s200, chronos-2-small, toto-open-base, sundial-base-128m, moirai-1.1-small-ft, first_sale/last52 contexts) came close to the bar; the branches and files are merged/kept so any can be retried later. Integration verified: `scripts/check.sh` passes, `ensemble_recipe.py evaluate` prints -13.67, and `build` reproduces `submissions/ensemble_top3_blend_v1.csv` byte-identically.

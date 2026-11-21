@@ -86,3 +86,15 @@ Another session (same GitHub handle, interleaved commits on this branch) works o
 - Cleanup when finished: delete the last line of `~/.ssh/authorized_keys` on the GPU machine (key comment `hackathon-gpu`), and `~/.ssh/hackathon_gpu*` on the laptop.
 - Mixed concurrent jobs on the GPU machine oversubscribe the CPU (thread storms): limit threads (`OMP_NUM_THREADS=4`) or pause a job with `kill -STOP` and resume with `kill -CONT` (done for TabPFN while Moirai ran).
 - `pkill -f 'pattern'` over SSH kills your own SSH shell when the pattern appears in the command: select by PID with `ps` + `awk`.
+
+## Iteration 08 (improvements) outcome 2026-11-21
+Ten parallel improvement tasks (T1-T10) were run against the current recipe D40 and all were evaluated on the standard 4 cuts; **none passed the adoption bar** (mean gain >= +0.5 and better on >= 3 of 4 cuts), so **D40 is unchanged** (local 4-cut mean **-13.67**: -3.72 / -25.91 / -11.01 / -14.02; live -4.8). The best task was +0.08 (T3 trimmed mean) and the rest were at or below +0.07 or actively worse; the decision is recorded as **D41** in `decisions-to-make.md`, and the consolidated table is in `iterations/08-improvements/README.md`. T5 (TabPFN-TS in the ensemble) is **still blocked**: its GPU jobs stayed CPU-bound with no forecasts for about 3 h and were left running, so D36 remains unresolved. The task branches are merged on `it08/adamex-svk/improvements` and their code (`src/improve/t1_*.py` ... `t10_*.py`) and notes/results (`iterations/08-improvements/t1` ... `t10`) are kept.
+
+New material now in the repo (forecasts under `iterations/03-foundation-model/forecasts/` and `forecasts_final/`, all new model names, D40 files untouched):
+- **Intermittent-demand classics (T1):** `sf-ses`, `sf-tsb`, `sf-croston`, `sf-croston-sba`, `sf-croston-opt`, `sf-adida`, `sf-imapa` (padded context, cuts 0-3 + final).
+- **Quantile / sample-count variants (T6):** `moirai-2.0-small-q40`, `moirai-2.0-small-q45`, `tirex-q40`, `chronos-t5-small-q40`, `moirai-1.1-base-s200` (SPECS are additive; defaults unchanged).
+- **New zero-shot families (T10):** `chronos-2-small`, `toto-open-base`, `sundial-base-128m` (new SPECS + adapters; Toto and Sundial need their own remote venvs).
+- **Fine-tuned model (T9):** `moirai-1.1-small-ft` (5 leakage-safe per-cut checkpoints).
+- **Context variants (T7):** `first_sale` and `last52` forecast files for `moirai-2.0-small`, `tirex` and `chronos-t5-small`; `run_model.py` gained `--context last52` and `ensemble_recipe.py` gained `--context` (both default to `padded`, byte-identical D40).
+
+Integration re-verified: `bash scripts/check.sh` passes, `ensemble_recipe.py evaluate --models moirai-2.0-small,tirex,chronos-t5-small` prints **-13.67**, and `build` reproduces `submissions/ensemble_top3_blend_v1.csv` byte-identically.
