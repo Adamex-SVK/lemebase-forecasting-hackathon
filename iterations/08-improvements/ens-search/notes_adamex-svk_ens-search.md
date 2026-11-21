@@ -30,3 +30,17 @@ All five jobs finished (cut 3 at 15:32; about 13,500-14,500 s of forecasting eac
 
 ## Conclusion
 Together with T1-T8 (all rejected) about fifteen independent ways of changing the blend have now failed the bar. D40 sits at a robust optimum for the information we have; further gains need **new information** (a genuinely different strong member: fine-tuning T9, new model families T10), not new ways of weighting the same forecasts.
+
+## Performance-based weights (`src/improve/perf_weights.py`, `results_perf_weights.csv`), all rejected
+**A. Global weights from each member's stand-alone error on the three training cuts (LOCO on the 4 standard cuts):**
+| pool / scheme | cut 0 | cut 1 | cut 2 | cut 3 | mean | gain | won |
+|---|---|---|---|---|---|---|---|
+| D40's 4 members, inverse error | -3.80 | -26.10 | -11.15 | -13.94 | -13.75 | -0.08 | 1/4 |
+| D40's 4 members, softmax (tau LOCO) | -3.74 | -26.06 | -11.11 | -14.00 | -13.73 | -0.06 | 1/4 |
+| top 6, inverse | -3.54 | -26.95 | -11.39 | -14.53 | -14.10 | -0.44 | 1/4 |
+| top 6, softmax | -3.73 | -26.99 | -11.38 | -14.53 | -14.16 | -0.49 | 0/4 |
+| all 19, inverse | -5.59 | -26.04 | -13.17 | -14.37 | -14.79 | -1.13 | 0/4 |
+| all 19, softmax | -3.94 | -25.57 | -11.35 | -13.88 | -13.69 | -0.02 | 2/4 |
+The members' stand-alone errors are so close that inverse-error weights are almost equal (0.25 each for D40's members, versus D40's 0.30 LightGBM); widening the pool lets weaker members in and hurts.
+
+**B. Per-article track-record weights** (each article's own error per member on overlapping cuts that end before the test cut; 9 / 6 / 3 history cuts for test cuts 0 / 1 / 2; shrunk toward D40 with alpha): alpha 0.25: -0.00 (1/3), alpha 0.5: -0.00 (2/3), alpha 1.0: -0.03 (1/3) versus D40 on cuts 0-2 (-13.55). **No effect:** an article's past ranking of the models does not predict its future ranking (consistent with FFORMA's near-global weights).
