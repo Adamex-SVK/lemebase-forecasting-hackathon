@@ -18,6 +18,7 @@ Work is organised in iterations with every decision tracked.
 | `iterations/03-foundation-model` | Plan and model notes for Chronos, TimesFM, Moirai, TiRex (prepared, not yet run) |
 | `iterations/05-data-evaluation` | Reproducible raw/prepared data audit and findings |
 | `iterations/06-autogluon` | Optional AutoGluon challenger setup, evaluation commands, and integration evidence |
+| `iterations/07-ensemble-review` | Reproduced winning ensemble, component removals, and blend-weight checks |
 | `src/` | `prepare.py`, `validate.py` (metric and cuts), `baselines.py`, `features.py`, `train_gbm.py`, `run_arms.py`, `rolling.py`, `make_submission.py`, `foundation/` |
 | `tests/` | Hand-computed checks of the metric and the features (including a leakage test) |
 | `submissions/` | Submission CSVs (`article_id, w1..w13`) |
@@ -31,8 +32,13 @@ Historical iteration plans are context, not instructions to restart unfinished
 runs automatically.
 
 ## Status (night of 2026-11-21)
-Best live score so far: -7.6 (global LightGBM trained on all test-shop history); median of the last 13 weeks: -9.8;
-live references: AutoARIMA -33.7, Naive -64.5. Local cuts track the live board well, see `iterations/01-global-gbm/log.md`.
+Best reported live score: **-4.8**, from `submissions/ensemble_top3_blend_v1.csv`
+(Moirai 2.0-small, TiRex, Chronos-T5-small, plus 30% LightGBM; zero rule and rounding).
+Confirmed by the user and the friend's upload record; original CSV preserved
+from commit `71b82f3`. Historical reconstruction and comparisons are in
+`iterations/07-ensemble-review/log.md`. Earlier LightGBM score: -7.6; median13:
+-9.8; live references: AutoARIMA -33.7, Naive -64.5. Public and historical
+scores cover different periods and must not be compared directly.
 
 ## Reproduce
 ```bash

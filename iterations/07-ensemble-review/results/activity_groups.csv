@@ -1,0 +1,17 @@
+cut,group,model,n_series,score
+0,recent13_active,current,2006,-32.197965197802844
+0,recent13_active,lgbm_rounded,2006,-32.63260557626395
+0,recent13_inactive,current,833,64.84274004290069
+0,recent13_inactive,lgbm_rounded,833,64.83332021657601
+1,recent13_active,current,1992,-59.25601041533679
+1,recent13_active,lgbm_rounded,1992,-62.240025983533
+1,recent13_inactive,current,770,60.36577848528297
+1,recent13_inactive,lgbm_rounded,770,60.36577848528297
+2,recent13_active,current,1937,-40.871496085070035
+2,recent13_active,lgbm_rounded,1937,-43.730266711331645
+2,recent13_inactive,current,743,66.83666491085236
+2,recent13_inactive,lgbm_rounded,743,66.83666491085236
+3,recent13_active,current,1898,-41.29178182275086
+3,recent13_active,lgbm_rounded,1898,-43.051010854486485
+3,recent13_inactive,current,701,59.81703950904221
+3,recent13_inactive,lgbm_rounded,701,59.81703950904221
