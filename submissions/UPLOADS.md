@@ -9,6 +9,9 @@ One row per upload (see `TEAM-RULES.md` section 6). The live score covers weeks 
 | 2026-11-21 | owner | `lgbm_d33_3seed_blend_v2.csv` | 9081b5a | -8.4 | D33 features, 3 seeds, 70/30 blend with the median: no better than v1 |
 | 2026-11-21 | owner | `moirai2_small_v1.csv` | 54ad3e7 | -7.3 | Moirai 2.0-small alone, zero rule, rounded: about the same as the LightGBM (-7.6); the blend (-4.8) is much better, so the gain comes from combining models |
 | 2026-11-21 | owner | `ensemble_top3_blend_v1.csv` | 54ad3e7 | **-4.8** | moirai-2.0-small + tirex + chronos-t5-small averaged, 8-week zero rule, 30% LightGBM, rounded. **Best so far, +2.8 over `lgbm_own_v1`.** |
+| 2026-11-21 | owner | `ensemble_tabpfn_swap_v1.csv` | 6c4d6e2 | -5.2 | D40 with TabPFN replacing chronos-t5-small (chosen on cut 0 only): not better than -4.8 (within noise) |
+| 2026-11-21 | owner | `ensemble_fforma_pure_v1.csv` | uncommitted (D42) | -7.9 | FFORMA per-article weights over LightGBM + the top-3 foundation models: worse than D40 by 3.1 and below LightGBM alone |
+| 2026-11-21 | owner | `ensemble_fforma_hedge_v1.csv` | uncommitted (D42) | -6.2 | 0.5 FFORMA + 0.5 D40: worse than D40 by 1.4, about halfway between D40 and pure FFORMA |
 
 Reference points on the board at the time: AutoARIMA -33.7, Naive -64.5, leader -5.4 (seen before the -4.8 upload; the board may have changed).
 
