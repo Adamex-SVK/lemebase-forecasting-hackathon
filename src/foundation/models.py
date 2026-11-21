@@ -24,6 +24,7 @@ import pandas as pd
 SPECS = {
     # Chronos 1.0 (T5 tokenised), Chronos-Bolt, Chronos-2          package: chronos-forecasting
     "chronos-t5-small": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-small", chunk=48),
+    "chronos-t5-small-q40": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-small", chunk=48, quantile=0.40),
     "chronos-t5-base": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-base", chunk=48),
     "chronos-t5-large": dict(family="chronos", kind="t5", hf="amazon/chronos-t5-large", chunk=48),
     "chronos-bolt-small": dict(family="chronos", kind="bolt", hf="amazon/chronos-bolt-small"),
@@ -38,8 +39,13 @@ SPECS = {
     "moirai-moe-small": dict(family="moirai", kind="moe", hf="Salesforce/moirai-moe-1.0-R-small"),
     "moirai-moe-base": dict(family="moirai", kind="moe", hf="Salesforce/moirai-moe-1.0-R-base"),
     "moirai-2.0-small": dict(family="moirai", kind="m2", hf="Salesforce/moirai-2.0-R-small"),
+    # quantile / sample-count variants (iteration 08, T6); the default specs above are unchanged
+    "moirai-2.0-small-q45": dict(family="moirai", kind="m2", hf="Salesforce/moirai-2.0-R-small", quantile=0.45),
+    "moirai-2.0-small-q40": dict(family="moirai", kind="m2", hf="Salesforce/moirai-2.0-R-small", quantile=0.40),
+    "moirai-1.1-base-s200": dict(family="moirai", kind="m1", hf="Salesforce/moirai-1.1-R-base", num_samples=200),
     # TiRex                                                        package: tirex-ts
     "tirex": dict(family="tirex", kind="v1", hf="NX-AI/TiRex"),
+    "tirex-q40": dict(family="tirex", kind="v1", hf="NX-AI/TiRex", q_index=3),   # trained levels 0.1..0.9; index 3 = 0.4
     # TabPFN-TS (tabular foundation model for time series), LOCAL mode only (the hosted API would send the shop's data to a third party),
     # TabPFN-v2 regression weights (ungated; the newer 2.5 / 3.5 weights need a Prior Labs account + licence acceptance + token)
     "tabpfn-ts-v2": dict(family="tabpfn", kind="v2", hf="Prior-Labs/TabPFN-v2-reg", ckpt="tabpfn-v2-regressor.ckpt", chunk=200),
@@ -93,15 +99,17 @@ def _fc_chronos(spec, pipe, ctx, H, end_week):
         for k, c in enumerate(ctx):
             ts = pd.date_range(end=end_week, periods=len(c), freq="W-MON")
             rows.append(pd.DataFrame({"id": k, "timestamp": ts, "target": c.astype("float32")}))
-        pred = pipe.predict_df(pd.concat(rows, ignore_index=True), prediction_length=H, quantile_levels=[0.5],
+        pred = pipe.predict_df(pd.concat(rows, ignore_index=True), prediction_length=H,
+                               quantile_levels=[spec.get("quantile", 0.5)],
                                id_column="id", timestamp_column="timestamp", target="target")
         pred = pred.sort_values(["id", "timestamp"])
-        col = "0.5" if "0.5" in pred.columns else "predictions"   # VERIFY the column name
+        ql = str(spec.get("quantile", 0.5))
+        col = ql if ql in pred.columns else "predictions"   # VERIFY the column name
         return pred[col].to_numpy().reshape(len(ctx), H)
     import torch
     # predict_quantiles exists on the 1.0 / Bolt pipelines in the chronos package   # VERIFY
     q, _mean = pipe.predict_quantiles([torch.tensor(c, dtype=torch.float32) for c in ctx],
-                                      prediction_length=H, quantile_levels=[0.5])
+                                      prediction_length=H, quantile_levels=[spec.get("quantile", 0.5)])
     return q[..., 0].float().cpu().numpy()                         # [n, H, 1] -> [n, H]
 
 
@@ -139,8 +147,8 @@ def _fc_moirai(spec, handle, ctx, H, end_week):
     if spec["kind"] == "m1":
         from uni2ts.model.moirai import MoiraiForecast, MoiraiModule
         model = MoiraiForecast(module=MoiraiModule.from_pretrained(spec["hf"]), prediction_length=H, context_length=L,
-                               patch_size="auto", num_samples=50, target_dim=1, feat_dynamic_real_dim=0,
-                               past_feat_dynamic_real_dim=0)
+                               patch_size="auto", num_samples=spec.get("num_samples", 50), target_dim=1,
+                               feat_dynamic_real_dim=0, past_feat_dynamic_real_dim=0)
     elif spec["kind"] == "moe":
         from uni2ts.model.moirai_moe import MoiraiMoEForecast, MoiraiMoEModule
         model = MoiraiMoEForecast(module=MoiraiMoEModule.from_pretrained(spec["hf"]), prediction_length=H,
@@ -148,16 +156,17 @@ def _fc_moirai(spec, handle, ctx, H, end_week):
                                   feat_dynamic_real_dim=0, past_feat_dynamic_real_dim=0)
     else:  # Moirai 2.0: the README snippet is broken, the example notebook imports from uni2ts.model.moirai2
         from uni2ts.model.moirai2 import Moirai2Forecast, Moirai2Module
+        extra = {"num_samples": spec["num_samples"]} if "num_samples" in spec else {}
         model = Moirai2Forecast(module=Moirai2Module.from_pretrained(spec["hf"]), prediction_length=H,
                                 context_length=L, target_dim=1, feat_dynamic_real_dim=0,
-                                past_feat_dynamic_real_dim=0)                                  # VERIFY
+                                past_feat_dynamic_real_dim=0, **extra)                          # VERIFY
     predictor = model.create_predictor(batch_size=64)
     out = []
     for f in predictor.predict(ds):
         try:
-            out.append(np.asarray(f.quantile(0.5)))
+            out.append(np.asarray(f.quantile(spec.get("quantile", 0.5))))
         except Exception:                                                                       # VERIFY
-            out.append(np.asarray(f.median))
+            out.append(np.asarray(f.median))   # no quantile method: fall back to the median
     return np.stack(out)
 
 
@@ -175,7 +184,7 @@ def _fc_tirex(spec, m, ctx, H, end_week):
         X[k, L - len(c):] = torch.tensor(c, dtype=torch.float32)
     quantiles, mean = m.forecast(context=X, prediction_length=H)   # order: quantiles, then mean (README)
     q = quantiles.float().cpu().numpy()
-    return q[..., q.shape[-1] // 2]                           # middle quantile = median   # VERIFY quantile levels
+    return q[..., spec.get("q_index", q.shape[-1] // 2)]      # middle quantile = median   # VERIFY quantile levels
 
 
 # ---------------------------------------------------------------- TabPFN-TS (local mode, v2 weights)
