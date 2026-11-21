@@ -1,0 +1,34 @@
+variant,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won,verdict
+"[siblings, 1 run (seed 0)] alone",-2.73,-27.04,-11.26,-13.88,-13.73,-0.06,2,reject
+"[siblings, 1 run (seed 0)] D40 + it as 4th member",-3.65,-26.13,-11.01,-13.82,-13.65,0.02,3,reject
+"[siblings, 1 run (seed 0)] D40, half of the foundation part is it",-3.45,-26.33,-11.22,-14.03,-13.76,-0.09,1,reject
+"[siblings, 3-run avg] alone",-3.26,-26.79,-12.44,-13.8,-14.07,-0.41,2,reject
+"[siblings, 3-run avg] D40 + it as 4th member",-3.8,-26.02,-10.89,-14.07,-13.7,-0.03,1,reject
+"[siblings, 3-run avg] D40, half of the foundation part is it",-3.69,-26.36,-10.97,-13.8,-13.71,-0.04,3,reject
+"[siblings, 6-run avg] alone",-3.3,-27.01,-12.12,-14.16,-14.15,-0.48,1,reject
+"[siblings, 6-run avg] D40 + it as 4th member",-3.73,-26.02,-10.89,-13.9,-13.63,0.03,2,reject
+"[siblings, 6-run avg] D40, half of the foundation part is it",-3.68,-26.39,-11.02,-13.9,-13.75,-0.08,2,reject
+[siblings + own history x1] alone,-1.24,-27.89,-10.97,-13.39,-13.37,0.29,3,reject
+[siblings + own history x1] D40 + it as 4th member,-3.21,-26.15,-11.3,-13.69,-13.59,0.08,2,reject
+"[siblings + own history x1] D40, half of the foundation part is it",-2.65,-26.64,-11.31,-13.88,-13.62,0.05,2,reject
+[siblings + own history x3] alone,-3.03,-26.47,-12.17,-12.65,-13.58,0.09,2,reject
+[siblings + own history x3] D40 + it as 4th member,-3.57,-25.9,-11.09,-13.48,-13.51,0.16,3,reject
+"[siblings + own history x3] D40, half of the foundation part is it",-3.46,-26.05,-11.38,-13.25,-13.54,0.13,2,reject
+"[siblings + own history x1, seed 1] alone",-2.91,-27.81,-11.3,-14.1,-14.03,-0.36,1,reject
+"[siblings + own history x1, seed 1] D40 + it as 4th member",-3.52,-26.19,-11.33,-13.86,-13.73,-0.06,2,reject
+"[siblings + own history x1, seed 1] D40, half of the foundation part is it",-3.53,-26.61,-11.06,-14.53,-13.93,-0.27,1,reject
+"[siblings + own history x1, seed 2] alone",-1.44,-27.12,-11.13,-14.6,-13.57,0.09,1,reject
+"[siblings + own history x1, seed 2] D40 + it as 4th member",-3.25,-26.07,-11.05,-13.87,-13.56,0.11,2,reject
+"[siblings + own history x1, seed 2] D40, half of the foundation part is it",-2.84,-26.25,-11.17,-14.03,-13.57,0.09,1,reject
+"[siblings + own history x1, seed 3] alone",-0.78,-27.67,-11.42,-12.81,-13.17,0.49,2,reject
+"[siblings + own history x1, seed 3] D40 + it as 4th member",-3.16,-26.15,-11.16,-13.65,-13.53,0.14,2,reject
+"[siblings + own history x1, seed 3] D40, half of the foundation part is it",-2.5,-26.62,-11.38,-13.6,-13.53,0.14,2,reject
+"[siblings + own history x1, seed 4] alone",-1.01,-27.72,-11.57,-15.18,-13.87,-0.2,1,reject
+"[siblings + own history x1, seed 4] D40 + it as 4th member",-3.42,-26.17,-11.24,-13.81,-13.66,0.01,2,reject
+"[siblings + own history x1, seed 4] D40, half of the foundation part is it",-2.76,-26.61,-11.55,-13.95,-13.72,-0.05,2,reject
+"[siblings + own history x1, 5-seed avg] alone",-1.03,-27.63,-11.26,-13.16,-13.27,0.39,2,reject
+"[siblings + own history x1, 5-seed avg] D40 + it as 4th member",-3.4,-26.18,-11.2,-13.51,-13.57,0.09,2,reject
+"[siblings + own history x1, 5-seed avg] D40, half of the foundation part is it",-2.84,-26.48,-11.25,-13.91,-13.62,0.04,2,reject
+"[siblings + own history x1, 1000 steps] alone",-1.58,-27.55,-11.95,-14.41,-13.87,-0.21,1,reject
+"[siblings + own history x1, 1000 steps] D40 + it as 4th member",-3.5,-26.08,-11.02,-14.07,-13.67,-0.0,1,reject
+"[siblings + own history x1, 1000 steps] D40, half of the foundation part is it",-2.68,-26.29,-11.33,-14.29,-13.65,0.02,1,reject

@@ -1,0 +1,13 @@
+variant,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won,verdict
+"interp: all three members masked, D40 blend",-25.71,-51.78,-26.97,-26.88,-32.84,-19.17,0,reject
+interp: masked ensemble alone,-35.6,-58.14,-33.96,-32.09,-39.95,-26.28,0,reject
+"interp: only moirai-2.0-small masked, D40 blend",-5.04,-28.15,-12.75,-14.65,-15.14,-1.48,0,reject
+"interp: only tirex masked, D40 blend",-4.91,-28.22,-12.86,-14.8,-15.2,-1.53,0,reject
+"interp: only chronos-t5-small masked, D40 blend",-5.08,-27.64,-12.47,-14.96,-15.04,-1.37,0,reject
+interp: masked + unmasked members together (6),-6.81,-29.62,-13.5,-14.97,-16.23,-2.56,0,reject
+"short: all three members masked, D40 blend",-9.64,-29.64,-16.06,-22.61,-19.49,-5.82,0,reject
+short: masked ensemble alone,-14.31,-31.26,-19.89,-24.69,-22.54,-8.87,0,reject
+"short: only moirai-2.0-small masked, D40 blend",-3.96,-25.98,-11.69,-14.18,-13.95,-0.29,0,reject
+"short: only tirex masked, D40 blend",-3.92,-26.18,-11.72,-14.19,-14.0,-0.34,0,reject
+"short: only chronos-t5-small masked, D40 blend",-4.14,-25.99,-11.62,-14.55,-14.08,-0.41,0,reject
+short: masked + unmasked members together (6),-4.04,-26.38,-11.69,-14.45,-14.14,-0.47,0,reject

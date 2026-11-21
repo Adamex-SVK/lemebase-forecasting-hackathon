@@ -32,7 +32,37 @@ OUT = ROOT / "iterations" / "03-foundation-model" / "forecasts"
 H = v.HORIZON
 
 
-def contexts_for(shop, cut_index, context, final=False, cut_weeks=None):
+def mask_out_of_stock(A, O, mode):
+    """Replace weeks where the shop was out of stock and sold nothing (censored demand, not zero demand) by interpolated values.
+
+    interp: every such week, linear between the neighbouring observed weeks (trailing run: last observed value held);
+    short:  only runs of at most 3 such weeks (longer stock-outs stay zero, they are likely to persist into the forecast).
+    A and O are (series x weeks) arrays; the model only ever sees past weeks (the flags before the cut)."""
+    A = A.copy()
+    for k in range(len(A)):
+        m = O[k] & (A[k] == 0)
+        if not m.any():
+            continue
+        good = np.flatnonzero(~m)
+        if len(good) == 0:
+            continue
+        if mode == "short":                          # keep long runs as they are
+            run, start = 0, None
+            keep = np.zeros(len(m), bool)
+            for i, x in enumerate(np.append(m, False)):
+                if x and start is None:
+                    start = i
+                if not x and start is not None:
+                    if i - start > 3:
+                        keep[start:i] = True
+                    start = None
+            m = m & ~keep
+            good = np.flatnonzero(~m)
+        A[k, m] = np.interp(np.flatnonzero(m), good, A[k, good])
+    return A
+
+
+def contexts_for(shop, cut_index, context, final=False, cut_weeks=None, oos="none"):
     full = v.load_weekly(shop)
     if final:   # real forecast: ALL history is the context, the 13 weeks after the last week are forecast
         train = v.pad_to_shop_start(full, full[v.KEYS].drop_duplicates())
@@ -43,6 +73,11 @@ def contexts_for(shop, cut_index, context, final=False, cut_weeks=None):
         train, hold, cut = v.split(df)
     W = train.pivot_table(index=v.KEYS, columns="week", values="units", aggfunc="sum", fill_value=0.0).sort_index(axis=1)
     A = W.to_numpy(dtype="float64")
+    if oos != "none":
+        O = (full[full["week"] < cut].pivot_table(index=v.KEYS, columns="week", values="out_of_stock_flag", aggfunc="max")
+             .reindex(index=W.index, columns=W.columns).fillna(False).to_numpy(bool))
+        Aorig = A
+        A = mask_out_of_stock(A, O, oos)
     ctx, active = [], []
     for k in range(len(A)):
         row = A[k]
@@ -51,7 +86,7 @@ def contexts_for(shop, cut_index, context, final=False, cut_weeks=None):
         elif context == "last52":
             row = row[-52:]
         ctx.append(row)
-        active.append(bool((row > 0).any()))
+        active.append(bool((row > 0).any()) if oos == "none" else bool((Aorig[k] > 0).any()))
     return W.index, ctx, np.array(active), hold, cut, train
 
 
@@ -63,13 +98,14 @@ def main():
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--limit", type=int, default=0, help="only the first N active series (smoke runs)")
     ap.add_argument("--cut-weeks", type=int, default=None, help="drop this many weeks from the end before the cut (any offset, for overlapping cuts); output goes to forecasts_cuts/ as ..__w{N}__..")
+    ap.add_argument("--oos", default="none", choices=["none", "interp", "short"], help="out-of-stock weeks with zero sales replaced by interpolation (output to forecasts_oos-<mode>/)")
     ap.add_argument("--final", action="store_true", help="forecast the real future weeks from the full history (no holdout); output goes to forecasts_final/")
     ap.add_argument("--emit-quantiles", action="store_true",
                     help="export quantiles (additive, iteration 09) to iterations/09-forecast-approaches/quantiles/; "
                          "the point forecast is the interpolated median of those quantiles")
     a = ap.parse_args()
     t0 = time.time()
-    index, ctx, active, hold, cut, train = contexts_for(a.shop, a.cut_index, a.context, a.final, a.cut_weeks)
+    index, ctx, active, hold, cut, train = contexts_for(a.shop, a.cut_index, a.context, a.final, a.cut_weeks, a.oos)
     end_week = cut - pd.Timedelta(weeks=1)
     idx = np.flatnonzero(active)
     if a.limit:
@@ -92,7 +128,7 @@ def main():
         "store_id": np.repeat(index.get_level_values(0).to_numpy(), H),
         "article_id": np.repeat(index.get_level_values(1).to_numpy(), H),
         "week": np.tile(weeks, len(index)), "forecast": F.reshape(-1)})
-    out_dir = OUT.parent / "forecasts_final" if a.final else (OUT.parent / "forecasts_cuts" if a.cut_weeks is not None else OUT)
+    out_dir = OUT.parent / f"forecasts_oos-{a.oos}" if a.oos != "none" else OUT.parent / "forecasts_final" if a.final else (OUT.parent / "forecasts_cuts" if a.cut_weeks is not None else OUT)
     out_dir.mkdir(parents=True, exist_ok=True)
     stem = f"{a.model}__{a.shop}__" + ("final" if a.final else (f"w{a.cut_weeks}" if a.cut_weeks is not None else f"cut{a.cut_index}")) + f"__{a.context}" + (f"__limit{a.limit}" if a.limit else "")
     fc.to_parquet(out_dir / f"{stem}.parquet", index=False)

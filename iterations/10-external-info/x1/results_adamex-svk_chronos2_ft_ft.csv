@@ -1,0 +1,5 @@
+variant,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won
+chronos-2 zero-shot alone,-9.54,-35.07,-21.52,-25.7,-22.96,-9.29,0
+[ft] fine-tuned chronos-2 alone,-2.73,-27.04,-11.26,-13.88,-13.73,-0.06,2
+[ft] D40 with it as 4th member,-3.65,-26.13,-11.01,-13.82,-13.65,0.02,3
+[ft] D40 with chronos-t5-small replaced,-3.42,-26.34,-11.24,-14.16,-13.79,-0.12,1

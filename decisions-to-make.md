@@ -159,6 +159,8 @@ All on 2026-11-21 (decision gate 1 and the following round), unless noted. "Rec.
 
   **T5 blocked:** all five TabPFN-TS GPU jobs were CPU-bound and had written no full forecasts after about 3 h; not killed per the task rules (D36 remains unresolved, still blocked). None of the new zero-shot models or forecast variants (sf-* classics, q40/q45, s200, chronos-2-small, toto-open-base, sundial-base-128m, moirai-1.1-small-ft, first_sale/last52 contexts) came close to the bar; the branches and files are merged/kept so any can be retried later. Integration verified: `scripts/check.sh` passes, `ensemble_recipe.py evaluate` prints -13.67, and `build` reproduces `submissions/ensemble_top3_blend_v1.csv` byte-identically.
 
+- **D44. DECIDED 2026-11-21 (owner `adamex-svk`): FINAL model = D40 + the sibling-shop fine-tuned Chronos-2 as a 4th member** (`submissions/ensemble_d40_plus_chronos2ft_v1.csv`, live **-4.5**, D40 alone -4.8). Evidence: 4-cut +0.02, 13 overlapping cuts +0.14 (9/13), live +0.3; all variants within the live noise (about 0.7). Not adopted by the +0.5 bar but chosen as the final upload; no further improvement was found (iteration 10, `iterations/10-external-info/x1/`). Moirai 2.0 fine-tune and holiday features were deliberately not pursued.
+
 ### Iteration 09 (forecasting headroom) - 2026-11-21, owner `adamex-svk`
 - **Draft iteration-09 record (superseded by D45 below; the earlier "D42" label was removed because D42 is the it08 FFORMA hedge).** The reference was re-verified at local 4-cut mean **-13.67** (-3.72 / -25.91 / -11.01 / -14.02) and the final build still reproduces `submissions/ensemble_top3_blend_v1.csv` byte-identically. Per-task results of record (details and CSVs under `iterations/09-forecast-approaches/`):
 

@@ -1,0 +1,8 @@
+variant,cut0,cut1,cut2,cut3,mean,gain_vs_D40,cuts_won
+"chronos-2 alone, covariates=none",-9.54,-35.07,-21.52,-25.7,-22.96,-9.29,0
+D40 with chronos-2 (none) as 4th member,-3.9,-25.8,-11.61,-13.68,-13.75,-0.08,2
+D40 with chronos-t5-small replaced by chronos-2 (none),-4.06,-26.17,-11.57,-14.17,-13.99,-0.33,0
+"chronos-2 alone, covariates=stock",-9.52,-36.99,-20.54,-26.64,-23.42,-9.76,0
+D40 with chronos-2 (stock) as 4th member,-3.95,-25.81,-11.99,-14.06,-13.95,-0.29,1
+D40 with chronos-t5-small replaced by chronos-2 (stock),-4.2,-26.2,-11.69,-14.28,-14.09,-0.43,0
+"chronos-2 alone (saved forecasts, sanity)",-9.54,-35.07,-21.52,-25.7,-22.96,-9.29,0
