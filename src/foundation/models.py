@@ -189,6 +189,16 @@ def _load_tabpfn(spec, device):
 
 
 def _fc_tabpfn(spec, pipe, ctx, H, end_week):
+    # ~1 s per series: series with no sale in the last 8 weeks are forecast 0 without calling the model
+    # (the 8-week zero rule of the baselines; our best post-processing sets them to 0 anyway)
+    alive = np.array([c[-8:].sum() > 0 for c in ctx])
+    out = np.zeros((len(ctx), H))
+    if alive.any():
+        out[alive] = _fc_tabpfn_alive(pipe, [c for c, a in zip(ctx, alive) if a], H, end_week)
+    return out
+
+
+def _fc_tabpfn_alive(pipe, ctx, H, end_week):
     rows = []
     for k, c in enumerate(ctx):
         ts = pd.date_range(end=end_week, periods=len(c), freq="W-MON")
