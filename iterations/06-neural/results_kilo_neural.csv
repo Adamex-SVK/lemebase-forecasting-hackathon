@@ -1,0 +1,29 @@
+model,cut,variant,score
+lgbm_base,0,round+zero8,-4.04241166977124
+median13,0,round+zero8,-6.682702156816989
+fm_ensemble(moirai-2.0-small+tirex+chronos-t5-small),0,round+zero8,-4.367914058708688
+d40 0.3*lgbm+0.7*fm,0,round+zero8,-3.637012443260379
+lgbm_base,1,round+zero8,-28.037398809682458
+median13,1,round+zero8,-30.53227496356705
+fm_ensemble(moirai-2.0-small+tirex+chronos-t5-small),1,round+zero8,-26.269285004743637
+d40 0.3*lgbm+0.7*fm,1,round+zero8,-25.851608080489363
+lgbm_base,2,round+zero8,-13.076822608614203
+median13,2,round+zero8,-12.59004948170086
+fm_ensemble(moirai-2.0-small+tirex+chronos-t5-small),2,round+zero8,-12.140407294650068
+d40 0.3*lgbm+0.7*fm,2,round+zero8,-11.299915388935243
+lgbm_base,3,round+zero8,-15.305530552511225
+median13,3,round+zero8,-16.344814374683224
+fm_ensemble(moirai-2.0-small+tirex+chronos-t5-small),3,round+zero8,-13.91689557161586
+d40 0.3*lgbm+0.7*fm,3,round+zero8,-13.994827632860884
+NHITS,0,round+zero8,-3.7723722713708163
+NHITS,1,round+zero8,-29.623797049705058
+NHITS,2,round+zero8,-12.647140174682491
+NHITS,3,round+zero8,-15.135404536552667
+NHITS+lgbm w=0.1,0,round+zero8,-3.824938486407592
+NHITS+lgbm w=0.1,1,round+zero8,-28.006522595476536
+NHITS+lgbm w=0.1,2,round+zero8,-12.952568395861853
+NHITS+lgbm w=0.1,3,round+zero8,-15.24876321033728
+NHITS+fm w=0.3,0,round+zero8,-3.4272900105402515
+NHITS+fm w=0.3,1,round+zero8,-26.031693478822238
+NHITS+fm w=0.3,2,round+zero8,-11.494515161933517
+NHITS+fm w=0.3,3,round+zero8,-13.970428498515929
