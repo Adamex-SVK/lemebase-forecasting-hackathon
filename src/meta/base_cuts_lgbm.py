@@ -20,7 +20,7 @@ import experiments_02 as e  # noqa: E402
 import validate as v  # noqa: E402
 
 warnings.filterwarnings("ignore")
-OUT = ROOT / "iterations" / "04-meta-ensemble" / "base_forecasts"
+OUT = ROOT / "iterations" / "05-meta-ensemble" / "base_forecasts"
 OFFSETS = list(range(0, 49, 4))
 
 if __name__ == "__main__":

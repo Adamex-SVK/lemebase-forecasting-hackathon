@@ -1,13 +1,7 @@
 # Next steps (prepared 2026-11-21, night)
 
-## RESUME HERE (paused by the user, night of 2026-11-21)
-Nothing is running. State:
-- **Iteration 00:** complete. **Iteration 01:** steps 1.1 and 1.2 done; **step 1.3 (all shops x arms) not finished** - restart it with `.venv/bin/python src/run_arms.py > logs/gbm_arms.txt 2>&1` (about 45-60 min; results saved after every arm). First-attempt partial results for the test shop are in `iterations/01-global-gbm/results_1_3_partial_origin_step2.csv`: own -4.83, pooled equalised -5.84, pooled unweighted -4.95, others only -23.07.
-- **Iteration 02:** rolling-origin evaluation done (`iterations/02-robust-eval/log.md`): the LightGBM beats the median of the last 13 weeks by about 1 point on average (3 of 4 cuts), and both are about 20 points ahead of AutoARIMA, Top-down and zero. F6 (moving peak) closed: no calendar features needed.
-- **Iteration 03:** preparation done and plumbing tested with dummy models; real adapters untested; needs the GPU machine (see section C below and `iterations/03-foundation-model/`).
-- **Open decisions for the morning:** D33 (`on_hand` regime change), D34 (model licences), D32 (rolling evaluation as the standard; the user has not answered, my rec. is yes). D30 is answered by running both weightings.
-- **Suggested order tomorrow:** (1) restart step 1.3; (2) while it runs: ask the CEO the GPU questions in section C; (3) analyse step 1.3 (step 1.4); (4) decide D33 and run it on the 4 cuts; (5) foundation-model smoke tests on the GPU.
-
+## RESUME HERE (updated 2026-11-21, afternoon)
+**Read `HANDOVER.md` first**: it has the current state, the best recipe (live -4.8), the jobs in flight and the ordered next steps. Short version: (1) collect the TabPFN and overlapping-cut forecasts from the GPU machine (`iterations/03-foundation-model/gpu-machine.md`); (2) write and run the FFORMA-style meta-learner (`iterations/05-meta-ensemble/plan.md`, `src/meta/fforma.py` not written yet); (3) decide the final recipe and let a person upload a few files; (4) finish `EXTRA-CREDIT.md`; (5) clean up the SSH key.
 
 Status: iteration 00 complete; iteration 01 steps 1.1-1.2 done; step 1.3 (all shops x arms) is paused, not finished (see RESUME HERE above). Decisions to settle are in `decisions-to-make.md` (D30-D32 open). Nothing below is run until you approve it.
 

@@ -1,0 +1,1 @@
+{"model": "chronos-t5-small", "shop": "test", "cut_index": 2, "context": "padded", "n_series": 2904, "n_sent_to_model": 2680, "load_seconds": 5.9, "forecast_seconds": 8.6}

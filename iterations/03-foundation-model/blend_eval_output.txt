@@ -1,0 +1,59 @@
+LightGBM variant: base; foundation post-processing: round+zero8; round final: True; models with all 4 cuts: ['chronos-2', 'chronos-bolt-base', 'chronos-bolt-small', 'chronos-t5-base', 'chronos-t5-large', 'chronos-t5-small', 'moirai-1.0-large', 'moirai-1.1-base', 'moirai-1.1-large', 'moirai-2.0-small', 'moirai-moe-base', 'moirai-moe-small', 'timesfm-2.5', 'tirex']
+
+LightGBM alone:   -4.03  -28.06  -13.08  -15.31   mean -15.12
+
+chronos-2: alone         -9.54  -35.07  -21.52  -25.70   mean -22.96
+chronos-2: blend w=0.8 (chosen on cuts 1-3)   -3.65  -26.66  -12.62  -14.82   mean -14.44   vs LightGBM alone +0.68, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-22.96  0.1:-21.89  0.2:-19.94  0.3:-18.40  0.4:-17.05  0.5:-16.48  0.6:-14.89  0.7:-14.85  0.8:-14.44  0.9:-14.83  1.0:-15.12
+
+chronos-bolt-base: alone        -36.82  -83.77  -67.13  -38.11   mean -56.46
+chronos-bolt-base: blend w=0.9 (chosen on cuts 1-3)   -3.81  -27.05  -12.88  -14.91   mean -14.66   vs LightGBM alone +0.46, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-56.46  0.1:-53.86  0.2:-48.66  0.3:-38.15  0.4:-34.44  0.5:-30.13  0.6:-24.79  0.7:-23.33  0.8:-16.06  0.9:-14.66  1.0:-15.12
+
+chronos-bolt-small: alone        -35.56  -80.01  -66.05  -45.54   mean -56.79
+chronos-bolt-small: blend w=0.9 (chosen on cuts 1-3)   -3.61  -26.91  -12.80  -14.95   mean -14.57   vs LightGBM alone +0.55, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-56.79  0.1:-53.69  0.2:-49.30  0.3:-37.11  0.4:-33.88  0.5:-30.30  0.6:-25.31  0.7:-24.12  0.8:-15.66  0.9:-14.57  1.0:-15.12
+
+chronos-t5-base: alone         -6.85  -30.38  -17.02  -18.28   mean -18.13
+chronos-t5-base: blend w=0.6 (chosen on cuts 1-3)   -3.32  -26.70  -12.43  -14.53   mean -14.24   vs LightGBM alone +0.88, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-18.13  0.1:-17.87  0.2:-17.47  0.3:-16.96  0.4:-16.77  0.5:-15.63  0.6:-14.24  0.7:-14.39  0.8:-14.52  0.9:-14.68  1.0:-15.12
+
+chronos-t5-large: alone        -10.15  -31.47  -16.68  -20.01   mean -19.57
+chronos-t5-large: blend w=0.6 (chosen on cuts 1-3)   -4.47  -26.69  -12.13  -15.20   mean -14.62   vs LightGBM alone +0.50, cuts won 3/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-19.57  0.1:-19.14  0.2:-18.53  0.3:-17.83  0.4:-17.37  0.5:-16.02  0.6:-14.62  0.7:-14.66  0.8:-14.62  0.9:-14.78  1.0:-15.12
+
+chronos-t5-small: alone         -7.51  -30.02  -17.30  -16.93   mean -17.94
+chronos-t5-small: blend w=0.6 (chosen on cuts 1-3)   -3.60  -26.45  -12.12  -14.30   mean -14.12   vs LightGBM alone +1.00, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-17.94  0.1:-17.63  0.2:-17.18  0.3:-16.68  0.4:-16.41  0.5:-15.44  0.6:-14.12  0.7:-14.32  0.8:-14.52  0.9:-14.66  1.0:-15.12
+
+moirai-1.0-large: alone        -12.78  -46.84  -32.63  -22.06   mean -28.58
+moirai-1.0-large: blend w=0.8 (chosen on cuts 1-3)   -2.92  -27.33  -12.63  -14.76   mean -14.41   vs LightGBM alone +0.71, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-28.58  0.1:-28.05  0.2:-27.43  0.3:-26.40  0.4:-25.95  0.5:-16.22  0.6:-14.37  0.7:-14.44  0.8:-14.41  0.9:-14.67  1.0:-15.12
+
+moirai-1.1-base: alone         -6.92  -31.47  -18.38  -16.37   mean -18.28
+moirai-1.1-base: blend w=0.8 (chosen on cuts 1-3)   -3.30  -27.14  -12.89  -15.03   mean -14.59   vs LightGBM alone +0.53, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-18.28  0.1:-17.83  0.2:-17.46  0.3:-16.57  0.4:-16.37  0.5:-15.88  0.6:-14.77  0.7:-14.75  0.8:-14.59  0.9:-14.82  1.0:-15.12
+
+moirai-1.1-large: alone        -11.50  -33.77  -24.32  -16.94   mean -21.63
+moirai-1.1-large: blend w=0.6 (chosen on cuts 1-3)   -2.68  -26.16  -12.39  -14.71   mean -13.98   vs LightGBM alone +1.14, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-21.63  0.1:-21.38  0.2:-21.09  0.3:-20.67  0.4:-20.51  0.5:-15.46  0.6:-13.98  0.7:-14.21  0.8:-14.43  0.9:-14.74  1.0:-15.12
+
+moirai-2.0-small: alone         -4.60  -27.68  -11.76  -14.83   mean -14.72
+moirai-2.0-small: blend w=0.5 (chosen on cuts 1-3)   -4.50  -27.58  -11.67  -14.63   mean -14.60   vs LightGBM alone +0.52, cuts won 3/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-14.72  0.1:-14.67  0.2:-14.65  0.3:-14.50  0.4:-14.59  0.5:-14.60  0.6:-14.46  0.7:-14.71  0.8:-14.68  0.9:-14.91  1.0:-15.12
+
+moirai-moe-base: alone        -14.97  -36.43  -20.42  -18.23   mean -22.51
+moirai-moe-base: blend w=0.7 (chosen on cuts 1-3)   -5.31  -25.78  -12.84  -14.88   mean -14.70   vs LightGBM alone +0.42, cuts won 3/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-22.51  0.1:-21.47  0.2:-19.98  0.3:-17.99  0.4:-17.09  0.5:-16.39  0.6:-14.73  0.7:-14.70  0.8:-14.46  0.9:-14.63  1.0:-15.12
+
+moirai-moe-small: alone        -11.65  -31.91  -17.84  -16.41   mean -19.46
+moirai-moe-small: blend w=0.6 (chosen on cuts 1-3)   -5.01  -26.04  -11.64  -14.74   mean -14.36   vs LightGBM alone +0.76, cuts won 3/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-19.46  0.1:-18.82  0.2:-17.81  0.3:-16.72  0.4:-16.19  0.5:-15.25  0.6:-14.36  0.7:-14.51  0.8:-14.21  0.9:-14.77  1.0:-15.12
+
+timesfm-2.5: alone         -9.18  -31.00  -18.76  -15.97   mean -18.73
+timesfm-2.5: blend w=0.6 (chosen on cuts 1-3)   -3.81  -26.29  -12.40  -14.75   mean -14.31   vs LightGBM alone +0.80, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-18.73  0.1:-18.52  0.2:-18.21  0.3:-17.83  0.4:-17.72  0.5:-15.48  0.6:-14.31  0.7:-14.45  0.8:-14.52  0.9:-14.80  1.0:-15.12
+
+tirex: alone         -6.19  -27.33  -15.67  -14.67   mean -15.97
+tirex: blend w=0.6 (chosen on cuts 1-3)   -3.52  -26.28  -11.65  -14.17   mean -13.91   vs LightGBM alone +1.21, cuts won 4/4
+   mean over 4 cuts by weight on LightGBM: 0.0:-15.97  0.1:-15.76  0.2:-15.58  0.3:-14.97  0.4:-14.95  0.5:-14.25  0.6:-13.91  0.7:-14.23  0.8:-14.25  0.9:-14.72  1.0:-15.12

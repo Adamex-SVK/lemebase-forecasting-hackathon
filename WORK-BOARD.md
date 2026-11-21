@@ -14,4 +14,7 @@ Claim a task by putting your handle in **Owner** and your branch in **Branch** (
 | LightGBM hyperparameter search on the 4 cuts | 02 | | | open | seed noise about 0.8 on one cut: use the mean over cuts |
 | Combine several robust level estimators (medians over different windows) | 02 | | | open | |
 | TabPFN-TS (local mode, v2 weights): smoke test, 4 cuts, blend test | 03 | | it03/adamex-svk/foundation-models | in progress | D36; environment being installed on the GPU machine |
-| Meta-learning ensemble (FFORMA style): per-series model weights from features | 04 | | | open | D37; needs base forecasts at 8-12 origins |
+| Meta-learning ensemble (FFORMA style): write `src/meta/fforma.py`, run the purged evaluation | 05 | | | in progress | D37; base forecasts at 13 cuts: LightGBM done, GPU streams running; see `iterations/05-meta-ensemble/plan.md` |
+| Collect finished GPU jobs (TabPFN, overlapping cuts), commit the forecasts, rebuild the submission | 03 | | | open | see `HANDOVER.md` section 7 |
+| Finish step 1.3 (other shops x arms) and the extra-credit table | 01 | | | open | `EXTRA-CREDIT.md`, `python src/run_arms.py` |
+| Clean up: remove the SSH key from the GPU machine and the laptop | - | | | open | when all GPU work is done |

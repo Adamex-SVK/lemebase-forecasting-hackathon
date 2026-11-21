@@ -127,6 +127,15 @@ All on 2026-11-21 (decision gate 1 and the following round), unless noted. "Rec.
 - **D28** Window sampling for big shops: keep all windows with a sale in the last 26 weeks plus a random 10% of the rest, weighted x10.
 - **D29** Target = units(t+h) / the series' MASE scale at the origin, L1 objective, one model with horizon `h` as a feature; windows with scale 0 are skipped for training.
 
+### Late additions (2026-11-21 afternoon; evidence in `iterations/03-foundation-model/log.md`)
+- **D38 (adopted):** round every submitted forecast to whole units and clip at 0. Evidence: LightGBM +0.4 on the 4-cut mean (4 of 4 cuts), foundation models +1.4 to +2.5; the metric's per-article scale is tiny for slow articles, so integer medians win.
+- **D39 (adopted):** set the forecast to 0 for articles with no sale in the last 8 weeks (zero rule) for the foundation-model forecasts. Adds about 0.1 on top of rounding (the models already forecast about 0 for them).
+- **D40 (current best recipe, confirmed live):** average Moirai 2.0-small + TiRex + Chronos-T5-small zero-shot forecasts, zero rule, blend 0.3 x LightGBM (`lgbm_own_v1`) + 0.7 x ensemble, round: local -13.67 (4 cuts), **live -4.8** (LightGBM alone -7.6, Moirai 2.0-small alone -7.3). Model sets were fixed in advance; every set tried gave -13.7 to -13.9.
+- **D36 (applied, unconfirmed by the owner):** TabPFN-TS runs in LOCAL mode with the ungated v2 weights only; the hosted mode would send the shop's data to a third party and the 2.5+ weights need an account and licence acceptance by a person.
+- **D32 (de facto adopted):** the 4 rolling cuts are the standard yardstick (`TEAM-RULES.md`); overlapping cuts (every 4 weeks) are used only to train the meta-ensemble, with a purged protocol (iteration 05).
+- **D33:** tested, not adopted (about +0.0).
+- Still open: **D34** (model licences), **D37** (meta-ensemble, iteration 05), the extra-credit write-up (`EXTRA-CREDIT.md`).
+
 ### Earlier decisions
 - **D18** Use all four techniques to pass rich-column knowledge into a model that only sees the 4 test-shop columns: (a) feature dropout, (b) teacher-student, (c) auxiliary tasks, (d) cleaning. Each is an experiment scored on the extra-credit comparison; order in D19.
 - **D23** Park generating more synthetic Set B data (a public generator may exist; not checked). Revisit only if B helps as a donor in the extra-credit experiment.

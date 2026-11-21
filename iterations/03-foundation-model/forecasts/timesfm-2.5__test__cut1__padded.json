@@ -1,0 +1,1 @@
+{"model": "timesfm-2.5", "shop": "test", "cut_index": 1, "context": "padded", "n_series": 2904, "n_sent_to_model": 2762, "load_seconds": 5.4, "forecast_seconds": 124.8}

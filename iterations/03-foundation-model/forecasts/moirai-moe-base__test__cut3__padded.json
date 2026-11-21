@@ -1,0 +1,1 @@
+{"model": "moirai-moe-base", "shop": "test", "cut_index": 3, "context": "padded", "n_series": 2904, "n_sent_to_model": 2599, "load_seconds": 0.5, "forecast_seconds": 117.4}

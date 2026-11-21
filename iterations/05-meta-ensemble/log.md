@@ -1,0 +1,9 @@
+# Iteration 05 log (meta-ensemble on overlapping cuts)
+
+Append-only. (This folder was first created as `04-meta-ensemble`; renamed to 05 because another session uses `04-rich-columns`, as in the roadmap of `pipeline-architecture.md`.)
+
+## 2026-11-21: base forecasts at 13 overlapping cuts
+- **Cuts:** offsets N = 0, 4, ..., 48 weeks removed from the end of the test-shop history; holdout = the 13 weeks after the cut. Runner option `--cut-weeks N` in `src/foundation/run_model.py` (output `iterations/03-foundation-model/forecasts_cuts/{model}__test__w{N}__padded.parquet`).
+- **LightGBM (own arm, plain features, seed 0) at all 13 cuts: finished** (`src/meta/base_cuts_lgbm.py`; `base_forecasts/lgbm_w{N}.npy` and `median13_w{N}.npy`, rows in `ShopMatrix` key order of the training part). Rounded scores per cut (holdout start in brackets): N=0 -4.03 (2023-01-23), 4 -2.81, 8 -12.72, 12 -22.43, 16 -37.89 (2022-10-03), 20 -29.07, 24 -2.27, 28 -24.36, 32 -19.74, 36 -3.11, 40 -30.87, 44 +7.30 (2022-03-21), 48 +5.27 (2022-02-21). **Window difficulty varies by 45 points between neighbouring months**: compare models within a cut only; the Oct-Dec windows are the hardest.
+- **Foundation models at the cuts** (GPU machine, `run_cuts.sh`, `OMP_NUM_THREADS=4`): tirex finished (13 cuts, about 50 s each); moirai-2.0-small, moirai-1.1-base and chronos-t5-small/base in progress at the time of writing (check `forecasts_cuts/`, target 5 models x 13 cuts = 65 files). **TimesFM was dropped**: its first overlapping cut sat at about 25% CPU for 11 minutes (it had run fine on the standard cuts); a restart behaved the same; not a top model (-18.7 alone), so it was left out.
+- **Not done yet:** the meta-learner itself (`src/meta/fforma.py`), see `plan.md` for design and the leakage-free protocol (train on cuts with offset >= test offset + 13; test offsets 0, 4, 8, 12).

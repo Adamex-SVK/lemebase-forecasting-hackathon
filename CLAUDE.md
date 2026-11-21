@@ -1,6 +1,6 @@
 # Instructions for AI assistants working in this repo
 
-Read first: `TEAM-RULES.md`, `process-rules.md`, `next-steps.md` (RESUME HERE), `decisions-to-make.md`.
+Read first: **`HANDOVER.md`** (current state, best recipe, jobs in flight, next steps), then `TEAM-RULES.md`, `process-rules.md`, `next-steps.md` (RESUME HERE), `decisions-to-make.md`.
 
 Non-negotiable:
 - **Decisions are made by a collaborator, not by you.** Any collaborator can be the decision owner (usually the person you work for). Present evidence, 2-3 options and a recommendation; wait for their answer. Record who decided and when in `decisions-to-make.md`.

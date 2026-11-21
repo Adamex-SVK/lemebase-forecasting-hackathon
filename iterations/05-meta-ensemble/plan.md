@@ -1,4 +1,4 @@
-# Iteration 04: meta-ensemble (FFORMA style) on overlapping cuts
+# Iteration 05: meta-ensemble (FFORMA style) on overlapping cuts
 
 **Status (2026-11-21):** started. Base forecasts at 13 overlapping cuts are being produced; the meta-learner is next. Decision D37.
 
