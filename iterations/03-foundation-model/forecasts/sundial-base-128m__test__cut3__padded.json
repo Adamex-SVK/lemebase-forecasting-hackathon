@@ -1,0 +1,1 @@
+{"model": "sundial-base-128m", "shop": "test", "cut_index": 3, "context": "padded", "n_series": 2904, "n_sent_to_model": 2599, "load_seconds": 5.7, "forecast_seconds": 23.9}
