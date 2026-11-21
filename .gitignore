@@ -18,3 +18,6 @@ iterations/*/forecasts/
 iterations/*/forecasts_*/
 iterations/03-foundation-model/forecasts/
 iterations/01-global-gbm/forecasts_test_own_plain.parquet
+
+# bundles for the GPU machine
+dist/
