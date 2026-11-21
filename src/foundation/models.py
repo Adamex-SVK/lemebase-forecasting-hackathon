@@ -40,11 +40,14 @@ SPECS = {
     "moirai-2.0-small": dict(family="moirai", kind="m2", hf="Salesforce/moirai-2.0-R-small"),
     # TiRex                                                        package: tirex-ts
     "tirex": dict(family="tirex", kind="v1", hf="NX-AI/TiRex"),
+    # TabPFN-TS (tabular foundation model for time series), LOCAL mode only (the hosted API would send the shop's data to a third party),
+    # TabPFN-v2 regression weights (ungated; the newer 2.5 / 3.5 weights need a Prior Labs account + licence acceptance + token)
+    "tabpfn-ts-v2": dict(family="tabpfn", kind="v2", hf="Prior-Labs/TabPFN-v2-reg", ckpt="tabpfn-v2-regressor.ckpt", chunk=200),
     # plumbing tests, no dependencies
     "dummy-median13": dict(family="dummy", kind="median13"),
     "dummy-naive": dict(family="dummy", kind="naive"),
 }
-CHUNK = {"chronos": 1024, "timesfm": 1024, "moirai": 256, "tirex": 1024, "dummy": 100000}
+CHUNK = {"chronos": 1024, "timesfm": 1024, "moirai": 256, "tirex": 1024, "tabpfn": 200, "dummy": 100000}
 
 
 def load(name, device="cuda"):
@@ -175,5 +178,25 @@ def _fc_tirex(spec, m, ctx, H, end_week):
     return q[..., q.shape[-1] // 2]                           # middle quantile = median   # VERIFY quantile levels
 
 
-_LOADERS = {"dummy": _load_dummy, "chronos": _load_chronos, "timesfm": _load_timesfm, "moirai": _load_moirai, "tirex": _load_tirex}
-_FORECASTERS = {"dummy": _fc_dummy, "chronos": _fc_chronos, "timesfm": _fc_timesfm, "moirai": _fc_moirai, "tirex": _fc_tirex}
+# ---------------------------------------------------------------- TabPFN-TS (local mode, v2 weights)
+def _load_tabpfn(spec, device):
+    os.environ.setdefault("TABPFN_DISABLE_TELEMETRY", "1")
+    from huggingface_hub import hf_hub_download
+    ckpt = hf_hub_download(spec["hf"], spec["ckpt"])      # ungated; the file name carries the model version (v2)
+    from tabpfn_time_series import TabPFNMode, TabPFNTSPipeline
+    return TabPFNTSPipeline(tabpfn_mode=TabPFNMode.LOCAL, tabpfn_output_selection="median",
+                            tabpfn_model_config={"model_path": ckpt})        # VERIFY: device handling is automatic
+
+
+def _fc_tabpfn(spec, pipe, ctx, H, end_week):
+    rows = []
+    for k, c in enumerate(ctx):
+        ts = pd.date_range(end=end_week, periods=len(c), freq="W-MON")
+        rows.append(pd.DataFrame({"item_id": k, "timestamp": ts, "target": c.astype("float32")}))
+    pred = pipe.predict_df(pd.concat(rows, ignore_index=True), prediction_length=H, quantiles=[0.5])
+    pred = pred.reset_index().sort_values(["item_id", "timestamp"])
+    return pred["target"].to_numpy(dtype=float).reshape(len(ctx), H)
+
+
+_LOADERS = {"dummy": _load_dummy, "chronos": _load_chronos, "timesfm": _load_timesfm, "moirai": _load_moirai, "tirex": _load_tirex, "tabpfn": _load_tabpfn}
+_FORECASTERS = {"dummy": _fc_dummy, "chronos": _fc_chronos, "timesfm": _fc_timesfm, "moirai": _fc_moirai, "tirex": _fc_tirex, "tabpfn": _fc_tabpfn}

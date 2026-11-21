@@ -13,3 +13,5 @@ Claim a task by putting your handle in **Owner** and your branch in **Branch** (
 | Rich-column techniques (D18): feature dropout -> cleaning -> auxiliary tasks -> teacher-student | 04 | | | open | needs side tables joined (D7) |
 | LightGBM hyperparameter search on the 4 cuts | 02 | | | open | seed noise about 0.8 on one cut: use the mean over cuts |
 | Combine several robust level estimators (medians over different windows) | 02 | | | open | |
+| TabPFN-TS (local mode, v2 weights): smoke test, 4 cuts, blend test | 03 | | it03/adamex-svk/foundation-models | in progress | D36; environment being installed on the GPU machine |
+| Meta-learning ensemble (FFORMA style): per-series model weights from features | 04 | | | open | D37; needs base forecasts at 8-12 origins |
