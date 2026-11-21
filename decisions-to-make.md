@@ -1,5 +1,7 @@
 # Decisions to make
 
+Sale-probability gate (2026-11-21): keep the fixed ensemble. Applying the seed-0 gate only to its 30% LightGBM component improved the primary historical mean by 0.0609 points (3/4 wins), below the 0.5 threshold. One of two additional periods regressed. The user reported −4.9 on the public leaderboard, 0.1 points below the original ensemble. See `iterations/15-sale-probability-gate/log.md`.
+
 Living list for the team. Settled items are under **Decided** with date and choice. Last updated: 2026-11-21.
 
 ## Maya's branch: AutoGluon integration (2026-11-21)
