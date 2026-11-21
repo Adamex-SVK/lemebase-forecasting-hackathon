@@ -35,7 +35,11 @@ def cut_frame(full, k):
 
 def run_lgbm(full, k, d33, seed):
     """Own-arm LightGBM for cut k. Returns (keys, F[n x 13], train, hold, weeks, median13 F)."""
-    df = cut_frame(full, k)
+    return run_lgbm_df(cut_frame(full, k), d33, seed)
+
+
+def run_lgbm_df(df, d33, seed):
+    """Same, for any history frame (the last 13 weeks of `df` are the holdout)."""
     train, hold, cut = v.split(df)
     M = f.ShopMatrix(df[df["week"] < cut], mask_oh_before=MASK_DATE if d33 else None)
     weeks = pd.date_range(cut, periods=H, freq="7D")
