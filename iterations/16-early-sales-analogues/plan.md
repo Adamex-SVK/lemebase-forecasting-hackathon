@@ -1,0 +1,7 @@
+# Early sales analogues
+
+Test one fixed rule on the target shop. Age is 1–13 calendar weeks inclusive from first observed positive sale. Use an older product once, aligned to its first observed sale. Require at least 13 observed shop weeks before that first sale to reduce left-edge censoring, and require the entire donor continuation to end before the forecast starts. Keep zero weeks in prefixes and continuations.
+
+For products of the same observed age, restrict (1 + cumulative units) to within a factor of two of the target. Rank by the sum of absolute log2 smoothed volume ratio, absolute difference in fraction of weeks with sales, and total variation distance between the two weekly shares of cumulative volume. Each term ranges from zero to one within the volume filter. Use the nearest 15 and include all ties at the boundary. Use their unweighted median raw units for each of the next 13 weeks and apply the ensemble's usual integer rounding. Other products and targets with fewer than 15 qualifying peers retain their full champion forecast.
+
+No parameters are selected on holdout scores. Compare with the original fixed ensemble on primary offsets 0,13,26,39 and additional offsets 16,32. Require at least +0.5 mean points, wins on 3/4 primary cuts, nonnegative mean weeks 8–13 gain and nonnegative gain on both additional offsets. Historical development periods cover one target shop. Generate a local candidate CSV if the rule passes these checks.

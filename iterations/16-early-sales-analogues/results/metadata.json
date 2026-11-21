@@ -1,0 +1,56 @@
+{
+  "primary_offsets": [
+    0,
+    13,
+    26,
+    39
+  ],
+  "additional_offsets": [
+    16,
+    32
+  ],
+  "primary_gain": -0.15186857597091397,
+  "primary_wins": 1,
+  "late_gain": 0.17950091545492763,
+  "review_pass": false,
+  "numpy": "2.5.5",
+  "pandas": "2.3.3",
+  "python": "3.12.4",
+  "source_blobs": {
+    "iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut0__padded.parquet": "9e09e08f22eb5b124f2cff85de125d2adb3fa81bad67f07f04d20732999f1f04",
+    "iterations/03-foundation-model/forecasts/tirex__test__cut0__padded.parquet": "8bd6919eade69e221aa0e1de47c4ddb642399e77306a86705685bfbea6644775",
+    "iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut0__padded.parquet": "acccb9be349792e7df55456eb6726e9af2099a39cdf8a77159969e48c93a7cee",
+    "iterations/02-robust-eval/forecasts/base_cut0_seed0.npy": "6e795dddd310678602da6a904167182cbb79eeb6447f95f6139e742a2028ab5f",
+    "iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut1__padded.parquet": "f0972f20cb3695c61eac6739ff0ecb377be8a24334f8d7bdcd153e7f1587acf0",
+    "iterations/03-foundation-model/forecasts/tirex__test__cut1__padded.parquet": "77ebf1187a028e428faee546987f99e89657297c9b741662c1b085a8e45dba33",
+    "iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut1__padded.parquet": "9a4d3e568b6fd3d262b88357bb0782c2626696de0a308e195d061eec2c0b8c50",
+    "iterations/02-robust-eval/forecasts/base_cut1_seed0.npy": "81c3090cb2be46178c8fa8c4cee7f98a40fbb93d4b95ccaff191cbf8dfd3f539",
+    "iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut2__padded.parquet": "09fd1c07bef8bac156d647ac2b7dc508185495d358cab8ae93ccf25b0817f089",
+    "iterations/03-foundation-model/forecasts/tirex__test__cut2__padded.parquet": "b286f90489f6be58e1182c5e31ca30e2ccc86b6d2b63359058551debe47691a1",
+    "iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut2__padded.parquet": "0938a79ae738b0f54549edcaf4baf555c6d1c24299e1a2cd091f87a031ebb38a",
+    "iterations/02-robust-eval/forecasts/base_cut2_seed0.npy": "cd64d3264664d25e6e32933fe9b9d73aa1ad0805b07003ee35b7e43ba3efa247",
+    "iterations/03-foundation-model/forecasts/moirai-2.0-small__test__cut3__padded.parquet": "74952d50196150e865051425152ef3d10a036268dd7511965fb945a120482302",
+    "iterations/03-foundation-model/forecasts/tirex__test__cut3__padded.parquet": "77952cda70b5fa02d3984d9c876d883d291a62cb7068e6608e17e8031101987f",
+    "iterations/03-foundation-model/forecasts/chronos-t5-small__test__cut3__padded.parquet": "140308fcd91fa6839d4059d8b06e62d51b4552c810c660a4cb5230300eaf0a0c",
+    "iterations/02-robust-eval/forecasts/base_cut3_seed0.npy": "49aad1d5b7d976e2d9f57226dfc3816393094e2424928fa2dbd7ab926463d2e3",
+    "iterations/03-foundation-model/forecasts_cuts/moirai-2.0-small__test__w16__padded.parquet": "713ee008a4345ce550c5679d3bf310a3a9d44815c86e5b954e9bc6555506a716",
+    "iterations/03-foundation-model/forecasts_cuts/tirex__test__w16__padded.parquet": "f24d2524f50929e48e767ccdca930d5436e960c971209d53731efedc234e8d29",
+    "iterations/03-foundation-model/forecasts_cuts/chronos-t5-small__test__w16__padded.parquet": "a701b4d2378f396e7efe064a9a963874bf7e2190f8519a39c9aa3c7597771935",
+    "iterations/05-meta-ensemble/base_forecasts/lgbm_w16.npy": "d4e27b1493350acf596d802b3db5713adf012234a7dd978480c8b86e00998a19",
+    "iterations/03-foundation-model/forecasts_cuts/moirai-2.0-small__test__w32__padded.parquet": "45d76d26796b51ced36a3c1016ccd4a4b3692976499d5d696b234cca8625a783",
+    "iterations/03-foundation-model/forecasts_cuts/tirex__test__w32__padded.parquet": "686fb02f48db107d5817a6bcd1d703a50b85bf7ee4cd3d54574347fae1d1b71b",
+    "iterations/03-foundation-model/forecasts_cuts/chronos-t5-small__test__w32__padded.parquet": "02307a8bf9634a4e6812c2af00cad468026490c65d368c305e5563289775351b",
+    "iterations/05-meta-ensemble/base_forecasts/lgbm_w32.npy": "da1ac8ca79c693190461f7b725bda8cb1b381a5fe27c7bd35c8aa3eb76a18cd3"
+  },
+  "source_commits": [
+    "71b82f33f0fe5647a13d3786cd17d11b4c4e5493",
+    "5592b3593c794dd21b441b0fdd564eea90f78248"
+  ],
+  "hashes": {
+    "iterations/16-early-sales-analogues/analogues.py": "63bbedbd44758b066ede939f51c8988e44a5b25bdf273665f2067fa7a3fa3f90",
+    "iterations/16-early-sales-analogues/backtest.py": "682c0b36d3797c9440ecd57e0a2f861125e8ce64b6c9faa33ee614b8e74057cc",
+    "iterations/10-benchmark-diagnosis/validation.json": "ee3a10c6065575c770d40f3d9145f7f5ad689974ea244296960ce1cf3f9332ab",
+    "data/interim/weekly_test.parquet": "748a74cfa28b9151012a76df254d0dd274075141cd030241fcf1709c69aecb33",
+    "submissions/ensemble_top3_blend_v1.csv": "af2d49198248e54f4fe5b175484f019fb9c4b22ec1f0b6f916d344f01bfb5639"
+  }
+}
