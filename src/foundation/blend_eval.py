@@ -32,6 +32,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--variant", default="base", choices=["base", "d33"])
     ap.add_argument("--post", default="raw", choices=["raw", "round", "zero8", "round+zero8"])
+    ap.add_argument("--round-final", action="store_true", help="round every blended forecast (and LightGBM alone) to whole units")
     a = ap.parse_args()
     full = v.load_weekly("test")
     models = sorted({p.stem.split("__")[0] for p in FM_DIR.glob("*__test__cut0__padded.parquet")})
@@ -56,9 +57,9 @@ def main():
 
     def score(k, F):
         M, train, hold, weeks, *_ = ctx[k]
-        return e.score_F(M, F, train, hold, weeks)["score"]
+        return e.score_F(M, np.round(F) if a.round_final else F, train, hold, weeks)["score"]
 
-    print(f"LightGBM variant: {a.variant}; foundation post-processing: {a.post}; models with all 4 cuts: {models}\n")
+    print(f"LightGBM variant: {a.variant}; foundation post-processing: {a.post}; round final: {a.round_final}; models with all 4 cuts: {models}\n")
     ref = [score(k, ctx[k][5]) for k in range(4)]
     print("LightGBM alone:", " ".join(f"{x:7.2f}" for x in ref), f"  mean {np.mean(ref):.2f}")
     for m in models:
