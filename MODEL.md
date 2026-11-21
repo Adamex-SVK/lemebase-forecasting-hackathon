@@ -1,17 +1,20 @@
-# The current best model (D40)
+# The FINAL model (D40 + sibling-shop fine-tuned Chronos-2)
+
+**Final submission: `submissions/ensemble_d40_plus_chronos2ft_v1.csv`, live -4.5** (decided by the owner on 2026-11-21 after no further improvement was found; D40 alone scored -4.8). The recipe below is D40; the final model adds one ensemble member (step 1b).
 
 One page that says what the best model is, how to rebuild it, what it is worth, and where it is weak. Everything here is backed by the logs; nothing is untested.
 
 ## Result
 | | Score (higher is better) |
 |---|---|
-| Live board, weeks 1-7 | **-4.8** (LightGBM alone -7.6, median of last 13 weeks -9.8, AutoARIMA -33.7, Naive -64.5) |
+| Live board, weeks 1-7 | **-4.5 final model** (D40 alone -4.8 ; LightGBM alone -7.6, median of last 13 weeks -9.8, AutoARIMA -33.7, Naive -64.5) |
 | Local, mean of 4 rolling cuts | **-13.67** (cuts -3.72 / -25.91 / -11.01 / -14.02) |
 
 Local cuts differ by up to 45 points between months (Oct-Dec are the hardest), so compare models inside a cut, never across cuts. The final score uses weeks 8-13, not the 7 weeks seen live.
 
 ## The recipe
 1. **Foundation ensemble.** Average the raw zero-shot forecasts of Moirai 2.0-small, TiRex and Chronos-T5-small. They are used as published (no training on our data), with the shop's weekly history zero-padded from its first sale week.
+1b. **Fine-tuned Chronos-2 as a 4th member.** LoRA fine-tune of Chronos-2 (300 steps, learning rate 1e-5) on weekly series of the real sibling shops A, C, D (2,000 per shop, seed 0; never the test shop) with `src/foundation/x1_chronos2_ft.py`; its forecast joins the three zero-shot models in the mean. Local 4-cut +0.02, 13 overlapping cuts +0.14 (9/13), live -4.5. The forecast is committed (`iterations/03-foundation-model/forecasts_oos-ft/chronos-2-ft__test__final__padded.parquet`), so no GPU is needed to rebuild.
 2. **Zero rule (D39).** Forecast 0 for any article with no sale in the last 8 weeks (1,073 of 2,904 articles).
 3. **LightGBM blend.** `0.3 x LightGBM + 0.7 x ensemble`. LightGBM (`lgbm_own_v1`): L1 loss on units divided by each article's MASE scale (D29), 41 lag and calendar features, training windows every 2 weeks, 276 trees, trained on the test shop's own history only.
 4. **Round and clip (D38).** Round to whole units, clip at 0. The metric favours integer medians for slow sellers.
@@ -22,7 +25,7 @@ Local cuts differ by up to 45 points between months (Oct-Dec are the hardest), s
 .venv/bin/python src/build_best_model.py           # LightGBM + ensemble, validates, checks the hash
 .venv/bin/python src/build_best_model.py --skip-lgbm   # reuse submissions/lgbm_own_v1.csv
 ```
-Rebuilding reproduces `submissions/ensemble_top3_blend_v1.csv` **byte for byte** (sha256 checked in the script; verified 2026-11-21). The final foundation-model forecasts are committed in `iterations/03-foundation-model/forecasts_final/`, so no GPU is needed to rebuild. Regenerating them needs the GPU machine (`GPU-ACCESS.md`, `iterations/03-foundation-model/gpu-machine.md`).
+Rebuilding reproduces `submissions/ensemble_d40_plus_chronos2ft_v1.csv` **byte for byte** (sha256 checked in the script; verified 2026-11-21). The final foundation-model forecasts are committed in `iterations/03-foundation-model/forecasts_final/`, so no GPU is needed to rebuild. Regenerating them needs the GPU machine (`GPU-ACCESS.md`, `iterations/03-foundation-model/gpu-machine.md`).
 
 ## Why this recipe (evidence)
 - **Combining different models is what worked**: LightGBM -7.6 and Moirai alone -7.3 live, the blend -4.8 (`iterations/03-foundation-model/`).
@@ -36,3 +39,6 @@ Rebuilding reproduces `submissions/ensemble_top3_blend_v1.csv` **byte for byte**
 
 ## Next (not in this model yet)
 `iterations/10-external-info/plan.md`: original public sources (X2), holiday features (X3), bias correction learned on sibling shops (X4); then fine-tuning on real sibling retail data. A change enters this model only through a decision entry and the 4-cut bar.
+
+## Final-day results (iteration 10, PR #20)
+Tried after D40 and none beat it by the bar: stock masking (worse), Chronos-2 stock covariates (worse), siblings-only and own-history fine-tunes (-13.2 to -14.2 alone, about D40 level), 30-member ensemble curve (saturates after 2-3 members), D40 + fine-tune variants live: 4th member -4.5, half-replaced -5.2, fine-tune alone -4.9. See `iterations/10-external-info/x1/notes_adamex-svk_unused-info.md`.
