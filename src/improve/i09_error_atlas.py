@@ -111,8 +111,11 @@ def standard_candidates(ctx):
         cand[m] = raw[m]
     for name, m in Q40.items():
         cand[name] = matrix_from_parquet(FC / f"{m}__test__cut{ctx['k']}__padded.parquet", M)
-    cand["NHITS"] = matrix_from_parquet(ROOT / "iterations" / "06-neural" / "forecasts" /
-                                        f"NHITS__test__cut{ctx['k']}__padded.parquet", M)
+    # NHITS forecasts live in another session's untracked iteration-06 folder; include them when
+    # present, but keep the atlas runnable on a fresh checkout without that folder.
+    nhits = ROOT / "iterations" / "06-neural" / "forecasts" / f"NHITS__test__cut{ctx['k']}__padded.parquet"
+    if nhits.exists():
+        cand["NHITS"] = matrix_from_parquet(nhits, M)
     cand["Sundial"] = matrix_from_parquet(FC / f"sundial-base-128m__test__cut{ctx['k']}__padded.parquet", M)
     # last52 D40 and its members
     raw52 = {m: matrix_from_parquet(FC / f"{m}__test__cut{ctx['k']}__last52.parquet", M) for m in REF_MODELS}
