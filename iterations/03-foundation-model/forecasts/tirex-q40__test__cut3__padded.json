@@ -1,0 +1,1 @@
+{"model": "tirex-q40", "shop": "test", "cut_index": 3, "context": "padded", "n_series": 2904, "n_sent_to_model": 2599, "load_seconds": 20.3, "forecast_seconds": 15.4}
