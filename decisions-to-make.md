@@ -1,6 +1,6 @@
 # Decisions to make
 
-Early-sales peer forecasts (2026-11-21) scored −13.8178 against the fixed ensemble’s −13.6659 on the four primary holdouts, with one win. The two additional periods split. Retain the original ensemble. See `iterations/16-early-sales-analogues/log.md`.
+Early-sales peer forecasts (2026-11-21) scored −13.8178 against the fixed ensemble’s −13.6659 on the four primary holdouts, with one win. The two additional periods split. The user reported −4.8 for the 50/50 peer blend on the public leaderboard, tying the original at displayed precision. Retain the original ensemble. See `iterations/16-early-sales-analogues/log.md`.
 
 Sale-probability gate (2026-11-21): keep the fixed ensemble. Applying the seed-0 gate only to its 30% LightGBM component improved the primary historical mean by 0.0609 points (3/4 wins), below the 0.5 threshold. One of two additional periods regressed. The user reported −4.9 on the public leaderboard, 0.1 points below the original ensemble. See `iterations/15-sale-probability-gate/log.md`.
 
