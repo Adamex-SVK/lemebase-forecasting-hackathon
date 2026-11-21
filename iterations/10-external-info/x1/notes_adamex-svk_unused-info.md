@@ -50,3 +50,8 @@ Training data: weekly series of Sets A, C and D only (never the test shop, never
 - Stock information as used here is not a lever (A, B).
 - Sibling-shop fine-tuning works as a way to fix a weak model, but **gives no gain over the blend that already exists**. The idea is not dead for stronger members (fine-tune Moirai 2.0 or TiRex on the siblings), which was not tried: Moirai/TiRex need their own training code.
 - Next, if continued: fine-tune Moirai 2.0-small or TiRex on A, C, D (about 1-2 h each with the tooling), and add the Chronos-2 fine-tune to a blend with 3 or more fine-tuned members.
+
+## D. Follow-up after the live score of the D40 + fine-tuned Chronos-2 file (-4.5 vs -4.8) (`chronos2_ft_multi_eval.py`, `results_adamex-svk_chronos2_ft_multi.csv`)
+- Averaging siblings-only runs does not help: 3-run avg -14.07, 6-run avg -14.15 alone (the first run's -13.73 was partly luck); in the blend +0.02 to +0.03.
+- Fine-tune on siblings plus the test shop's own pre-cut history (fine-tuned per cut, leakage-safe), alone: seeds 0-4 give -13.37, -14.03, -13.57, -13.17, -13.87 (spread about 0.9 from the seed alone); 5-seed average -13.27 (+0.39, 2/4 cuts); x3 repeat of own history -13.58; 1000 steps -13.87. As a 4th member of D40: -13.51 to -13.73.
+- Nothing clears +0.5 on 3/4 cuts. Seed noise (about +-0.4) is as large as every difference seen. The local plateau is about -13.5.
