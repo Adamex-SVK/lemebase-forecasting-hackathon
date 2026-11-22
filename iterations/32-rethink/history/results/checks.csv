@@ -1,0 +1,16 @@
+run,forecasts,different_from_original
+test_0,37752,2778
+test_13,37752,2897
+test_26,37752,2940
+test_39,37752,2555
+test_16,37752,2834
+test_32,37752,2776
+test_final,37752,3001
+A_own,7787,0
+A_pooled,7787,1461
+B_own,97500,0
+B_pooled,97500,9310
+C_own,11063,44
+C_pooled,11063,52
+D_own,655759,214
+D_pooled,655759,439

@@ -1,0 +1,16 @@
+{
+  "python": "3.12.4",
+  "numpy": "2.5.5",
+  "pandas": "2.3.3",
+  "lightgbm": "4.7.0",
+  "seed": 0,
+  "source_sha256": {
+    "ca3a0ed111ecec8ef55ceb9c408a2988ee892149:iterations/03-foundation-model/forecasts_final/moirai-2.0-small__test__final__padded.parquet": "e8008dfeaea4d175de4af389041d9b4a7b4ca775eaffaf6d15a11f95367258c6",
+    "ca3a0ed111ecec8ef55ceb9c408a2988ee892149:iterations/03-foundation-model/forecasts_final/tirex__test__final__padded.parquet": "390dd09e67c41359f10ba109b5229c9cb07d2481b7e463ccf4ada15a6ab1856c",
+    "ca3a0ed111ecec8ef55ceb9c408a2988ee892149:iterations/03-foundation-model/forecasts_final/chronos-t5-small__test__final__padded.parquet": "796a6e2bbf5d02e470f6b58cad9d010c203468570c4a1da5b7cd7944367d4ddb",
+    "ca3a0ed111ecec8ef55ceb9c408a2988ee892149:iterations/03-foundation-model/forecasts_oos-ft/chronos-2-ft__test__final__padded.parquet": "df252b8b28af9a0f1db03855c563800b584332110a550109abe1238671b1364e",
+    "ca3a0ed111ecec8ef55ceb9c408a2988ee892149:submissions/lgbm_own_v1.csv": "2ba0a899d6775794127403d8601189f5294ae0d5a77fe6dfaa9f336c829bd3af",
+    "ca3a0ed111ecec8ef55ceb9c408a2988ee892149:submissions/ensemble_d40_plus_chronos2ft_v1.csv": "424efba0fc50e3ce49869f7f4129d0e1752a608088b2dd0931c569ce1f0aa936",
+    "iterations/31-demand-distribution/results/test_final.parquet": "0f63a159848baf2f2887b688923ed8232c3e5fe142fb4b25274f4d6c526a1607"
+  }
+}

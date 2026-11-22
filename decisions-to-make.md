@@ -318,3 +318,15 @@ User reported C-Team's public best of -4.7. The screenshot identifies the team a
 Iteration 29. Requested extra-credit A–D comparison of own-shop and pooled training using the full PR 20 blend. Include own-shop records in both arms, add all three other shops in the pooled arm, and use the existing 13-week shop-specific holdouts.
 
 Iteration 30. User selected Set B promotion records as a donor-only feature for Set A. Compare the full blend with identical A+B training windows, with and without B's historical promoted-unit share in LightGBM. Preserve the original four-shop comparison. The calendar dates permit a retrospective transfer experiment only.
+
+2026-11-22 — Maya selected weekly demand distribution regression inside the current −4.5 five-model blend. Iteration 31 keeps the existing weights and validation periods. Train a median-producing classifier, compare paired predictions on the target and Sets A–D, and provide a local forecast CSV for review.
+
+Iteration 31 results checkpoint. The weekly distribution challenger gained 0.3294 points across four target-shop periods, won three, and gained 0.0525 in weeks 8–13. The two supplementary periods split. The gain falls below the +0.5 promotion threshold. Retain the −4.5 incumbent as preferred and make the requested candidate available for local review in submissions/ensemble_pr20_weekly_distribution_v1.csv. Pooled A–D gained 0.1161 points and own-only A–D lost 0.0332 points. No public result for the challenger.
+
+2026-11-22 — Maya selected ensemble_pr20_weekly_distribution_v1.csv for the next submission based on the observed historical gain. This supersedes the earlier preference for the incumbent in iteration 31. The +0.5-point review threshold was waived for this selection. The prior ensemble holds the recorded −4.5 public score and the selected file awaits leaderboard evaluation.
+
+2026-11-22 — Maya reported approximately −4.4 for the iteration 31 CSV. For iteration 32 Maya explicitly delegated the choice of mechanisms, experiments and validation through local CSV delivery. Research briefs and evaluation rules are under iterations/32-rethink.
+
+Iteration 32 selected ensemble32_history_pack.csv for Maya's target shop, ahead of opening the offset-65 stress outcomes. Pre-origin inventory-flow features and product-specific sales increments gained +0.4224 over the reported −4.4 file across the four primary full-horizon backtests, including +0.5251 in weeks 1–7 and +0.3026 in weeks 8–13. Both supplementary periods improved. This is the selected local forecast for review; its public leaderboard score is unknown.
+
+The frozen iteration 32 choice also gained +0.1455 points on the separately reserved older target period, with gains for both horizon halves. Confirmed the selected CSV for the target shop at the results checkpoint.

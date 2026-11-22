@@ -1,0 +1,8 @@
+{
+  "iterations/32-rethink/research/stress/moirai-2.0-small__test__w65__padded.parquet": "39c12a2dc3389523b95fed1dec3a057625a2b20fb1208374acc287ae089f898e",
+  "iterations/32-rethink/research/stress/tirex__test__w65__padded.parquet": "fcd1eb8aa6052274b3cb24063a27c04eeb27d84ea64ea45bf322dc3468786491",
+  "iterations/32-rethink/research/stress/chronos-t5-small__test__w65__padded.parquet": "1ef5183bc396d2a16937bf64684c8cdc0c02aff507a4a59ecdffc4c59783796f",
+  "iterations/32-rethink/research/stress/chronos-2-ft__test__w65__padded.parquet": "3f4305698faeb20c397f4c4663858df5874c82ea9712c4e38d7b573ba6ac06a4",
+  "iterations/32-rethink/history/stress/incumbent.parquet": "70f669f80394feac984a92024619cdf6ff2e7a9166ad655dd5063156dc7354c6",
+  "iterations/32-rethink/history/stress/history.parquet": "0fb36920c193141b934f84cd0f6b5746e89ca6859541d5101b720dcec0bcc30c"
+}
