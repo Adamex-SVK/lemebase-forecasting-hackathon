@@ -306,3 +306,15 @@ Iteration 22 export: user requested a local upload-format CSV for each of the fo
 ## Bounded Chronos retraining loop — proposed
 
 User reported C-Team's public best of -4.7. The screenshot identifies the team and score; confirm which submitted CSV earned it before attributing the change. Target-only Chronos selected the 500-update ceiling in three of six historical folds and in the full-history fit; the other historical folds chose 100 or 250. Proposed first round: extend the existing checkpoint menu with 750 and 1,000 updates, keep the earlier checkpoints eligible, and hold the training data, seed, ensemble and all other settings fixed. Choose steps on the earlier inner period of each fold. Compare on the six registered outer periods against both the current target-only Chronos run and the pinned original ensemble. Keep the existing promotion criteria and report the incremental change versus target-only. Stop after this bounded comparison for review. Use observed historical sales as training labels.
+
+2026-11-21 — Presentation comparison approved. Iteration 25 compares the PR 20 final ensemble with AutoARIMA and top-down MSTL on four target-shop holdouts and uses the fast LightGBM component for a Brammibal’s store-sales demonstration. Use relative MASE improvement because the publisher's centered sales index has no meaningful raw-unit percentage denominator.
+
+2026-11-21 — User approved the San Antonio Hard Rock Cafe location and Texas Comptroller source for a retrospective January–March 2026 monthly beverage-receipts demonstration. See iteration 26 for the small-sample monthly LightGBM adaptation and comparison with 2025.
+
+2026-11-21 — User approved Fielmann's Germany segment as a quarterly euro-denominated case. Iteration 27 retains the year-end-2025 information boundary, original Q1 2025 baseline and single-quarter reporting scope.
+
+2026-11-22 — The user requested an A–D evaluation of the full PR 20 blend. Iteration 28 retains the 30/17.5/17.5/17.5/17.5 weights and latest 13-week shop holdouts. Refit the tree on each shop’s training history and fine-tune the Chronos-2 component jointly on truncated A/C/D donor histories. No holdout labels enter component fitting. Report the full-blend backtests separately from the submitted target-shop forecast and single-Chronos results.
+
+Iteration 29. Requested extra-credit A–D comparison of own-shop and pooled training using the full PR 20 blend. Include own-shop records in both arms, add all three other shops in the pooled arm, and use the existing 13-week shop-specific holdouts.
+
+Iteration 30. User selected Set B promotion records as a donor-only feature for Set A. Compare the full blend with identical A+B training windows, with and without B's historical promoted-unit share in LightGBM. Preserve the original four-shop comparison. The calendar dates permit a retrospective transfer experiment only.
